@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 
         HomeFragment fragment = new HomeFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -93,6 +93,11 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_map) {
+            MapsFragment fragment = new MapsFragment();
+            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
 
         } else if (id == R.id.nav_manage) {
 

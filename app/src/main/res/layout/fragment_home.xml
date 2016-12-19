@@ -4,35 +4,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="3"
-    android:background="@color/aqua"
+    android:background="@color/red"
     tools:context="br.com.cdf.cheapit.HomeFragment">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+
+        android:background="@android:color/black"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_height="200dp"
         >
-
-
         <android.support.v4.view.ViewPager
             android:id="@+id/viewPageAndroid"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/layout_border">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/cheap_logo"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_height="250dp"
             />
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@android:color/black"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        </ListView>
+
+    </LinearLayout>
+
 </LinearLayout>
