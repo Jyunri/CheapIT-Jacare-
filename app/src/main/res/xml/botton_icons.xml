@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        id="@+id/tab_home"
+        barColorWhenSelected="@color/red"
+        activeColor = "@color/white"
+        icon="@drawable/ic_call_black_24dp"
+        title="Home" />
+    <tab
+        id="@+id/tab_ligar"
+        barColorWhenSelected="@color/royalblue"
+        activeColor = "@color/white"
+        icon="@drawable/ic_call_black_24dp"
+        title="Ligar" />
+    <tab
+        id="@+id/tab_cardapio"
+        barColorWhenSelected="@color/red"
+        activeColor = "@color/white"
+        icon="@drawable/ic_call_black_24dp"
+        title="Cardápio" />
+    <tab
+        id="@+id/tab_facebook"
+        barColorWhenSelected="@color/royalblue"
+        activeColor = "@color/white"
+        icon="@drawable/ic_call_black_24dp"
+        title="Facebook" />
+</tabs>

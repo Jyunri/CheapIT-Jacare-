@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        //Remove o menu de 3 bolinhas a direita do toolbar
         //setSupportActionBar(toolbar);
 
         HomeFragment fragment = new HomeFragment();
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+
+        toggle.setDrawerIndicatorEnabled(false); //disable "hamburger to arrow" drawable
+
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
