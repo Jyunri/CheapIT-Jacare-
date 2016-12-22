@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
     <tab
-        id="@+id/tab_home"
-        barColorWhenSelected="@color/red"
+        id="@+id/tab_coupons"
+        barColorWhenSelected="@color/dark_red"
         activeColor = "@color/white"
-        icon="@drawable/ic_call_black_24dp"
-        title="Home" />
+        icon="@drawable/ic_coupon_24"
+        title="Cupons" />
     <tab
-        id="@+id/tab_ligar"
+        id="@+id/tab_map"
+        barColorWhenSelected="@color/royalblue"
+        activeColor = "@color/white"
+        icon="@drawable/ic_location_on_white_24dp"
+        title="Mapa" />
+    <tab
+        id="@+id/tab_fav"
+        barColorWhenSelected="@color/dark_red"
+        activeColor = "@color/white"
+        icon="@drawable/ic_favorite_white_24dp"
+        title="Favoritos" />
+    <tab
+        id="@+id/tab_announce"
         barColorWhenSelected="@color/royalblue"
         activeColor = "@color/white"
         icon="@drawable/ic_call_black_24dp"
-        title="Ligar" />
-    <tab
-        id="@+id/tab_cardapio"
-        barColorWhenSelected="@color/red"
-        activeColor = "@color/white"
-        icon="@drawable/ic_call_black_24dp"
-        title="Cardápio" />
-    <tab
-        id="@+id/tab_facebook"
-        barColorWhenSelected="@color/royalblue"
-        activeColor = "@color/white"
-        icon="@drawable/ic_call_black_24dp"
-        title="Facebook" />
+        title="Anuncie" />
 </tabs>
