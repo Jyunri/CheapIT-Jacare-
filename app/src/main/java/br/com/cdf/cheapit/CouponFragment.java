@@ -8,6 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
  */
 public class CouponFragment extends Fragment {
 
+    private RadioGroup radioGroup1;
 
     public CouponFragment() {
         // Required empty public constructor
@@ -29,6 +33,29 @@ public class CouponFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_coupon, container, false);
+
+        radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
+
+        // Checked change Listener for RadioGroup 1
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.radioAndroid:
+                        Toast.makeText(getContext(), "Android RadioButton checked", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radioiPhone:
+                        Toast.makeText(getContext(), "iPhone RadioButton checked", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
 
         //criar listas de itens
         ArrayList<String> clientes = new ArrayList<>();

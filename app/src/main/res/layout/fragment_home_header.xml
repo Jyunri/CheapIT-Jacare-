@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/llHeader"
     android:orientation="vertical"
-    android:background="@color/red">
+    android:background="@color/dark_red">
 
     <View
         android:layout_width="match_parent"
@@ -28,6 +28,33 @@
         android:layout_height="5dp"
         android:background="@android:color/black"
         />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvCQDT"
+        android:text="CUPONS #CORREQUEDATEMPO"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
+        android:textColor="@color/yellow"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:drawablePadding="2dp"
+        android:drawableRight="@drawable/ic_clock_24"
+        android:drawableEnd="@drawable/ic_clock_24"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/cqdt"
+        android:gravity="center"
+        android:textColor="@color/white"/>
 
 
 </LinearLayout>

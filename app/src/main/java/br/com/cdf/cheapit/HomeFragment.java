@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,6 +43,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
         AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext());
         mViewPager.setAdapter(adapterView);
+
+        TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
+        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
+        tvCQDT.setTypeface(type);
 
         //criar listas de itens
         ArrayList<String> clientes = new ArrayList<>();
