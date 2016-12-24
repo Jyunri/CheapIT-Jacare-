@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape android:shape="rectangle">
-            <!-- draw a border around rectangle shape -->
+            <!-- draw a border around rectangle_bege shape -->
             <!-- solid background -->
             <solid android:color="@color/darkblue"/>
 

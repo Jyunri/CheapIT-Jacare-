@@ -5,17 +5,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bege"
-    tools:context="br.com.cdf.cheapit.CouponFragment">
+    tools:context="br.com.cdf.cheapit.FavoritesFragment">
 
     <RadioGroup
-        android:id="@+id/radioGroup1"
+        android:id="@+id/radioGroup2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
         android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/radioAndroid"
+            android:id="@+id/rbFAVORITOS"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -24,21 +24,7 @@
             android:checked="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="ATIVOS"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-        <RadioButton
-            android:id="@+id/radioiPhone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ENCERRADOS"
+            android:text="FAVORITOS"
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
@@ -48,7 +34,8 @@
 
 
     <ListView
-        android:id="@+id/lvCoupons"
+        android:id="@+id/lvFavorites"
+        android:layout_margin="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -56,8 +43,7 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="60dp"
         android:divider="@android:color/transparent"
-        android:dividerHeight="5.0sp"
-        >
+        android:dividerHeight="5.0sp">
 
     </ListView>
 

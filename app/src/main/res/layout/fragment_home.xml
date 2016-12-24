@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/red"
+    android:background="@color/dark_red"
     tools:context="br.com.cdf.cheapit.HomeFragment">
 
 
@@ -16,7 +16,9 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/lvExpiring">
+            android:id="@+id/lvExpiring"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5.0sp">
 
         </ListView>
     </LinearLayout>

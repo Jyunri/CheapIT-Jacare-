@@ -31,7 +31,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/rectangle"
+        android:src="@drawable/rectangle_bege"
         android:id="@+id/loginRectangle"
         android:layout_below="@+id/tvCadastro"
         android:paddingBottom="25dp"

@@ -25,6 +25,7 @@
                 >
 
                 <ImageButton
+                    android:id="@+id/ibHomeLogo"
                     android:layout_width="200dp"
                     android:layout_height="80dp"
                     android:background="@drawable/cheapit_logo3"
