@@ -8,7 +8,7 @@
         title="Início" />
     <tab
         id="@+id/tab_coupons"
-        barColorWhenSelected="@color/royalblue"
+        barColorWhenSelected="@color/dark_orange"
         activeColor = "@color/white"
         icon="@drawable/ic_coupon_24"
         title="Cupons" />
@@ -20,7 +20,7 @@
         title="Favoritos" />
     <tab
         id="@+id/tab_map"
-        barColorWhenSelected="@color/royalblue"
+        barColorWhenSelected="@color/dark_orange"
         activeColor = "@color/white"
         icon="@drawable/ic_location_on_white_24dp"
         title="Mapa" />

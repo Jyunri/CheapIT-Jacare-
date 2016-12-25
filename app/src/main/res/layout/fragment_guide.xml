@@ -2,13 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bege"
-    tools:context="br.com.cdf.cheapit.CouponFragment">
+    tools:context="br.com.cdf.cheapit.GuideFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <RadioGroup
-        android:id="@+id/radioGroup1"
+        android:id="@+id/radioGroup3"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:gravity="center"
@@ -24,13 +24,13 @@
             android:checked="true"
             android:gravity="center"
             android:padding="5dp"
-            android:text="ATIVOS"
+            android:text="LISTA"
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
 
         <RadioButton
-            android:id="@+id/radioEncerrados"
+            android:id="@+id/radioMapa"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
-            android:text="ENCERRADOS"
+            android:text="MAPA"
             android:textStyle="bold"
             android:textSize="15dp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
@@ -46,19 +46,15 @@
 
     </RadioGroup>
 
-
-    <ListView
-        android:id="@+id/lvCoupons"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="60dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="5.0sp"
-        >
-
-    </ListView>
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="4"
+        android:orientation="vertical">
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            class="com.google.android.gms.maps.SupportMapFragment" />
+    </LinearLayout>
 </LinearLayout>

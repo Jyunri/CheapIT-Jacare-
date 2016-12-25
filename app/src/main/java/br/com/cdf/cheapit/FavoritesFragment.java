@@ -50,7 +50,7 @@ public class FavoritesFragment extends Fragment {
         ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //pegar referencia do listview
-        ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
+        ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvFavorites);
 
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);

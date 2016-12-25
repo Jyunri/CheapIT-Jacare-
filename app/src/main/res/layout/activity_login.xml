@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
+    android:fitsSystemWindows="true"
     android:background="@drawable/default_background">
 
     <ImageView
@@ -23,51 +24,59 @@
         android:gravity="center"
         android:textColor="@color/white"
         android:layout_marginTop="-5dp"
-        android:paddingBottom="15dp"
+        android:paddingBottom="20dp"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:layout_below="@+id/imgLogo"/>
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/tvCadastro"
+        android:background="@drawable/rectangle_bege"
         android:src="@drawable/rectangle_bege"
         android:id="@+id/loginRectangle"
-        android:layout_below="@+id/tvCadastro"
-        android:paddingBottom="25dp"
-        android:paddingLeft="25dp"
-        android:paddingRight="25dp" />
+        android:layout_marginBottom="50dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:gravity="center">
+
+        <TextView
+            android:text="Use uma conta Google ou seu perfil do Facebook para fazer login:"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_red"
+            android:textSize="17sp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/tvLoginText" />
+
+        <ImageButton
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="29dp"
+            android:id="@+id/ibFbLogin"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:background="@drawable/fb_loginbutton"/>
+
+        <ImageButton
+            android:layout_width="230dp"
+            android:layout_height="40dp"
+            android:id="@+id/ibGoogleLogin"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/ibFbLogin"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/google_loginbutton"/>
+    </LinearLayout>
 
 
-    <TextView
-        android:text="Use uma conta Google ou seu perfil do Facebook para fazer login:"
-        android:gravity="center"
-        android:layout_below="@id/tvCadastro"
-        android:textStyle="bold"
-        android:layout_marginTop="10dp"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/dark_red"
-        android:id="@+id/tvLoginText" />
-
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="10dp"
-        android:id="@+id/ibFbLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/tvLoginText"
-        android:background="@drawable/fb_loginbutton"/>
-
-    <ImageButton
-        android:layout_width="200dp"
-        android:layout_height="35dp"
-        android:id="@+id/ibGoogleLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/ibFbLogin"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/google_loginbutton"/>
 
     <View
         android:layout_width="match_parent"

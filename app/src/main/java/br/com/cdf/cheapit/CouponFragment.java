@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -44,11 +43,11 @@ public class CouponFragment extends Fragment {
             {
                 switch (checkedId)
                 {
-                    case R.id.radioAndroid:
-                        Toast.makeText(getContext(), "Android RadioButton checked", Toast.LENGTH_SHORT).show();
+                    case R.id.radioAtivos:
+                        Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.radioiPhone:
-                        Toast.makeText(getContext(), "iPhone RadioButton checked", Toast.LENGTH_SHORT).show();
+                    case R.id.radioEncerrados:
+                        Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

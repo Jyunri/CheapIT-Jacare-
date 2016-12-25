@@ -1,8 +1,7 @@
 package br.com.cdf.cheapit;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +12,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+
+import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -46,6 +48,46 @@ public class MainActivity extends AppCompatActivity
 
         ImageButton ibHomeLogo = (ImageButton)findViewById(R.id.ibHomeLogo);
         ibHomeLogo.setOnClickListener(this);
+
+
+
+        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
+            @Override
+            public void onTabSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    //// TODO: 8/31/16 melhorar para o primeiro acesso
+                    case (R.id.tab_home):
+                        HomeFragment fragment = new HomeFragment();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                        break;
+                    case (R.id.tab_coupons):
+                        CouponFragment couponFragment = new CouponFragment();
+                        android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        couponfragmentTransaction
+                                .replace(R.id.fragment_container, couponFragment)
+                                .commit();
+                        break;
+                    case (R.id.tab_fav):
+                        FavoritesFragment favoritesFragment = new FavoritesFragment();
+                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        favfragmentTransaction
+                                .replace(R.id.fragment_container, favoritesFragment)
+                                .commit();
+                        break;
+                    case (R.id.tab_map):
+                        GuideFragment guideFragment = new GuideFragment();
+                        android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        guidefragmentTransaction
+                                .replace(R.id.fragment_container, guideFragment)
+                                .commit();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -102,12 +144,11 @@ public class MainActivity extends AppCompatActivity
                     .commit();
 
         } else if (id == R.id.nav_map) {
-            MapsFragment fragment = new MapsFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction
-                    .replace(R.id.fragment_container, fragment)
+            GuideFragment guideFragment = new GuideFragment();
+            android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
+            guidefragmentTransaction
+                    .replace(R.id.fragment_container, guideFragment)
                     .commit();
-
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {

@@ -4,6 +4,7 @@ package br.com.cdf.cheapit;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -43,6 +44,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
         AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext());
         mViewPager.setAdapter(adapterView);
+
+        TabLayout tabLayout = (TabLayout) header.findViewById(R.id.tabDots);
+        tabLayout.setupWithViewPager(mViewPager);
 
         TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
