@@ -19,6 +19,8 @@ import com.roughike.bottombar.OnTabSelectListener;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    BottomBar bottomBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +51,11 @@ public class MainActivity extends AppCompatActivity
         ImageButton ibHomeLogo = (ImageButton)findViewById(R.id.ibHomeLogo);
         ibHomeLogo.setOnClickListener(this);
 
+        ImageButton ibMyCoupons = (ImageButton)findViewById(R.id.ibMyCoupons);
+        ibMyCoupons.setOnClickListener(this);
 
 
-        BottomBar bottomBar = (BottomBar) findViewById(R.id.bottomBar);
+        bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelected(@IdRes int tabId) {
@@ -129,26 +133,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
-            HomeFragment fragment = new HomeFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
+            bottomBar.getTabAtPosition(0).performClick();
 
         } else if (id == R.id.nav_coupons) {
-            CouponFragment fragment = new CouponFragment();
-            android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-
+            bottomBar.getTabAtPosition(1).performClick();
         } else if (id == R.id.nav_map) {
-            GuideFragment guideFragment = new GuideFragment();
-            android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
-            guidefragmentTransaction
-                    .replace(R.id.fragment_container, guideFragment)
-                    .commit();
+            bottomBar.getTabAtPosition(3).performClick();
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
@@ -166,12 +156,18 @@ public class MainActivity extends AppCompatActivity
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ibHomeLogo:
-                HomeFragment fragment = new HomeFragment();
-                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                fragmentTransaction
-                        .replace(R.id.fragment_container, fragment)
-                        .commit();
+                DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                drawer.openDrawer(GravityCompat.START);
+
+//                HomeFragment fragment = new HomeFragment();
+//                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction
+//                        .replace(R.id.fragment_container, fragment)
+//                        .commit();
                 break;
+            case R.id.ibMyCoupons:
+                bottomBar.getTabAtPosition(1).performClick();
+
             default: break;
         }
     }

@@ -7,21 +7,18 @@
     >
 
     <FrameLayout
-        android:layout_width="160dp"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         >
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="3dp"
+            android:layout_width="160dp"
+            android:layout_height="100dp"
+            android:padding="6dp"
             android:scaleType="fitXY"
             android:id="@+id/ivImagem"
             android:src="@drawable/coupon_example"
-             />
-        <ImageView
-            android:src="@drawable/rectangle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            />
+
     </FrameLayout>
 
     <LinearLayout

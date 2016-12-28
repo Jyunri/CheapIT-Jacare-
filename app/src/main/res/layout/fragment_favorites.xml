@@ -7,37 +7,25 @@
     android:background="@color/bege"
     tools:context="br.com.cdf.cheapit.FavoritesFragment">
 
-    <RadioGroup
-        android:id="@+id/radioGroup2"
+    <TextView
+        android:id="@+id/tvFavoritesTitle"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="20dp"
+        android:text="MEUS LOCAIS FAVORITOS"
+        android:background="@color/grey"
+        android:textColor="@color/white"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:textStyle="bold"
+        android:textSize="13sp"
 
-        <RadioButton
-            android:id="@+id/rbFAVORITOS"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="FAVORITOS"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-
-    </RadioGroup>
+        />
 
 
     <ListView
         android:id="@+id/lvFavorites"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="60dp"

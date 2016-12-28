@@ -27,16 +27,20 @@
                 <ImageButton
                     android:id="@+id/ibHomeLogo"
                     android:layout_width="200dp"
-                    android:layout_height="80dp"
-                    android:background="@drawable/cheapit_logo3"
+                    android:layout_height="70dp"
+                    android:layout_margin="2dp"
+                    android:scaleType="centerInside"
+                    android:background="@null"
+                    android:src="@drawable/cheapit_logo3"
                     />
 
                 <ImageButton
+                    android:id="@+id/ibMyCoupons"
                     android:layout_marginLeft="30dp"
                     android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:scaleType="fitXY"
-                    android:background="@drawable/help_icon"
+                    android:background="@drawable/ic_wallet"
                     android:layout_gravity="right"
                     />
 
@@ -45,6 +49,10 @@
 
         </android.support.design.widget.AppBarLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@android:color/black"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -58,7 +66,6 @@
                 >
             </FrameLayout>
 
-
             <com.roughike.bottombar.BottomBar
                 android:id="@+id/bottomBar"
                 android:layout_width="match_parent"
@@ -67,6 +74,8 @@
                 app:bb_tabXmlResource="@xml/botton_icons"
                 app:bb_behavior="shifting"
                 />
+
+
 
         </RelativeLayout>
 

@@ -7,6 +7,18 @@
     tools:context="br.com.cdf.cheapit.GuideFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/tvPlaces"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="LOCAIS"
+        android:background="@color/grey"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        />
+
     <RadioGroup
         android:id="@+id/radioGroup3"
         android:layout_width="match_parent"
@@ -15,7 +27,7 @@
         android:orientation="horizontal" >
 
         <RadioButton
-            android:id="@+id/radioAtivos"
+            android:id="@+id/radioLista"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -46,15 +58,35 @@
 
     </RadioGroup>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="4"
-        android:orientation="vertical">
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapView"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            class="com.google.android.gms.maps.SupportMapFragment" />
-    </LinearLayout>
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="vertical">
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/lvPlaces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="60dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="5.0sp"
+            >
+
+        </ListView>
+
+    </FrameLayout>
 </LinearLayout>

@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.InputStream;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class CouponFragment extends Fragment {
 
     private RadioGroup radioGroup1;
+    TextView tvMyCouponsTitle;
 
     public CouponFragment() {
         // Required empty public constructor
@@ -34,6 +36,7 @@ public class CouponFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_coupon, container, false);
 
         radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
+        tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvMyCouponsTitle);
 
         // Checked change Listener for RadioGroup 1
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -76,10 +79,17 @@ public class CouponFragment extends Fragment {
         ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //pegar referencia do listview
-        ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
+        final ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
 
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);
+
+        tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvCoupons.setSelection(0);
+            }
+        });
 
         return rootView;
     }

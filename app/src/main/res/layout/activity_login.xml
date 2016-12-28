@@ -40,6 +40,7 @@
         android:layout_marginBottom="50dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
+        android:weightSum="3"
         android:gravity="center">
 
         <TextView
@@ -47,33 +48,43 @@
             android:gravity="center"
             android:layout_gravity="center"
             android:textStyle="bold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:textColor="@color/dark_red"
-            android:textSize="17sp"
+            android:textSize="13sp"
+            android:layout_weight="1"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:id="@+id/tvLoginText" />
 
         <ImageButton
-            android:layout_width="230dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="29dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
             android:id="@+id/ibFbLogin"
             android:gravity="center"
+            android:background="@null"
             android:layout_gravity="center"
-            android:background="@drawable/fb_loginbutton"/>
+            android:scaleType="centerInside"
+            android:src="@drawable/fb_loginbutton"/>
 
         <ImageButton
-            android:layout_width="230dp"
-            android:layout_height="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:id="@+id/ibGoogleLogin"
+            android:background="@null"
             android:gravity="center"
             android:layout_gravity="center"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/ibFbLogin"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/google_loginbutton"/>
+            android:scaleType="centerInside"
+            android:layout_marginTop="-10dp"
+            android:paddingLeft="18dp"
+            android:paddingRight="18dp"
+            android:src="@drawable/google_loginbutton"/>
+
+
     </LinearLayout>
 
 

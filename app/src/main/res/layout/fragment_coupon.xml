@@ -7,6 +7,18 @@
     android:background="@color/bege"
     tools:context="br.com.cdf.cheapit.CouponFragment">
 
+    <TextView
+        android:id="@+id/tvMyCouponsTitle"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:text="MEUS CUPONS"
+        android:background="@color/grey"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        />
+
     <RadioGroup
         android:id="@+id/radioGroup1"
         android:layout_width="match_parent"
@@ -26,7 +38,7 @@
             android:padding="5dp"
             android:text="ATIVOS"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
 
         <RadioButton
@@ -40,7 +52,7 @@
             android:padding="5dp"
             android:text="ENCERRADOS"
             android:textStyle="bold"
-            android:textSize="15dp"
+            android:textSize="15sp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
 
 
@@ -51,7 +63,7 @@
         android:id="@+id/lvCoupons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:paddingTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="60dp"

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
  */
 public class FavoritesFragment extends Fragment {
 
+    TextView tvFavoritesTitle;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -29,6 +31,7 @@ public class FavoritesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
+        tvFavoritesTitle = (TextView)rootView.findViewById(R.id.tvFavoritesTitle);
 
         //criar listas de itens
         ArrayList<String> clientes = new ArrayList<>();
@@ -50,10 +53,17 @@ public class FavoritesFragment extends Fragment {
         ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //pegar referencia do listview
-        ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvFavorites);
+        final ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvFavorites);
 
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);
+
+        tvFavoritesTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvCoupons.setSelection(0);
+            }
+        });
 
         return rootView;
 
