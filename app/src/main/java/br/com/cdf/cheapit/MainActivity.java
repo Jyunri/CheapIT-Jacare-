@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity
 //                        .commit();
                 break;
             case R.id.ibMyCoupons:
-                bottomBar.getTabAtPosition(1).setPressed(true);    //simula o clique sem chamar as acoes
+                bottomBar.selectTabAtPosition(1);    //simula o clique sem chamar as acoes
                 MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
                 android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
                 couponfragmentTransaction
