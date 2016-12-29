@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabSelected(@IdRes int tabId) {
                 switch (tabId) {
-                    //// TODO: 8/31/16 melhorar para o primeiro acesso
                     case (R.id.tab_home):
                         HomeFragment fragment = new HomeFragment();
                         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -166,8 +165,13 @@ public class MainActivity extends AppCompatActivity
 //                        .commit();
                 break;
             case R.id.ibMyCoupons:
-                bottomBar.getTabAtPosition(1).performClick();
-
+                bottomBar.getTabAtPosition(1).setPressed(true);    //simula o clique sem chamar as acoes
+                MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
+                android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                couponfragmentTransaction
+                        .replace(R.id.fragment_container, myCouponsFragment)
+                        .commit();
+                break;
             default: break;
         }
     }

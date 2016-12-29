@@ -24,7 +24,7 @@ public class AndroidImageAdapter extends PagerAdapter {
     }
 
     private int[] sliderImagesId = new int[]{
-            R.drawable.slide1, R.drawable.batatarustica
+            R.drawable.slide1, R.drawable.slide1
     };
 
     @Override

@@ -74,10 +74,8 @@
                 app:bb_tabXmlResource="@xml/botton_icons"
                 app:bb_behavior="shifting"
                 />
-
-
-
         </RelativeLayout>
+
 
     </LinearLayout>
 
