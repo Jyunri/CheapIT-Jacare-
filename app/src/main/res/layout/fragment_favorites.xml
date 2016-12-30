@@ -7,19 +7,44 @@
     android:background="@color/bege"
     tools:context="br.com.cdf.cheapit.FavoritesFragment">
 
-    <TextView
-        android:id="@+id/tvFavoritesTitle"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:text="MEUS LOCAIS FAVORITOS"
-        android:background="@color/grey"
-        android:textColor="@color/white"
+        android:layout_height="25dp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="13sp"
-
-        />
-
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:id="@+id/ibSortFavorites"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:src="@drawable/ic_sort_black_24dp"/>
+        <TextView
+            android:id="@+id/tvFavoritesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="MEUS LOCAIS FAVORITOS"
+            android:background="@color/grey"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            />
+        <ImageButton
+            android:id="@+id/ibFilterFavorites"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_filter_list_black_24dp"/>
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:id="@+id/lvFavorites"

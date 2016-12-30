@@ -6,9 +6,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 public class FavoritesFragment extends Fragment {
 
     TextView tvFavoritesTitle;
+    ImageButton ibSortFavorites, ibFilterFavorites;
+
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -32,6 +36,39 @@ public class FavoritesFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_favorites, container, false);
         tvFavoritesTitle = (TextView)rootView.findViewById(R.id.tvFavoritesTitle);
+
+        ibSortFavorites = (ImageButton)rootView.findViewById(R.id.ibSortFavorites);
+        ibFilterFavorites =  (ImageButton)rootView.findViewById(R.id.ibFilterFavorites);
+
+        //Long pressed helpers
+        ibSortFavorites.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        ibFilterFavorites.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        //Sorts and Filters
+        ibSortFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Ordena",Toast.LENGTH_SHORT).show();
+            }
+        });
+        ibFilterFavorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Filtrar",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //criar listas de itens
         ArrayList<String> clientes = new ArrayList<>();

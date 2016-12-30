@@ -7,17 +7,43 @@
     android:background="@color/bege"
     tools:context="br.com.cdf.cheapit.MyCouponsFragment">
 
-    <TextView
-        android:id="@+id/tvMyCouponsTitle"
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="20dp"
-        android:text="MEUS CUPONS"
-        android:background="@color/grey"
-        android:textColor="@color/white"
+        android:layout_height="25dp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="13sp"
-        />
+        android:background="@color/grey"
+        android:orientation="horizontal"
+        >
+        <ImageButton
+            android:id="@+id/ibSortMyCoupons"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:src="@drawable/ic_sort_black_24dp"/>
+        <TextView
+            android:id="@+id/tvMyCouponsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:text="MEUS CUPONS"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="13sp"
+            />
+        <ImageButton
+            android:id="@+id/ibFilterMyCoupons"
+            android:layout_width="wrap_content"
+            android:layout_height="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_filter_list_black_24dp"/>
+    </android.support.v7.widget.Toolbar>
 
     <RadioGroup
         android:id="@+id/radioGroup1"

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -51,17 +52,52 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
 
     RadioGroup radioGroup3;
     TextView tvPlaces;
+    ImageButton ibSortPlaces, ibFilterPlaces;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
         tvPlaces = (TextView)rootView.findViewById(R.id.tvPlaces);
 
+        ibSortPlaces = (ImageButton)rootView.findViewById(R.id.ibSortPlaces);
+        ibFilterPlaces =  (ImageButton)rootView.findViewById(R.id.ibFilterPlaces);
+
         //initialize map, get from mapview
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
         mapView.setVisibility(GONE);
+
+        //Long pressed helpers
+        ibSortPlaces.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        ibFilterPlaces.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        //Sorts and Filters
+        ibSortPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Ordena",Toast.LENGTH_SHORT).show();
+            }
+        });
+        ibFilterPlaces.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Filtrar",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         radioGroup3 = (RadioGroup)rootView.findViewById(R.id.radioGroup3);
 

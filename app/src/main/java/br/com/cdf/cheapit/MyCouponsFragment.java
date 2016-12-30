@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -23,6 +24,7 @@ public class MyCouponsFragment extends Fragment {
 
     private RadioGroup radioGroup1;
     TextView tvMyCouponsTitle;
+    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
 
     public MyCouponsFragment() {
         // Required empty public constructor
@@ -37,6 +39,41 @@ public class MyCouponsFragment extends Fragment {
 
         radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvMyCouponsTitle);
+        ibSortMyCoupons = (ImageButton)rootView.findViewById(R.id.ibSortMyCoupons);
+        ibFilterMyCoupons =  (ImageButton)rootView.findViewById(R.id.ibFilterMyCoupons);
+
+
+        //Long pressed helpers
+        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+
+        //Sorts and Filters
+        ibSortMyCoupons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Ordena",Toast.LENGTH_SHORT).show();
+            }
+        });
+        ibFilterMyCoupons.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),"Filtrar",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
         // Checked change Listener for RadioGroup 1
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
