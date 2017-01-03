@@ -17,12 +17,24 @@
         <ImageButton
             android:id="@+id/ibSortMyCoupons"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="25dp"
             android:layout_gravity="left"
             android:layout_marginLeft="30dp"
             android:background="@null"
             android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"/>
+            android:src="@drawable/ic_sort_black_24dp"
+            />
+        <Spinner
+            android:id="@+id/spSortMyCoupons"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="30dp"
+            android:background="@null"
+            android:tint="@color/white"
+            android:drawableTint="@color/white"
+            android:drawableRight="@drawable/ic_sort_black_24dp"
+            />
         <TextView
             android:id="@+id/tvMyCouponsTitle"
             android:layout_width="wrap_content"
@@ -34,15 +46,17 @@
             android:textStyle="bold"
             android:textSize="13sp"
             />
-        <ImageButton
-            android:id="@+id/ibFilterMyCoupons"
+        <Spinner
+            android:id="@+id/spFilterMyCoupons"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="25dp"
             android:layout_marginRight="30dp"
-            android:background="@null"
             android:tint="@color/white"
+            android:background="@null"
             android:layout_gravity="right"
-            android:src="@drawable/ic_filter_list_black_24dp"/>
+            android:drawableTint="@color/white"
+            android:drawableLeft="@drawable/ic_filter_list_black_24dp"
+            style="@android:style/Widget.Holo.Spinner"/>
     </android.support.v7.widget.Toolbar>
 
     <RadioGroup
