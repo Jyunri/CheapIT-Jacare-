@@ -79,6 +79,12 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
         // Spinner click listener
         spSortMyCoupons.setOnItemSelectedListener(this);
+        spFilterMyCoupons.setOnItemSelectedListener(this);
+
+
+        // Spinner click listener
+        spSortMyCoupons.setOnItemSelectedListener(this);
+        spFilterMyCoupons.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> sortList = new ArrayList<String>();
@@ -96,12 +102,15 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
         // Creating adapter for spinner
         ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
 
         // Drop down layout style - list view with radio button
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
         spSortMyCoupons.setAdapter(sortAdapter);
+        spFilterMyCoupons.setAdapter(filterAdapter);
 
 
         // Checked change Listener for RadioGroup 1
@@ -166,7 +175,8 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
             case R.id.ibSortMyCoupons:
                 spSortMyCoupons.performClick();
                 break;
-            case R.id.spFilterMyCoupons:
+            case R.id.ibFilterMyCoupons:
+                spFilterMyCoupons.performClick();
                 break;
         }
     }
@@ -175,9 +185,19 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
+        switch (parent.getId()){
+            case R.id.spSortMyCoupons:
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
-        // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                break;
+            case R.id.spFilterMyCoupons:
+                // Showing selected spinner item
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+                break;
+        }
+
     }
 
     @Override
