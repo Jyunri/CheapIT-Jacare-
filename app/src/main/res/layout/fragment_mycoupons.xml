@@ -14,27 +14,24 @@
         android:background="@color/grey"
         android:orientation="horizontal"
         >
-        <ImageButton
-            android:id="@+id/ibSortMyCoupons"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="30dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"
-            />
-        <Spinner
-            android:id="@+id/spSortMyCoupons"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="30dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:drawableTint="@color/white"
-            android:drawableRight="@drawable/ic_sort_black_24dp"
-            />
+            android:layout_height="wrap_content"
+            android:layout_gravity="left">
+            <ImageButton
+                android:id="@+id/ibSortMyCoupons"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:tint="@color/white"
+                android:src="@drawable/ic_sort_black_24dp"
+                />
+            <Spinner
+                android:id="@+id/spSortMyCoupons"
+                android:layout_width="5dp"
+                android:layout_height="0dp">
+            </Spinner>
+        </LinearLayout>
         <TextView
             android:id="@+id/tvMyCouponsTitle"
             android:layout_width="wrap_content"
@@ -46,17 +43,25 @@
             android:textStyle="bold"
             android:textSize="13sp"
             />
-        <Spinner
-            android:id="@+id/spFilterMyCoupons"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_marginRight="30dp"
-            android:tint="@color/white"
-            android:background="@null"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:drawableTint="@color/white"
-            android:drawableLeft="@drawable/ic_filter_list_black_24dp"
-            style="@android:style/Widget.Holo.Spinner"/>
+            android:layout_marginRight="8dp">
+            <ImageButton
+                android:id="@+id/ibFilterMyCoupons"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@null"
+                android:tint="@color/white"
+                android:src="@drawable/ic_filter_list_black_24dp"
+                />
+            <Spinner
+                android:id="@+id/spFilterMyCoupons"
+                android:layout_width="5dp"
+                android:layout_height="0dp">
+            </Spinner>
+        </LinearLayout>
     </android.support.v7.widget.Toolbar>
 
     <RadioGroup
