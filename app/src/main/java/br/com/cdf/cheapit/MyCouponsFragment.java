@@ -1,13 +1,16 @@
 package br.com.cdf.cheapit;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -23,7 +26,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyCouponsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class MyCouponsFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener{
 
     private RadioGroup radioGroup1;
     TextView tvMyCouponsTitle;
@@ -32,6 +35,7 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
     ArrayList<String[]> coupons;
     ListView lvCoupons;
 
+    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
     Spinner spSortMyCoupons, spFilterMyCoupons;
 
     public MyCouponsFragment() {
@@ -47,19 +51,22 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
         radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvMyCouponsTitle);
+
+        ibSortMyCoupons = (ImageButton) rootView.findViewById(R.id.ibSortMyCoupons);
+        ibFilterMyCoupons =  (ImageButton) rootView.findViewById(R.id.ibFilterMyCoupons);
         spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
-        spFilterMyCoupons =  (Spinner)rootView.findViewById(R.id.spFilterMyCoupons);
+        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
 
 
         //Long pressed helpers
-        spSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
-        spFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
@@ -67,10 +74,11 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
             }
         });
 
+        ibSortMyCoupons.setOnClickListener(this);
+        ibFilterMyCoupons.setOnClickListener(this);
 
         // Spinner click listener
         spSortMyCoupons.setOnItemSelectedListener(this);
-        spFilterMyCoupons.setOnItemSelectedListener(this);
 
         // Spinner Drop down elements
         List<String> sortList = new ArrayList<String>();
@@ -87,18 +95,14 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         filterList.add("Serviços");
 
         // Creating adapter for spinner
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,sortList);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item,filterList);
-
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
 
         // Drop down layout style - list view with radio button
         sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
 
         // attaching data adapter to spinner
         spSortMyCoupons.setAdapter(sortAdapter);
-        spFilterMyCoupons.setAdapter(filterAdapter);
+
 
         // Checked change Listener for RadioGroup 1
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -158,26 +162,26 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.ibSortMyCoupons:
+                spSortMyCoupons.performClick();
+                break;
+            case R.id.spFilterMyCoupons:
+                break;
+        }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch (parent.getId()){
-            case R.id.ibSortMyCoupons:
-                String sortItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), "Ordenar por: " + sortItem, Toast.LENGTH_LONG).show();
-                break;
-            case R.id.ibFilterMyCoupons:
-                String filterItem = parent.getItemAtPosition(position).toString();
-                Toast.makeText(parent.getContext(), "Filtrar por: " + filterItem, Toast.LENGTH_LONG).show();
-                break;
-        }
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
 
+        // Showing selected spinner item
+        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
 
     }
 }
