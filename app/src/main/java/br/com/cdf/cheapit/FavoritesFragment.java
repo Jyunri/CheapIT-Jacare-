@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +24,7 @@ public class FavoritesFragment extends Fragment {
 
     TextView tvFavoritesTitle;
     ImageButton ibSortFavorites, ibFilterFavorites;
-
+    Spinner spSortMyCoupons,spFilterMyCoupons;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -39,6 +40,8 @@ public class FavoritesFragment extends Fragment {
 
         ibSortFavorites = (ImageButton)rootView.findViewById(R.id.ibSortFavorites);
         ibFilterFavorites =  (ImageButton)rootView.findViewById(R.id.ibFilterFavorites);
+        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
+        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
 
         //Long pressed helpers
         ibSortFavorites.setOnLongClickListener(new View.OnLongClickListener() {
@@ -60,14 +63,12 @@ public class FavoritesFragment extends Fragment {
         ibSortFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Ordena",Toast.LENGTH_SHORT).show();
-            }
+                spSortMyCoupons.performClick();            }
         });
         ibFilterFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Filtrar",Toast.LENGTH_SHORT).show();
-            }
+                spFilterMyCoupons.performClick();            }
         });
 
         //criar listas de itens

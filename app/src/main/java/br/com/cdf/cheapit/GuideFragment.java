@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -53,6 +54,8 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
     RadioGroup radioGroup3;
     TextView tvPlaces;
     ImageButton ibSortPlaces, ibFilterPlaces;
+    Spinner spSortMyCoupons,spFilterMyCoupons;
+
 
 
     @Override
@@ -62,6 +65,8 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
 
         ibSortPlaces = (ImageButton)rootView.findViewById(R.id.ibSortPlaces);
         ibFilterPlaces =  (ImageButton)rootView.findViewById(R.id.ibFilterPlaces);
+        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
+        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
 
         //initialize map, get from mapview
         mapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -89,14 +94,12 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
         ibSortPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Ordena",Toast.LENGTH_SHORT).show();
-            }
+                spSortMyCoupons.performClick();            }
         });
         ibFilterPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"Filtrar",Toast.LENGTH_SHORT).show();
-            }
+                spFilterMyCoupons.performClick();            }
         });
 
         radioGroup3 = (RadioGroup)rootView.findViewById(R.id.radioGroup3);
@@ -257,7 +260,7 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
         markerOptions.position(latLng);
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         currLocationMarker = mGoogleMap.addMarker(markerOptions);
-        
+
         //zoom to current position:
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng).zoom(14).build();
