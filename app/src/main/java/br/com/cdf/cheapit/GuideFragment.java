@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -33,6 +35,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.view.View.GONE;
 
@@ -40,7 +43,7 @@ import static android.view.View.GONE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class GuideFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class GuideFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener {
 
     MapView mapView;
 
@@ -54,7 +57,7 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
     RadioGroup radioGroup3;
     TextView tvPlaces;
     ImageButton ibSortPlaces, ibFilterPlaces;
-    Spinner spSortMyCoupons,spFilterMyCoupons;
+    Spinner spSortPlaces,spFilterPlaces;
 
 
 
@@ -65,8 +68,8 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
 
         ibSortPlaces = (ImageButton)rootView.findViewById(R.id.ibSortPlaces);
         ibFilterPlaces =  (ImageButton)rootView.findViewById(R.id.ibFilterPlaces);
-        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
-        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
+        spSortPlaces = (Spinner) rootView.findViewById(R.id.spSortPlaces);
+        spFilterPlaces =  (Spinner) rootView.findViewById(R.id.spFilterPlaces);
 
         //initialize map, get from mapview
         mapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -94,13 +97,43 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
         ibSortPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spSortMyCoupons.performClick();            }
+                spSortPlaces.performClick();            }
         });
         ibFilterPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spFilterMyCoupons.performClick();            }
+                spFilterPlaces.performClick();            }
         });
+
+        // Spinner click listener
+        spSortPlaces.setOnItemSelectedListener(this);
+        spFilterPlaces.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> sortList = new ArrayList<String>();
+        sortList.add("A-Z");
+        sortList.add("Z-A");
+        sortList.add("Data");
+        sortList.add("Unidades");
+        sortList.add("Maior desconto");
+
+        List<String> filterList = new ArrayList<String>();
+        filterList.add("Todos os cupons");
+        filterList.add("Restaurantes");
+        filterList.add("Lojas");
+        filterList.add("Serviços");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
+
+        // Drop down layout style - list view with radio button
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spSortPlaces.setAdapter(sortAdapter);
+        spFilterPlaces.setAdapter(filterAdapter);
 
         radioGroup3 = (RadioGroup)rootView.findViewById(R.id.radioGroup3);
 
@@ -273,4 +306,13 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
 
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

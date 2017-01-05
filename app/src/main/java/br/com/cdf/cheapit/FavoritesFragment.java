@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -15,16 +17,17 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritesFragment extends Fragment {
+public class FavoritesFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     TextView tvFavoritesTitle;
     ImageButton ibSortFavorites, ibFilterFavorites;
-    Spinner spSortMyCoupons,spFilterMyCoupons;
+    Spinner spSortFavorites,spFilterFavorites;
 
     public FavoritesFragment() {
         // Required empty public constructor
@@ -40,8 +43,8 @@ public class FavoritesFragment extends Fragment {
 
         ibSortFavorites = (ImageButton)rootView.findViewById(R.id.ibSortFavorites);
         ibFilterFavorites =  (ImageButton)rootView.findViewById(R.id.ibFilterFavorites);
-        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
-        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
+        spSortFavorites = (Spinner) rootView.findViewById(R.id.spSortFavorites);
+        spFilterFavorites =  (Spinner) rootView.findViewById(R.id.spFilterFavorites);
 
         //Long pressed helpers
         ibSortFavorites.setOnLongClickListener(new View.OnLongClickListener() {
@@ -63,13 +66,43 @@ public class FavoritesFragment extends Fragment {
         ibSortFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spSortMyCoupons.performClick();            }
+                spSortFavorites.performClick();            }
         });
         ibFilterFavorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spFilterMyCoupons.performClick();            }
+                spFilterFavorites.performClick();            }
         });
+
+        // Spinner click listener
+        spSortFavorites.setOnItemSelectedListener(this);
+        spFilterFavorites.setOnItemSelectedListener(this);
+
+        // Spinner Drop down elements
+        List<String> sortList = new ArrayList<String>();
+        sortList.add("A-Z");
+        sortList.add("Z-A");
+        sortList.add("Data");
+        sortList.add("Unidades");
+        sortList.add("Maior desconto");
+
+        List<String> filterList = new ArrayList<String>();
+        filterList.add("Todos os cupons");
+        filterList.add("Restaurantes");
+        filterList.add("Lojas");
+        filterList.add("Serviços");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
+
+        // Drop down layout style - list view with radio button
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spSortFavorites.setAdapter(sortAdapter);
+        spFilterFavorites.setAdapter(filterAdapter);
 
         //criar listas de itens
         ArrayList<String> clientes = new ArrayList<>();
@@ -107,4 +140,13 @@ public class FavoritesFragment extends Fragment {
 
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }

@@ -82,10 +82,6 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         spFilterMyCoupons.setOnItemSelectedListener(this);
 
 
-        // Spinner click listener
-        spSortMyCoupons.setOnItemSelectedListener(this);
-        spFilterMyCoupons.setOnItemSelectedListener(this);
-
         // Spinner Drop down elements
         List<String> sortList = new ArrayList<String>();
         sortList.add("A-Z");

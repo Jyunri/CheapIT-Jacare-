@@ -1,5 +1,6 @@
 package br.com.cdf.cheapit;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.view.View;
@@ -12,7 +13,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -20,11 +26,29 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
+    Profile profile;
+    String loginType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            loginType = extras.getString("key");
+        }
+
+        //Facebook access
+        if(loginType.equals("facebook")) {
+            if (AccessToken.getCurrentAccessToken() == null) {
+                goLoginScreen();
+            }
+
+            Profile.fetchProfileForCurrentAccessToken();    //renova o Profile a partir do token
+            profile = Profile.getCurrentProfile();
+            Toast.makeText(this, "Olá " + profile.getFirstName() + "!", Toast.LENGTH_LONG).show();
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //Remove o menu de 3 bolinhas a direita do toolbar
@@ -88,9 +112,17 @@ public class MainActivity extends AppCompatActivity
                                 .replace(R.id.fragment_container, guideFragment)
                                 .commit();
                         break;
+                    case (R.id.tab_support):
+                        LoginManager.getInstance().logOut();
+                        goLoginScreen();
                 }
             }
         });
+    }
+
+    private void goLoginScreen() {
+        Toast.makeText(this,"Indo para tela de login",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this,LoginActivity.class));
     }
 
     @Override
