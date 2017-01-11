@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bege"
-    tools:context="br.com.cdf.cheapit.MyCouponsFragment">
+    tools:context="br.com.cdf.cheapit.CouponsPoolFragment">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:id="@+id/tvMyCouponsTitle"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="MEUS CUPONS"
+            android:text="CUPONS DISPONÍVEIS"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:gravity="center"

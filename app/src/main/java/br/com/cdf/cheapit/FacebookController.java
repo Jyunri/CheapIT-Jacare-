@@ -10,10 +10,20 @@ import com.facebook.appevents.AppEventsLogger;
  */
 
 public class FacebookController extends MultiDexApplication {
+    public static String CurrentFirstName = "Visitante";
+
     @Override
     public void onCreate() {
         super.onCreate();
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+    }
+
+    public static String getCurrentFirstName() {
+        return CurrentFirstName;
+    }
+
+    public static void setCurrentFirstName(String currentFirstName) {
+        CurrentFirstName = currentFirstName;
     }
 }

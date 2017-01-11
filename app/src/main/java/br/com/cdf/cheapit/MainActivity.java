@@ -1,8 +1,10 @@
 package br.com.cdf.cheapit;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,13 +22,13 @@ import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.roughike.bottombar.BottomBar;
+import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    Profile profile;
     String loginType = "";
 
     @Override
@@ -38,16 +40,7 @@ public class MainActivity extends AppCompatActivity
             loginType = extras.getString("key");
         }
 
-        //Facebook access
-        if(loginType.equals("facebook")) {
-            if (AccessToken.getCurrentAccessToken() == null) {
-                goLoginScreen();
-            }
-
-            Profile.fetchProfileForCurrentAccessToken();    //renova o Profile a partir do token
-            profile = Profile.getCurrentProfile();
-            Toast.makeText(this, "Olá " + profile.getFirstName() + "!", Toast.LENGTH_LONG).show();
-        }
+        Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -74,6 +67,13 @@ public class MainActivity extends AppCompatActivity
 
         ImageButton ibHomeLogo = (ImageButton)findViewById(R.id.ibHomeLogo);
         ibHomeLogo.setOnClickListener(this);
+        ibHomeLogo.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getApplicationContext(),"Meus Cupons",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         ImageButton ibMyCoupons = (ImageButton)findViewById(R.id.ibMyCoupons);
         ibMyCoupons.setOnClickListener(this);
@@ -112,9 +112,31 @@ public class MainActivity extends AppCompatActivity
                                 .replace(R.id.fragment_container, guideFragment)
                                 .commit();
                         break;
-                    case (R.id.tab_support):
+                    case (R.id.tab_logout):
                         LoginManager.getInstance().logOut();
+                        // Writing data to SharedPreferences
+                        SharedPreferences preferences = getApplicationContext().getSharedPreferences("SaveFiles", 0); // 0 - for private mode
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putString("login", "");
+                        editor.commit();
+                        Log.d("Logout cached AT","LogoutAT: "+preferences.getString("login",""));
                         goLoginScreen();
+                }
+            }
+        });
+
+        // Handles if coupon tab pressed on MyCoupon fragment
+        bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
+            @Override
+            public void onTabReSelected(@IdRes int tabId) {
+                switch (tabId) {
+                    case (R.id.tab_coupons):
+                        CouponFragment couponFragment = new CouponFragment();
+                        android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        couponfragmentTransaction
+                                .replace(R.id.fragment_container, couponFragment)
+                                .commit();
+                        break;
                 }
             }
         });

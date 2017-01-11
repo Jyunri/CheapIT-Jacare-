@@ -25,9 +25,9 @@
         icon="@drawable/ic_location_on_white_24dp"
         title="Mapa" />
     <tab
-        id="@+id/tab_support"
+        id="@+id/tab_logout"
         barColorWhenSelected="@color/bordo_red"
         activeColor = "@color/white"
-        icon="@drawable/ic_call_black_24dp"
-        title="Suporte" />
+        icon="@drawable/ic_logout"
+        title="Sair" />
 </tabs>

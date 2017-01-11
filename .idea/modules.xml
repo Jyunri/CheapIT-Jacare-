@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CheapIT-Jacare-.iml" filepath="$PROJECT_DIR$/CheapIT-Jacare-.iml" />
       <module fileurl="file://$PROJECT_DIR$/Cheapit.iml" filepath="$PROJECT_DIR$/Cheapit.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

@@ -37,11 +37,13 @@
 
                 <ImageButton
                     android:id="@+id/ibMyCoupons"
-                    android:layout_marginLeft="30dp"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:scaleType="fitXY"
-                    android:background="@drawable/ic_wallet"
+                    android:padding="10dp"
+                    android:scaleType="fitCenter"
+                    android:background="@drawable/stripped_bg"
+                    android:src="@drawable/ic_my_coupon"
+                    android:tint="@color/dark_orange"
                     android:layout_gravity="right"
                     />
 
@@ -75,6 +77,9 @@
                 app:bb_tabXmlResource="@xml/botton_icons"
                 app:bb_behavior="shifting"
                 />
+
+
+
         </RelativeLayout>
 
 

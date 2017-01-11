@@ -42,14 +42,21 @@ public class CouponFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             //// TODO: 12/28/16 adicionar os cupons disponiveis
             case R.id.btAvailableCoupons:
+                CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                couponpoolfragmentTransaction
+                        .replace(R.id.fragment_container, couponsPoolFragment)
+                        .addToBackStack(null)
+                        .commit();
                 break;
             case R.id.btMyCoupons:
                 MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
-                android.support.v4.app.FragmentTransaction couponfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                couponfragmentTransaction
+                android.support.v4.app.FragmentTransaction mycouponfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                mycouponfragmentTransaction
                         .replace(R.id.fragment_container, myCouponsFragment)
                         .addToBackStack(null)
                         .commit();
+                break;
 
         }
     }
