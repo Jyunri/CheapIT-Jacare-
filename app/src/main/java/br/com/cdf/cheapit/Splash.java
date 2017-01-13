@@ -39,6 +39,11 @@ public class Splash extends Activity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
+
+                Intent i = new Intent(Splash.this, LoginActivity.class);
+                startActivity(i);   //
+
+                /* Testando novo metodo
                 if(cachedLogin.isEmpty())
                 {
                     Intent i = new Intent(Splash.this, LoginActivity.class);
@@ -55,6 +60,7 @@ public class Splash extends Activity {
                     i.putExtra("AccessToken",cachedLogin);
                     startActivity(i);
                 }
+                */
                 // close this activity
                 finish();
             }

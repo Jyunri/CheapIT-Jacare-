@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    String loginType = "";
+    String loginType = "", first_name = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +38,11 @@ public class MainActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             loginType = extras.getString("key");
+            first_name = extras.getString("first_name");
         }
 
-        Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();
+        /*Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();*/
+        Toast.makeText(this,"Olá, " + first_name,Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 

@@ -68,21 +68,23 @@
             android:gravity="center_horizontal"
             android:background="@null"
             android:layout_gravity="center"
+            xmlns:facebook="http://schemas.android.com/apk/res-auto"
+            facebook:com_facebook_login_text="Entrar com Facebook"
             />
 
-        <ImageButton
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/ibGoogleLogin"
-            android:background="@null"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:scaleType="centerInside"
+        <Button
+            android:id="@+id/ibGuestLogin"
+            android:layout_width="176dp"
+            android:layout_height="30dp"
             android:layout_marginTop="-10dp"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
-            android:src="@drawable/google_loginbutton"/>
+            android:text="Entrar como Visitante"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@color/bordo_red"/>
+
+
+
 
 
     </LinearLayout>
