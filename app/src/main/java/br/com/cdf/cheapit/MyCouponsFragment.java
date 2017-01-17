@@ -155,6 +155,18 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);
 
+        //eventos ao clicar nos itens da lista
+        lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
+            }
+
+        });
+
+
+        //retornar ao inicio da lista ao clicar no toolbar
         tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
