@@ -12,11 +12,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -78,6 +80,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         //setar o adapter da listview para o nosso adapter
         lvExpiring.setAdapter(listAdapter);
+
+        //eventos ao clicar nos itens da lista
+        lvExpiring.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
+                CouponInformation couponInformation = new CouponInformation();
+                android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                couponInformationfragmentTransaction
+                        .replace(R.id.fragment_container, couponInformation)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+        });
 
         return rootView;
     }

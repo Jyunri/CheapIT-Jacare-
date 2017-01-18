@@ -1,13 +1,145 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:layout_marginBottom="60dp"
+    android:background="@drawable/default_background"
     tools:context="br.com.cdf.cheapit.CouponInformation">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginBottom="65dp"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-</FrameLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:padding="2dp"
+                android:scaleType="fitXY"
+                android:id="@+id/ivImagem"
+                android:background="@drawable/rectangle_red"
+                android:src="@drawable/coupon_pizza"
+                />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Válido até: 03/2017"
+                    android:textColor="@color/bege"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Últimos cupons!"
+                    android:textColor="@color/bege"
+                    android:textStyle="bold"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="* Classificação: "
+                        android:textColor="@color/bege"
+                        android:textStyle="bold"/>
+                    <RatingBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_gravity="center"
+                        style="@style/Widget.AppCompat.RatingBar.Small"
+                        android:rating="4"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:background="@drawable/rectangle_bege">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Loja: Pizzaria do Cheff"
+                    android:textColor="@color/bordo_red"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Descrição do cupom: 50% de desconto nas pizzas gigantes"
+                    android:textColor="@color/bordo_red"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="* Regras:"
+                    android:textColor="@color/bordo_red"
+                    android:textStyle="bold"/>
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  1 - Cupons não cumulativos com outros cupons/descontos"
+                    android:textColor="@color/bordo_red"
+                    android:textStyle="bold"/>
+                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  2 - Preços sujeitos à alteração"
+                    android:textColor="@color/bordo_red"
+                    android:textStyle="bold"/>
+                />
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+    <Button
+        android:layout_width="match_parent"
+
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:text="Cheapit! Pegar cupom!"
+        android:layout_alignParentBottom="true"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:textColor="@color/bege"
+        android:background="@drawable/button_red"/>
+
+</RelativeLayout>

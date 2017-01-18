@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -153,6 +154,22 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
 
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);
+
+        //eventos ao clicar nos itens da lista
+        lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+                Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
+                CouponInformation couponInformation = new CouponInformation();
+                android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                couponInformationfragmentTransaction
+                        .replace(R.id.fragment_container, couponInformation)
+                        .addToBackStack(null)
+                        .commit();
+            }
+
+        });
 
         tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
             @Override
