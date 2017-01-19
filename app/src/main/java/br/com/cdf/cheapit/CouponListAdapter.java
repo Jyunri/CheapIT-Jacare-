@@ -1,8 +1,6 @@
 package br.com.cdf.cheapit;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +16,9 @@ import java.util.ArrayList;
 
 public class CouponListAdapter extends ArrayAdapter<String> {
 
+
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
+    ArrayList<String> listaIds;
     ArrayList<String> listaItens;
     ArrayList<String> listaDescricao;
     ArrayList<String> listaImagens;
@@ -26,6 +26,15 @@ public class CouponListAdapter extends ArrayAdapter<String> {
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
     public CouponListAdapter(Context context, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
         super(context, R.layout.coupon_row, listaItens);
+        this.listaItens = listaItens;
+        this.listaDescricao = listaDescricao;
+        this.listaImagens = listaImagens;
+    }
+
+    //Construtor alternativo com id
+    public CouponListAdapter(Context context, ArrayList<String> listaIds,ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
+        super(context, R.layout.coupon_row, listaItens);
+        this.listaIds = listaIds;
         this.listaItens = listaItens;
         this.listaDescricao = listaDescricao;
         this.listaImagens = listaImagens;
@@ -41,6 +50,11 @@ public class CouponListAdapter extends ArrayAdapter<String> {
 
         //recebe os itens das listas
 
+//        Recebe ids das listas
+//        String couponOfferId = listaIds.get(position);
+//        TextView tvCouponOfferId = (TextView)customView.findViewById(R.id.tvCouponOfferId);
+//        tvCouponOfferId.setText(couponOfferId);
+
         String item = listaItens.get(position);
         TextView tvItem = (TextView)customView.findViewById(R.id.tvItem);
         tvItem.setText(item);
@@ -50,7 +64,7 @@ public class CouponListAdapter extends ArrayAdapter<String> {
         tvDescricao.setText(descricao);
 
         String imagem = listaImagens.get(position);
-        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivImagem);
+        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivCouponVoucher);
 
         ivImagem.setImageResource(getContext().getResources().getIdentifier("drawable/"+imagem,null,getContext().getPackageName()));
 

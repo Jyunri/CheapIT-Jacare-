@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    String loginType = "", first_name = "";
+    String loginType = "", first_name = "", avatar = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,10 @@ public class MainActivity extends AppCompatActivity
         if (extras != null) {
             loginType = extras.getString("key");
             first_name = extras.getString("first_name");
+            avatar = extras.getString("avatar");
         }
 
+        FacebookController.setCurrentAvatar(avatar);
         /*Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();*/
         Toast.makeText(this,"Olá, " + first_name,Toast.LENGTH_LONG).show();
 
@@ -132,6 +134,13 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onTabReSelected(@IdRes int tabId) {
                 switch (tabId) {
+                    case (R.id.tab_home):
+                        HomeFragment fragment = new HomeFragment();
+                        android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        fragmentTransaction
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
+                        break;
                     case (R.id.tab_coupons):
                         CouponFragment couponFragment = new CouponFragment();
                         android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -187,8 +196,12 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_home) {
-            bottomBar.getTabAtPosition(0).performClick();
+        if (id == R.id.nav_profile) {
+            ProfileFragment profileFragment = new ProfileFragment();
+            android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
+            couponfragmentTransaction
+                    .replace(R.id.fragment_container, profileFragment)
+                    .commit();
 
         } else if (id == R.id.nav_coupons) {
             bottomBar.getTabAtPosition(1).performClick();

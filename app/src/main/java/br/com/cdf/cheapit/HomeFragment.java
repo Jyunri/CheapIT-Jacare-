@@ -55,9 +55,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tvCQDT.setTypeface(type);
 
         //criar listas de itens
+        final ArrayList<String> couponOffer_id = new ArrayList<>();
         ArrayList<String> clientes = new ArrayList<>();
         ArrayList<String> descricao = new ArrayList<>();
-        ArrayList<String> imagens = new ArrayList<>();
+        final ArrayList<String> imagens = new ArrayList<>();
 
         //recebe os dados do arquivo
         InputStream i = getResources().openRawResource(R.raw.coupons);
@@ -65,13 +66,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ArrayList<String[]> pizzas = csvParser.read();
 
         for(String[] pizza:pizzas) {
+            couponOffer_id.add(pizza[0].replace("\"", ""));
             clientes.add(pizza[1].replace("\"", ""));
             descricao.add(pizza[2].replace("\"", ""));
             imagens.add(pizza[3].replace("\"", ""));
         }
 
         //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-        ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
+        ListAdapter listAdapter = new CouponListAdapter(getContext(), couponOffer_id, clientes,descricao, imagens);
 
         //pegar referencia do listview
         ListView lvExpiring = (ListView)rootView.findViewById(R.id.lvExpiring);
@@ -87,7 +89,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
                 Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
+                Bundle bundle = new Bundle();
+                bundle.putString("couponOfferId", couponOffer_id.get(position-1));
+                bundle.putString("couponVoucher", imagens.get(position-1));
                 CouponInformation couponInformation = new CouponInformation();
+                couponInformation.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 couponInformationfragmentTransaction
                         .replace(R.id.fragment_container, couponInformation)

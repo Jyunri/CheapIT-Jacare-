@@ -11,6 +11,9 @@ import com.facebook.appevents.AppEventsLogger;
 
 public class FacebookController extends MultiDexApplication {
     public static String CurrentFirstName = "Visitante";
+    public static String CurrentAvatar;
+    public static String LoginMethod;
+
 
     @Override
     public void onCreate() {
@@ -19,11 +22,23 @@ public class FacebookController extends MultiDexApplication {
         AppEventsLogger.activateApp(this);
     }
 
+    public static void setLoginMethod(String loginMethod) {
+        LoginMethod = loginMethod;
+    }
+
     public static String getCurrentFirstName() {
         return CurrentFirstName;
     }
 
     public static void setCurrentFirstName(String currentFirstName) {
         CurrentFirstName = currentFirstName;
+    }
+
+    public static String getCurrentAvatar() {
+        return CurrentAvatar;
+    }
+
+    public static void setCurrentAvatar(String currentAvatar) {
+        CurrentAvatar = currentAvatar;
     }
 }

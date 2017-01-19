@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -116,8 +117,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void nextActivity(Profile profile){
         if(profile != null){
+            FacebookController.setLoginMethod("facebook");
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             main.putExtra("first_name", profile.getFirstName());
+            main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
             startActivity(main);
         }
     }
@@ -127,9 +130,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case (R.id.ibGuestLogin):
                 Toast.makeText(this,"login visitante",Toast.LENGTH_SHORT).show();
+                FacebookController.setLoginMethod("guest");
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("key","guest");
                 i.putExtra("first_name","Visitante");
+                i.putExtra("avatar", "drawable/default_avatar");
                 startActivity(i);
                 break;
         }
