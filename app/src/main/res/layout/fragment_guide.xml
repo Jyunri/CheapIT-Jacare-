@@ -57,44 +57,89 @@
 
     </android.support.v7.widget.Toolbar>
 
-    <RadioGroup
-        android:id="@+id/radioGroup3"
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
+        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/radioLista"
-            android:layout_width="match_parent"
+        <HorizontalScrollView
+            android:id="@+id/horizontalView"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="LISTA"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-        <RadioButton
-            android:id="@+id/radioMapa"
+            android:scrollbars="horizontal|vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="MAPA"
-            android:textStyle="bold"
-            android:textSize="15dp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
+            >
+
+            <RadioGroup
+                android:id="@+id/radioGroup3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:orientation="horizontal" >
+
+                <RadioButton
+                    android:id="@+id/radioMap"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rbtn_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="MAPA"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:textColor="@drawable/rbtn_textcolor_selector" />
+
+                <RadioButton
+                    android:id="@+id/radioRestaurants"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rbtn_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="RESTAURANTES"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:textColor="@drawable/rbtn_textcolor_selector" />
+
+                <RadioButton
+                    android:id="@+id/radioStores"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rbtn_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="LOJAS"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:textColor="@drawable/rbtn_textcolor_selector" />
+
+                <RadioButton
+                    android:id="@+id/radioServices"
+                    android:layout_width="200dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rbtn_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:padding="5dp"
+                    android:text="SERVIÇOS"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
+                    android:textColor="@drawable/rbtn_textcolor_selector" />
 
 
-    </RadioGroup>
+
+
+
+            </RadioGroup>
+
+        </HorizontalScrollView>
+
+    </ScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -1,7 +1,6 @@
 package br.com.cdf.cheapit;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -120,7 +119,7 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
                     case R.id.radioAtivos:
                         Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.radioEncerrados:
+                    case R.id.radioUsed:
                         Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
                         break;
                     default:
@@ -131,9 +130,10 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
 
 
         //criar listas de itens
+        final ArrayList<String> couponOffer_id = new ArrayList<>();
         ArrayList<String> clientes = new ArrayList<>();
         ArrayList<String> descricao = new ArrayList<>();
-        ArrayList<String> imagens = new ArrayList<>();
+        final ArrayList<String> imagens = new ArrayList<>();
 
         //recebe os dados do arquivo
         InputStream i = getResources().openRawResource(R.raw.coupons);
@@ -141,6 +141,7 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
         coupons = csvParser.read();
 
         for(String[] coupon: coupons) {
+            couponOffer_id.add(coupon[0].replace("\"", ""));
             clientes.add(coupon[1].replace("\"", ""));
             descricao.add(coupon[2].replace("\"", ""));
             imagens.add(coupon[3].replace("\"", ""));
@@ -162,6 +163,10 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
                                     int position, long id) {
                 Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
                 CouponInformation couponInformation = new CouponInformation();
+                Bundle bundle = new Bundle();
+                bundle.putString("couponOfferId", couponOffer_id.get(position-1));
+                bundle.putString("couponVoucher", imagens.get(position-1));
+                couponInformation.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 couponInformationfragmentTransaction
                         .replace(R.id.fragment_container, couponInformation)

@@ -121,6 +121,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             main.putExtra("first_name", profile.getFirstName());
             main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
+            main.putExtra("username",profile.getName());
             startActivity(main);
         }
     }
@@ -134,7 +135,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 i.putExtra("key","guest");
                 i.putExtra("first_name","Visitante");
-                i.putExtra("avatar", "drawable/default_avatar");
                 startActivity(i);
                 break;
         }

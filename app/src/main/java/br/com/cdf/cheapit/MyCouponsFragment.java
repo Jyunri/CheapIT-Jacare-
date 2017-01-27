@@ -1,16 +1,15 @@
 package br.com.cdf.cheapit;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -29,7 +28,7 @@ import java.util.List;
 public class MyCouponsFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener{
 
     private RadioGroup radioGroup1;
-    TextView tvMyCouponsTitle;
+    TextView tvUsername,tvMyCouponsTitle;
 
     ListAdapter listAdapter;
     ArrayList<String[]> coupons;
@@ -48,14 +47,22 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_mycoupons, container, false);
+        View header = inflater.inflate(R.layout.fragment_profile,null);
 
-        radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
-        tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvMyCouponsTitle);
+        // Header (profile)
+        if(FacebookController.LoginMethod.equals("facebook")) {
+            new DownloadImage((ImageView) header.findViewById(R.id.ivAvatar)).execute(FacebookController.getCurrentAvatar());
+            tvUsername = (TextView)header.findViewById(R.id.tvUsername);
+            tvUsername.setText(FacebookController.getCurrentUsername());
+        }
 
-        ibSortMyCoupons = (ImageButton) rootView.findViewById(R.id.ibSortMyCoupons);
-        ibFilterMyCoupons =  (ImageButton) rootView.findViewById(R.id.ibFilterMyCoupons);
-        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSortMyCoupons);
-        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilterMyCoupons);
+        radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
+        tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvMyCouponsTitle);
+
+        ibSortMyCoupons = (ImageButton) header.findViewById(R.id.ibSortMyCoupons);
+        ibFilterMyCoupons =  (ImageButton) header.findViewById(R.id.ibFilterMyCoupons);
+        spSortMyCoupons = (Spinner) header.findViewById(R.id.spSortMyCoupons);
+        spFilterMyCoupons =  (Spinner) header.findViewById(R.id.spFilterMyCoupons);
 
 
         //Long pressed helpers
@@ -120,7 +127,7 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
                     case R.id.radioAtivos:
                         Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
                         break;
-                    case R.id.radioEncerrados:
+                    case R.id.radioUsed:
                         Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
                         break;
                     default:
@@ -151,6 +158,9 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
         //pegar referencia do listview
         lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
+
+        //setar o profile como header da listview
+        lvCoupons.addHeaderView(header);
 
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);

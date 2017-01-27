@@ -86,7 +86,7 @@
             android:textColor="@drawable/rbtn_textcolor_selector" />
 
         <RadioButton
-            android:id="@+id/radioEncerrados"
+            android:id="@+id/radioUsed"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -94,7 +94,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
-            android:text="ENCERRADOS"
+            android:text="UTILIZADOS"
             android:textStyle="bold"
             android:textSize="15sp"
             android:textColor="@drawable/rbtn_textcolor_selector" />

@@ -2,6 +2,7 @@ package br.com.cdf.cheapit;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.hardware.camera2.params.Face;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.util.Log;
@@ -17,9 +18,6 @@ import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.Profile;
-import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
@@ -29,7 +27,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    String loginType = "", first_name = "", avatar = "";
+    String loginType = "", first_name = "", avatar = "", username = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,9 +38,11 @@ public class MainActivity extends AppCompatActivity
             loginType = extras.getString("key");
             first_name = extras.getString("first_name");
             avatar = extras.getString("avatar");
+            username = extras.getString("username");
         }
 
         FacebookController.setCurrentAvatar(avatar);
+        FacebookController.setCurrentUsername(username);
         /*Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();*/
         Toast.makeText(this,"Olá, " + first_name,Toast.LENGTH_LONG).show();
 
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ImageButton ibMyCoupons = (ImageButton)findViewById(R.id.ibMyCoupons);
+        ImageButton ibMyCoupons = (ImageButton)findViewById(R.id.ibProfile);
         ibMyCoupons.setOnClickListener(this);
 
 
@@ -96,10 +96,11 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_coupons):
-                        CouponFragment couponFragment = new CouponFragment();
-                        android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        couponfragmentTransaction
-                                .replace(R.id.fragment_container, couponFragment)
+                        CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                        android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        couponpoolfragmentTransaction
+                                .replace(R.id.fragment_container, couponsPoolFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
                     case (R.id.tab_fav):
@@ -142,10 +143,11 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_coupons):
-                        CouponFragment couponFragment = new CouponFragment();
-                        android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        couponfragmentTransaction
-                                .replace(R.id.fragment_container, couponFragment)
+                        CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                        android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        couponpoolfragmentTransaction
+                                .replace(R.id.fragment_container, couponsPoolFragment)
+                                .addToBackStack(null)
                                 .commit();
                         break;
                 }
@@ -197,14 +199,20 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            ProfileFragment profileFragment = new ProfileFragment();
-            android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
-            couponfragmentTransaction
+            MyCouponsFragment profileFragment = new MyCouponsFragment();
+            android.support.v4.app.FragmentTransaction profileFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            profileFragmentTransaction
                     .replace(R.id.fragment_container, profileFragment)
                     .commit();
 
         } else if (id == R.id.nav_coupons) {
             bottomBar.getTabAtPosition(1).performClick();
+            CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+            android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
+            couponpoolfragmentTransaction
+                    .replace(R.id.fragment_container, couponsPoolFragment)
+                    .addToBackStack(null)
+                    .commit();
         } else if (id == R.id.nav_map) {
             bottomBar.getTabAtPosition(3).performClick();
         } else if (id == R.id.nav_manage) {
@@ -233,12 +241,11 @@ public class MainActivity extends AppCompatActivity
 //                        .replace(R.id.fragment_container, fragment)
 //                        .commit();
                 break;
-            case R.id.ibMyCoupons:
-                bottomBar.selectTabAtPosition(1);    //simula o clique sem chamar as acoes
-                MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
-                android.support.v4.app.FragmentTransaction couponfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                couponfragmentTransaction
-                        .replace(R.id.fragment_container, myCouponsFragment)
+            case R.id.ibProfile:
+                MyCouponsFragment profileFragment = new MyCouponsFragment();
+                android.support.v4.app.FragmentTransaction profileFragmentTransaction = getSupportFragmentManager().beginTransaction();
+                profileFragmentTransaction
+                        .replace(R.id.fragment_container, profileFragment)
                         .commit();
                 break;
             default: break;

@@ -145,12 +145,12 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
             {
                 switch (checkedId)
                 {
-                    case R.id.radioLista:
+                    case R.id.radioRestaurants:
                         Toast.makeText(getContext(), "Exibindo Estabelecimentos", Toast.LENGTH_SHORT).show();
                         lvCoupons.setVisibility(View.VISIBLE);
                         mapView.setVisibility(View.GONE);
                         break;
-                    case R.id.radioMapa:
+                    case R.id.radioMap:
                         Toast.makeText(getContext(), "Exibindo Mapa", Toast.LENGTH_SHORT).show();
                         lvCoupons.setVisibility(GONE);
                         mapView.setVisibility(View.VISIBLE);

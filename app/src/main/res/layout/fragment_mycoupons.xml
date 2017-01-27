@@ -4,112 +4,13 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/bege"
     tools:context="br.com.cdf.cheapit.MyCouponsFragment">
-
-    <android.support.v7.widget.Toolbar
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:gravity="center"
-        android:background="@color/grey"
-        android:orientation="horizontal"
-        >
-
-        <ImageButton
-            android:id="@+id/ibSortMyCoupons"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="30dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"
-            />
-        <Spinner
-            android:id="@+id/spSortMyCoupons"
-            android:layout_width="5dp"
-            android:layout_height="0dp">
-        </Spinner>
-
-        <TextView
-            android:id="@+id/tvMyCouponsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:text="MEUS CUPONS"
-            android:textColor="@color/white"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:textStyle="bold"
-            android:textSize="13sp"
-            />
-
-        <ImageButton
-            android:id="@+id/ibFilterMyCoupons"
-            android:layout_width="wrap_content"
-            android:layout_height="25dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:layout_gravity="right"
-            android:layout_marginRight="30dp"
-            android:src="@drawable/ic_filter_list_black_24dp"
-            />
-        <Spinner
-            android:id="@+id/spFilterMyCoupons"
-            android:layout_width="5dp"
-            android:layout_height="0dp"
-            android:layout_gravity="right"
-            >
-        </Spinner>
-
-    </android.support.v7.widget.Toolbar>
-
-    <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radioAtivos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ATIVOS"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-        <RadioButton
-            android:id="@+id/radioEncerrados"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ENCERRADOS"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-
-    </RadioGroup>
-
 
     <ListView
         android:id="@+id/lvCoupons"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:background="@color/bege"
         android:layout_marginBottom="60dp"
         android:divider="@android:color/transparent"
         android:dividerHeight="5.0sp"

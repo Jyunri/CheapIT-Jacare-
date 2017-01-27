@@ -11,6 +11,7 @@ import com.facebook.appevents.AppEventsLogger;
 
 public class FacebookController extends MultiDexApplication {
     public static String CurrentFirstName = "Visitante";
+    public static String CurrentUsername = "Visitante";
     public static String CurrentAvatar;
     public static String LoginMethod;
 
@@ -40,5 +41,13 @@ public class FacebookController extends MultiDexApplication {
 
     public static void setCurrentAvatar(String currentAvatar) {
         CurrentAvatar = currentAvatar;
+    }
+
+    public static String getCurrentUsername() {
+        return FacebookController.CurrentUsername;
+    }
+
+    public static void setCurrentUsername(String currentUserName) {
+        FacebookController.CurrentUsername = currentUserName;
     }
 }

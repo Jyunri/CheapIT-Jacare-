@@ -1,0 +1,7 @@
+Codigo,Cliente,Descrição,Imagem,Preço Gigante
+1,Pizzaria do Cheff,"50% de desconto na Pizza Gigante",coupon_pizza,59
+2,Sushi Tina,"40% de desconto no Rodízio",coupon_sushi,63
+3,Spazio FastFood,"10% de desconto em qualquer Potato",coupon_example2,67
+4,KanMan,"Ganhe uma porção de rolinho primavera",coupon_harumaki,75
+5,Ceará,"10% de desconto na refeição",coupon_example3,65
+6,Garibaldi,"Refeição por R$16,00/quilo",coupon_churrasco,65
