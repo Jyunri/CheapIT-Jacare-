@@ -1,11 +1,10 @@
 package br.com.cdf.cheapit;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.hardware.camera2.params.Face;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,28 +34,28 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            loginType = extras.getString("key");
             first_name = extras.getString("first_name");
             avatar = extras.getString("avatar");
             username = extras.getString("username");
         }
 
-        FacebookController.setCurrentAvatar(avatar);
-        FacebookController.setCurrentUsername(username);
-        /*Toast.makeText(this,"Olá, " + FacebookController.getCurrentFirstName(),Toast.LENGTH_LONG).show();*/
-        Toast.makeText(this,"Olá, " + first_name,Toast.LENGTH_LONG).show();
+        // Set Global Current variables
+        LoginController.setCurrentAvatar(avatar);
+        LoginController.setCurrentUsername(username);
+
+        // Welcome toast
+        Toast.makeText(this,"Olá, " + first_name + "!",Toast.LENGTH_LONG).show();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        //Remove o menu de 3 bolinhas a direita do toolbar
-        //setSupportActionBar(toolbar);
-
+        // Start acitivity with Home Fragment
         HomeFragment fragment = new HomeFragment();
         android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction
                 .replace(R.id.fragment_container, fragment)
                 .commit();
 
+        // Handle Drawable Menu
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -69,6 +68,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Handle Toolbar Logo
         ImageButton ibHomeLogo = (ImageButton)findViewById(R.id.ibHomeLogo);
         ibHomeLogo.setOnClickListener(this);
         ibHomeLogo.setOnLongClickListener(new View.OnLongClickListener() {
@@ -79,10 +79,12 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        ImageButton ibMyCoupons = (ImageButton)findViewById(R.id.ibProfile);
-        ibMyCoupons.setOnClickListener(this);
+        // Handle Toolbar Profile Icon
+        ImageButton ibProfile = (ImageButton)findViewById(R.id.ibProfile);
+        ibProfile.setOnClickListener(this);
 
 
+        // Handle Bottom Bar
         bottomBar = (BottomBar) findViewById(R.id.bottomBar);
         bottomBar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
@@ -119,18 +121,12 @@ public class MainActivity extends AppCompatActivity
                         break;
                     case (R.id.tab_logout):
                         LoginManager.getInstance().logOut();
-                        // Writing data to SharedPreferences
-                        SharedPreferences preferences = getApplicationContext().getSharedPreferences("SaveFiles", 0); // 0 - for private mode
-                        SharedPreferences.Editor editor = preferences.edit();
-                        editor.putString("login", "");
-                        editor.commit();
-                        Log.d("Logout cached AT","LogoutAT: "+preferences.getString("login",""));
                         goLoginScreen();
                 }
             }
         });
 
-        // Handles if coupon tab pressed on MyCoupon fragment
+
         bottomBar.setOnTabReselectListener(new OnTabReselectListener() {
             @Override
             public void onTabReSelected(@IdRes int tabId) {
@@ -150,11 +146,29 @@ public class MainActivity extends AppCompatActivity
                                 .addToBackStack(null)
                                 .commit();
                         break;
+                    case (R.id.tab_fav):
+                        FavoritesFragment favoritesFragment = new FavoritesFragment();
+                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        favfragmentTransaction
+                                .replace(R.id.fragment_container, favoritesFragment)
+                                .commit();
+                        break;
+                    case (R.id.tab_map):
+                        GuideFragment guideFragment = new GuideFragment();
+                        android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        guidefragmentTransaction
+                                .replace(R.id.fragment_container, guideFragment)
+                                .commit();
+                        break;
+                    case (R.id.tab_logout):
+                        LoginManager.getInstance().logOut();
+                        goLoginScreen();
                 }
             }
         });
     }
 
+    // return to login screen
     private void goLoginScreen() {
         Toast.makeText(this,"Indo para tela de login",Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this,LoginActivity.class));
@@ -215,12 +229,33 @@ public class MainActivity extends AppCompatActivity
                     .commit();
         } else if (id == R.id.nav_map) {
             bottomBar.getTabAtPosition(3).performClick();
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
+        } else if (id == R.id.nav_points) {
+            PointsFragment pointsFragment = new PointsFragment();
+            android.support.v4.app.FragmentTransaction pointsFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            pointsFragmentTransaction
+                    .replace(R.id.fragment_container, pointsFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.nav_help) {
+            HelpFragment helpFragment = new HelpFragment();
+            android.support.v4.app.FragmentTransaction helpFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            helpFragmentTransaction
+                    .replace(R.id.fragment_container, helpFragment)
+                    .addToBackStack(null)
+                    .commit();
         } else if (id == R.id.nav_send) {
+            Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+            emailIntent.setData(Uri.parse("mailto:audience.cheapit@gmail.com"));
 
+            try {
+                startActivity(emailIntent);
+            } catch (ActivityNotFoundException e) {
+                //TODO: Handle case where no email app is available
+            }
+        }
+        else if(id == R.id.nav_logout){
+            LoginManager.getInstance().logOut();
+            goLoginScreen();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -234,12 +269,6 @@ public class MainActivity extends AppCompatActivity
             case R.id.ibHomeLogo:
                 DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                 drawer.openDrawer(GravityCompat.START);
-
-//                HomeFragment fragment = new HomeFragment();
-//                android.support.v4.app.FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-//                fragmentTransaction
-//                        .replace(R.id.fragment_container, fragment)
-//                        .commit();
                 break;
             case R.id.ibProfile:
                 MyCouponsFragment profileFragment = new MyCouponsFragment();

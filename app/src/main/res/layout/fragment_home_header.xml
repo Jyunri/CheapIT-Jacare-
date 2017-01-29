@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tvCQDT"
-        android:text="CUPONS #CORREQUEDATEMPO"
+        android:text="@string/correquedatempo"
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:paddingLeft="25dp"

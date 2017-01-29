@@ -17,12 +17,13 @@
         <ImageButton
             android:id="@+id/ibSortFavorites"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="15dp"
             android:layout_gravity="left"
             android:layout_marginLeft="30dp"
             android:background="@null"
             android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"/>
+            android:src="@drawable/ic_sort"
+            android:scaleType="centerInside"/>
         <Spinner
             android:id="@+id/spSortFavorites"
             android:layout_width="5dp"
@@ -44,16 +45,18 @@
         <ImageButton
             android:id="@+id/ibFilterFavorites"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="15dp"
             android:layout_marginRight="30dp"
             android:background="@null"
             android:tint="@color/white"
             android:layout_gravity="right"
-            android:src="@drawable/ic_filter_list_black_24dp"/>
+            android:src="@drawable/ic_filter"
+            android:scaleType="centerInside"/>
         <Spinner
             android:id="@+id/spFilterFavorites"
             android:layout_width="5dp"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_gravity="right">
         </Spinner>
 
     </android.support.v7.widget.Toolbar>

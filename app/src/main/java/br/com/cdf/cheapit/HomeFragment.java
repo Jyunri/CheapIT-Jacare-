@@ -3,18 +3,13 @@ package br.com.cdf.cheapit;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -63,20 +58,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         //recebe os dados do arquivo
         InputStream i = getResources().openRawResource(R.raw.coupons);
         CSVParser csvParser = new CSVParser(i);
-        ArrayList<String[]> pizzas = csvParser.read();
+        ArrayList<String[]> coupons = csvParser.read();
 
-        for(String[] pizza:pizzas) {
-            couponOffer_id.add(pizza[0].replace("\"", ""));
-            clientes.add(pizza[1].replace("\"", ""));
-            descricao.add(pizza[2].replace("\"", ""));
-            imagens.add(pizza[3].replace("\"", ""));
+        for(String[] coupon:coupons) {
+            couponOffer_id.add(coupon[0].replace("\"", ""));
+            clientes.add(coupon[1].replace("\"", ""));
+            descricao.add(coupon[2].replace("\"", ""));
+            imagens.add(coupon[3].replace("\"", ""));
         }
 
         //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
         ListAdapter listAdapter = new CouponListAdapter(getContext(), couponOffer_id, clientes,descricao, imagens);
 
         //pegar referencia do listview
-        ListView lvExpiring = (ListView)rootView.findViewById(R.id.lvExpiring);
+        ListView lvExpiring = (ListView)rootView.findViewById(R.id.lvHome);
 
         lvExpiring.addHeaderView(header);
 

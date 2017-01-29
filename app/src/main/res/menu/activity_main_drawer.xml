@@ -15,22 +15,31 @@
             android:icon="@drawable/ic_location_on_white_24dp"
             android:title="Mapa" />
         <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:id="@+id/nav_points"
+            android:icon="@drawable/ic_points"
+            android:title="Pontos Cheapit!" />
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="Suporte">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:id="@+id/nav_help"
+                android:icon="@drawable/ic_information"
+                android:title="Ajuda" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Contato" />
         </menu>
     </item>
+
+    <item android:title="">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="Sair" />
+    </item>
+
+
 
 </menu>

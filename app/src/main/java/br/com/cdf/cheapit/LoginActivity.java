@@ -1,12 +1,10 @@
 package br.com.cdf.cheapit;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.facebook.AccessToken;
@@ -69,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 else {
                     nextActivity(profile);
                 }
-                Toast.makeText(getApplicationContext(), "Entrando..", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -117,11 +114,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void nextActivity(Profile profile){
         if(profile != null){
-            FacebookController.setLoginMethod("facebook");
+            LoginController.setLoginMethod("facebook");
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             main.putExtra("first_name", profile.getFirstName());
             main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
             main.putExtra("username",profile.getName());
+            Toast.makeText(getApplicationContext(), "Carregando..", Toast.LENGTH_SHORT).show();
             startActivity(main);
         }
     }
@@ -130,80 +128,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case (R.id.ibGuestLogin):
-                Toast.makeText(this,"login visitante",Toast.LENGTH_SHORT).show();
-                FacebookController.setLoginMethod("guest");
+                LoginController.setLoginMethod("guest");
                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                i.putExtra("key","guest");
                 i.putExtra("first_name","Visitante");
+                i.putExtra("username","Visitante");
+                Toast.makeText(this,"Carregando..",Toast.LENGTH_SHORT).show();
                 startActivity(i);
                 break;
         }
     }
-
-        /* Testando novo metodo
-        fbLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-
-                if(Profile.getCurrentProfile()== null){
-                    Log.w("Profile changed","Tracking new profile");
-                    ProfileTracker profileTracker = new ProfileTracker() {
-                        @Override
-                        protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-                            stopTracking();
-                            Log.d("facebook - newprofile", currentProfile.getFirstName());
-                            Profile.setCurrentProfile(currentProfile);
-                            FacebookController.setCurrentFirstName(currentProfile.getFirstName());
-                        }
-                    };
-                    profileTracker.startTracking();
-                }
-                else {
-                    Profile profile = Profile.getCurrentProfile();
-                    Log.d("facebook - profile", profile.getFirstName());
-                    FacebookController.setCurrentFirstName(profile.getFirstName());
-                }
-
-
-                SharedPreferences preferences = getApplicationContext().getSharedPreferences("SaveFiles", 0); // 0 - for private mode
-                Log.d("Cached before login","BeforeLoginAT: " + preferences.getString("login",""));
-
-                // Writing data to SharedPreferences
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putString("login", AccessToken.getCurrentAccessToken().getToken());
-                editor.commit();
-
-                Log.d("Cached after login","AfterLoginAT: " + preferences.getString("login",""));
-
-                Toast.makeText(getApplicationContext(),"login via facebook",Toast.LENGTH_SHORT).show();
-
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(i);
-            }
-
-            @Override
-            public void onCancel() {
-                Toast.makeText(getApplicationContext(),"login canceled",Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                Toast.makeText(getApplicationContext(),"login error",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-        googleLogin.setOnClickListener(this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode,resultCode,data);
-    }
-
-    */
 
 
 

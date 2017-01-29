@@ -6,20 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -44,10 +33,10 @@ public class ProfileFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_profile, container, false);
-        if(FacebookController.LoginMethod.equals("facebook")) {
-            new DownloadImage((ImageView) rootView.findViewById(R.id.ivAvatar)).execute(FacebookController.getCurrentAvatar());
+        if(LoginController.LoginMethod.equals("facebook")) {
+            new DownloadImage((ImageView) rootView.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
             tvUsername = (TextView)rootView.findViewById(R.id.tvUsername);
-            tvUsername.setText(FacebookController.getCurrentUsername());
+            tvUsername.setText(LoginController.getCurrentUsername());
         }
 
 

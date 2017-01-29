@@ -26,8 +26,6 @@ import java.util.List;
  */
 public class CouponsPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-
-    private RadioGroup radioGroup1;
     TextView tvMyCouponsTitle;
 
     ListAdapter listAdapter;
@@ -48,7 +46,6 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_coupons_pool, container, false);
 
-        radioGroup1 = (RadioGroup)rootView.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvMyCouponsTitle);
 
         ibSortMyCoupons = (ImageButton) rootView.findViewById(R.id.ibSortMyCoupons);
@@ -108,26 +105,6 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
         spFilterMyCoupons.setAdapter(filterAdapter);
 
 
-        // Checked change Listener for RadioGroup 1
-        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId)
-            {
-                switch (checkedId)
-                {
-                    case R.id.radioAtivos:
-                        Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.radioUsed:
-                        Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
-
 
         //criar listas de itens
         final ArrayList<String> couponOffer_id = new ArrayList<>();
@@ -164,8 +141,8 @@ public class CouponsPoolFragment extends Fragment implements View.OnClickListene
                 Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
                 CouponInformation couponInformation = new CouponInformation();
                 Bundle bundle = new Bundle();
-                bundle.putString("couponOfferId", couponOffer_id.get(position-1));
-                bundle.putString("couponVoucher", imagens.get(position-1));
+                bundle.putString("couponOfferId", couponOffer_id.get(position));
+                bundle.putString("couponVoucher", imagens.get(position));
                 couponInformation.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 couponInformationfragmentTransaction

@@ -11,7 +11,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
-    <string name="www_cheapit_com_br">www.cheapit.com.br</string>
+    <string name="cheapitwebsite">www.cheapit.com.br</string>
     <string name="cqdt">Últimos dias/unidades! Confira:</string>
     <string name="slogan">Quer Desconto? CheapIt!</string>
+    <string name="loginToCheapit">Faça o login para ter acesso à descontos nos estabelecimentos próximos à você!</string>
+    <string name="stLoginMethod">Faça o login com seu perfil do Facebook ou entre como visitante:</string>
+    <string name="correquedatempo">CUPONS #CORREQUEDATEMPO</string>
+    <string name="whatIsPoints">"Os Pontos Cheapit servem para você concorrer mensalmente a prêmios especiais selecionados pela Audience Marketing além de "</string>
 </resources>

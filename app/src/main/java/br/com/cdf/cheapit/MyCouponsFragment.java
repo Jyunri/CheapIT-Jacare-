@@ -28,7 +28,7 @@ import java.util.List;
 public class MyCouponsFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener{
 
     private RadioGroup radioGroup1;
-    TextView tvUsername,tvMyCouponsTitle;
+    TextView tvUsername,tvMyCouponsTitle, tvCheapitPoints;
 
     ListAdapter listAdapter;
     ArrayList<String[]> coupons;
@@ -50,11 +50,16 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         View header = inflater.inflate(R.layout.fragment_profile,null);
 
         // Header (profile)
-        if(FacebookController.LoginMethod.equals("facebook")) {
-            new DownloadImage((ImageView) header.findViewById(R.id.ivAvatar)).execute(FacebookController.getCurrentAvatar());
+        if(LoginController.LoginMethod.equals("facebook")) {
+            new DownloadImage((ImageView) header.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
             tvUsername = (TextView)header.findViewById(R.id.tvUsername);
-            tvUsername.setText(FacebookController.getCurrentUsername());
+            tvUsername.setText(LoginController.getCurrentUsername());
         }
+
+        tvCheapitPoints = (TextView)header.findViewById(R.id.tvCheapitPoints);
+        tvCheapitPoints.setOnClickListener(this);
+
+
 
         radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvMyCouponsTitle);

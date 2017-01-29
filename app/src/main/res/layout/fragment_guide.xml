@@ -16,12 +16,13 @@
         <ImageButton
             android:id="@+id/ibSortPlaces"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="15dp"
             android:layout_gravity="left"
             android:layout_marginLeft="30dp"
             android:background="@null"
             android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"/>
+            android:src="@drawable/ic_sort"
+            android:scaleType="centerInside"/>
         <Spinner
             android:id="@+id/spSortPlaces"
             android:layout_width="5dp"
@@ -43,16 +44,18 @@
         <ImageButton
             android:id="@+id/ibFilterPlaces"
             android:layout_width="wrap_content"
-            android:layout_height="10dp"
+            android:layout_height="15dp"
             android:layout_marginRight="30dp"
             android:background="@null"
             android:tint="@color/white"
             android:layout_gravity="right"
-            android:src="@drawable/ic_filter_list_black_24dp"/>
+            android:src="@drawable/ic_filter"
+            android:scaleType="centerInside"/>
         <Spinner
             android:id="@+id/spFilterPlaces"
             android:layout_width="5dp"
-            android:layout_height="0dp">
+            android:layout_height="0dp"
+            android:layout_gravity="right">
         </Spinner>
 
     </android.support.v7.widget.Toolbar>
@@ -76,18 +79,19 @@
                 android:gravity="center"
                 android:orientation="horizontal" >
 
+
                 <RadioButton
                     android:id="@+id/radioMap"
-                    android:layout_width="80dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/rbtn_selector"
                     android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="MAPA"
-                    android:textStyle="bold"
-                    android:textSize="15dp"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
+                    android:drawableRight="@drawable/ic_location_on_white_24dp"
+                    android:paddingRight="10dp"
+                    android:tint="@color/bege"
+                    android:checked="true"
+                    />
+
 
                 <RadioButton
                     android:id="@+id/radioRestaurants"
@@ -95,7 +99,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rbtn_selector"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="RESTAURANTES"
@@ -109,7 +112,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rbtn_selector"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="LOJAS"
@@ -123,7 +125,6 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/rbtn_selector"
                     android:button="@null"
-                    android:checked="true"
                     android:gravity="center"
                     android:padding="5dp"
                     android:text="SERVIÇOS"

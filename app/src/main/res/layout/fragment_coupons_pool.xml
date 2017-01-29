@@ -18,12 +18,13 @@
         <ImageButton
             android:id="@+id/ibSortMyCoupons"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="15dp"
             android:layout_gravity="left"
             android:layout_marginLeft="30dp"
             android:background="@null"
             android:tint="@color/white"
-            android:src="@drawable/ic_sort_black_24dp"
+            android:src="@drawable/ic_sort"
+            android:scaleType="centerInside"
             />
         <Spinner
             android:id="@+id/spSortMyCoupons"
@@ -46,12 +47,13 @@
         <ImageButton
             android:id="@+id/ibFilterMyCoupons"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="15dp"
             android:background="@null"
             android:tint="@color/white"
             android:layout_gravity="right"
             android:layout_marginRight="30dp"
-            android:src="@drawable/ic_filter_list_black_24dp"
+            android:src="@drawable/ic_filter"
+            android:scaleType="centerInside"
             />
         <Spinner
             android:id="@+id/spFilterMyCoupons"
@@ -62,45 +64,6 @@
         </Spinner>
 
     </android.support.v7.widget.Toolbar>
-
-    <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radioAtivos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:checked="true"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="ATIVOS"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-        <RadioButton
-            android:id="@+id/radioUsed"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/rbtn_selector"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="5dp"
-            android:text="UTILIZADOS"
-            android:textStyle="bold"
-            android:textSize="15sp"
-            android:textColor="@drawable/rbtn_textcolor_selector" />
-
-
-    </RadioGroup>
 
 
     <ListView

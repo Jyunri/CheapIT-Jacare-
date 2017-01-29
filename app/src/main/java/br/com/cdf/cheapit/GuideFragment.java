@@ -75,7 +75,7 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-        mapView.setVisibility(GONE);
+
 
         //Long pressed helpers
         ibSortPlaces.setOnLongClickListener(new View.OnLongClickListener() {
@@ -186,6 +186,9 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
         //setar o adapter da listview para o nosso adapter
         lvCoupons.setAdapter(listAdapter);
 
+        //iniciar o listview como invisivel
+        lvCoupons.setVisibility(GONE);
+
         tvPlaces.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -221,6 +224,12 @@ public class GuideFragment extends Fragment implements OnMapReadyCallback, Googl
 
         //connect to GoogleAPIClient
         mGoogleApiClient.connect();
+
+        //add markers
+        Marker marker = mGoogleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(-23.298966, -45.955750))
+                .title("Pizzaria do Cheff")
+                .snippet("Population: 776733"));
 
     }
 

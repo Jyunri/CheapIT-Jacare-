@@ -9,7 +9,7 @@ import com.facebook.appevents.AppEventsLogger;
  * Created by Jimy on 1/4/17.
  */
 
-public class FacebookController extends MultiDexApplication {
+public class LoginController extends MultiDexApplication {
     public static String CurrentFirstName = "Visitante";
     public static String CurrentUsername = "Visitante";
     public static String CurrentAvatar;
@@ -44,10 +44,10 @@ public class FacebookController extends MultiDexApplication {
     }
 
     public static String getCurrentUsername() {
-        return FacebookController.CurrentUsername;
+        return LoginController.CurrentUsername;
     }
 
     public static void setCurrentUsername(String currentUserName) {
-        FacebookController.CurrentUsername = currentUserName;
+        LoginController.CurrentUsername = currentUserName;
     }
 }
