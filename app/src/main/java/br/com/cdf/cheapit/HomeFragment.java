@@ -38,8 +38,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         View header = inflater.inflate(R.layout.fragment_home_header,null);
 
+        int[] images = new int[]{
+                R.drawable.slide1, R.drawable.slide1
+        };
+
         ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
-        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext());
+        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext(), images);
         mViewPager.setAdapter(adapterView);
 
         TabLayout tabLayout = (TabLayout) header.findViewById(R.id.tabDots);

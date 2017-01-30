@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.cdf.cheapit.PointsFragment">
+    tools:context="br.com.cdf.cheapit.PointsFragment"
+    android:background="@drawable/default_background"
+    android:paddingBottom="60dp">
 
     <ExpandableListView
         android:id="@+id/lvPoints"

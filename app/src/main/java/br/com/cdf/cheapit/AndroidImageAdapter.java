@@ -13,9 +13,11 @@ import android.widget.ImageView;
 
 public class AndroidImageAdapter extends PagerAdapter {
     Context mContext;
+    private  int[] sliderImagesId;
 
-    AndroidImageAdapter(Context context) {
+    AndroidImageAdapter(Context context, int images[]) {
         this.mContext = context;
+        sliderImagesId = images;
     }
 
     @Override
@@ -23,7 +25,7 @@ public class AndroidImageAdapter extends PagerAdapter {
         return sliderImagesId.length;
     }
 
-    private int[] sliderImagesId = new int[]{
+    private int[] images = new int[]{
             R.drawable.slide1, R.drawable.slide1
     };
 

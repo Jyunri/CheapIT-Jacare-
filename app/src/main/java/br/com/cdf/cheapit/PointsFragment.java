@@ -3,6 +3,7 @@ package br.com.cdf.cheapit;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +33,19 @@ public class PointsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_points, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_prizes, container, false);
+        View header = inflater.inflate(R.layout.header_prizes,null);
+
+
         expListView = (ExpandableListView) rootView.findViewById(R.id.lvPoints);
+        expListView.addHeaderView(header);
+
+        int[] images = new int[]{
+                R.drawable.prizedraw, R.drawable.prizedraw
+        };
+        ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
+        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext(), images);
+        mViewPager.setAdapter(adapterView);
 
         // preparing list data
         prepareListData();
