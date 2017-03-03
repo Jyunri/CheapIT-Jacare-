@@ -29,7 +29,6 @@
                 android:scaleType="fitXY"
                 android:id="@+id/ivCouponVoucher"
                 android:background="@drawable/rectangle_red"
-                android:src="@drawable/coupon_pizza"
                 />
 
             <LinearLayout
@@ -44,9 +43,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* Válido até: 03/2017"
+                    android:text="* Válido até:"
                     android:textColor="@color/bege"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/tv_expires_at" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -88,16 +88,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* Loja: Pizzaria do Cheff"
+                    android:text="* Loja:"
                     android:textColor="@color/bordo_red"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/tv_partner" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="* Descrição do cupom: 50% de desconto nas pizzas gigantes"
+                    android:text="* Descrição do cupom:"
                     android:textColor="@color/bordo_red"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/tv_description" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -110,7 +112,8 @@
                     android:layout_height="wrap_content"
                     android:text="  1 - Cupons não cumulativos com outros cupons/descontos"
                     android:textColor="@color/bordo_red"
-                    android:textStyle="bold"/>
+                    android:textStyle="bold"
+                    android:id="@+id/tv_rules" />
                 />
                 <TextView
                     android:layout_width="wrap_content"

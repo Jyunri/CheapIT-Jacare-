@@ -1,15 +1,38 @@
 package br.com.cdf.cheapit;
 
 
+import android.app.ProgressDialog;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -19,6 +42,8 @@ public class CouponInformation extends Fragment {
 
     public String couponOfferId = "", couponVoucherSrc = "";
     ImageView couponVoucher;
+    TextView expires_at, partner ,description, offer_rules;
+    String json;
 
     public CouponInformation() {
         // Required empty public constructor
@@ -34,13 +59,152 @@ public class CouponInformation extends Fragment {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             couponOfferId = bundle.getString("couponOfferId", "0");
-            couponVoucherSrc = bundle.getString("couponVoucher", "0");
         }
 
         couponVoucher = (ImageView)rootview.findViewById(R.id.ivCouponVoucher);
-        couponVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+couponVoucherSrc,null,getContext().getPackageName()));
+        expires_at = (TextView)rootview.findViewById(R.id.tv_expires_at);
+        partner = (TextView)rootview.findViewById(R.id.tv_partner);
+        description = (TextView)rootview.findViewById(R.id.tv_description);
+        offer_rules = (TextView)rootview.findViewById(R.id.tv_rules);
+
+        // Get Offer Information
+        new GetCoupons().execute("",couponOfferId);
+
 
         return rootview;
+    }
+
+    private class GetCoupons extends AsyncTask<String,String,String> {
+
+        public static final int CONNECTION_TIMEOUT=10000;
+        public static final int READ_TIMEOUT=15000;
+
+        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        HttpURLConnection conn;
+        URL url = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tCarregando...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // Enter URL address where your php file resides
+                url = new URL("https://cheapit.000webhostapp.com/page_json.php");
+
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
+                return "exception";
+            }
+            try {
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("partner", params[0])
+                        .appendQueryParameter("id", params[1]);
+                String query = builder.build().getEncodedQuery();
+                Log.d("Query",query);
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
+                return "exception";
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "exception";
+            } finally {
+                conn.disconnect();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Dismiss the progress dialog
+            if (pdLoading.isShowing())
+                pdLoading.dismiss();
+
+            json = result;
+
+            try {
+                JSONObject jsonObj = new JSONObject(json);
+                // Getting JSON Array node
+                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
+                Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
+
+
+                String image = coupons_array.getJSONObject(0).getString("image");
+                couponVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
+                expires_at.setText("* Validade: "+coupons_array.getJSONObject(0).getString("expires_at"));
+                partner.setText("* Loja: "+coupons_array.getJSONObject(0).getString("partner"));
+                description.setText("* Descrição do cupom: "+coupons_array.getJSONObject(0).getString("description"));
+                if(!coupons_array.getJSONObject(0).getString("rules").isEmpty()){
+                    offer_rules.setText(coupons_array.getJSONObject(0).getString("rules"));
+                }
+
+            }catch(Exception e){
+                Log.d("erro",e.getMessage());
+            }
+            Log.d("Result",result);
+
+        }
     }
 
 }

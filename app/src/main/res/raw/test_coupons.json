@@ -1,0 +1,44 @@
+[
+  {
+    "Codigo": 1,
+    "Cliente": "Pizzaria do Cheff",
+    "Descrição": "50% de desconto na Pizza Gigante",
+    "Imagem": "coupon_pizza",
+    "Preço Gigante": 59
+  },
+  {
+    "Codigo": 2,
+    "Cliente": "Sushi Tina",
+    "Descrição": "40% de desconto no Rodízio",
+    "Imagem": "coupon_sushi",
+    "Preço Gigante": 63
+  },
+  {
+    "Codigo": 3,
+    "Cliente": "Spazio FastFood",
+    "Descrição": "10% de desconto em qualquer Potato",
+    "Imagem": "coupon_example2",
+    "Preço Gigante": 67
+  },
+  {
+    "Codigo": 4,
+    "Cliente": "KanMan",
+    "Descrição": "Ganhe uma porção de rolinho primavera",
+    "Imagem": "coupon_harumaki",
+    "Preço Gigante": 75
+  },
+  {
+    "Codigo": 5,
+    "Cliente": "Ceará",
+    "Descrição": "10% de desconto na refeição",
+    "Imagem": "coupon_example3",
+    "Preço Gigante": 65
+  },
+  {
+    "Codigo": 6,
+    "Cliente": "Garibaldi",
+    "Descrição": "Refeição por R$16,00/quilo",
+    "Imagem": "coupon_churrasco",
+    "Preço Gigante": 65
+  }
+]
