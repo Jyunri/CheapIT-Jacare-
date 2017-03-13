@@ -98,18 +98,25 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_coupons):
-                        CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                        OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                         android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
                         couponpoolfragmentTransaction
-                                .replace(R.id.fragment_container, couponsPoolFragment)
+                                .replace(R.id.fragment_container, offerPoolFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
-                    case (R.id.tab_fav):
-                        FavoritesFragment favoritesFragment = new FavoritesFragment();
-                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        favfragmentTransaction
-                                .replace(R.id.fragment_container, favoritesFragment)
+//                    case (R.id.tab_fav):
+//                        FavoritesFragment favoritesFragment = new FavoritesFragment();
+//                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                        favfragmentTransaction
+//                                .replace(R.id.fragment_container, favoritesFragment)
+//                                .commit();
+//                        break;
+                    case (R.id.tab_partner):
+                        PartnerPoolFragment partnerPoolFragment = new PartnerPoolFragment();
+                        android.support.v4.app.FragmentTransaction partnerfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        partnerfragmentTransaction
+                                .replace(R.id.fragment_container, partnerPoolFragment)
                                 .commit();
                         break;
                     case (R.id.tab_map):
@@ -139,18 +146,25 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_coupons):
-                        CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                        OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                         android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
                         couponpoolfragmentTransaction
-                                .replace(R.id.fragment_container, couponsPoolFragment)
+                                .replace(R.id.fragment_container, offerPoolFragment)
                                 .addToBackStack(null)
                                 .commit();
                         break;
-                    case (R.id.tab_fav):
-                        FavoritesFragment favoritesFragment = new FavoritesFragment();
-                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
-                        favfragmentTransaction
-                                .replace(R.id.fragment_container, favoritesFragment)
+//                    case (R.id.tab_fav):
+//                        FavoritesFragment favoritesFragment = new FavoritesFragment();
+//                        android.support.v4.app.FragmentTransaction favfragmentTransaction = getSupportFragmentManager().beginTransaction();
+//                        favfragmentTransaction
+//                                .replace(R.id.fragment_container, favoritesFragment)
+//                                .commit();
+//                        break;
+                    case (R.id.tab_partner):
+                        PartnerPoolFragment partnerPoolFragment = new PartnerPoolFragment();
+                        android.support.v4.app.FragmentTransaction partnerfragmentTransaction = getSupportFragmentManager().beginTransaction();
+                        partnerfragmentTransaction
+                                .replace(R.id.fragment_container, partnerPoolFragment)
                                 .commit();
                         break;
                     case (R.id.tab_map):
@@ -221,10 +235,10 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_coupons) {
             bottomBar.getTabAtPosition(1).performClick();
-            CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+            OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
             android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
             couponpoolfragmentTransaction
-                    .replace(R.id.fragment_container, couponsPoolFragment)
+                    .replace(R.id.fragment_container, offerPoolFragment)
                     .addToBackStack(null)
                     .commit();
         } else if (id == R.id.nav_map) {

@@ -42,10 +42,10 @@ public class CouponFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             //// TODO: 12/28/16 adicionar os cupons disponiveis
             case R.id.btAvailableCoupons:
-                CouponsPoolFragment couponsPoolFragment = new CouponsPoolFragment();
+                OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                 android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 couponpoolfragmentTransaction
-                        .replace(R.id.fragment_container, couponsPoolFragment)
+                        .replace(R.id.fragment_container, offerPoolFragment)
                         .addToBackStack(null)
                         .commit();
                 break;

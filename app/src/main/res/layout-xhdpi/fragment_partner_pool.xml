@@ -36,7 +36,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="CUPONS DISPONÍVEIS"
+            android:text="LOCAIS"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:gravity="center"
@@ -67,8 +67,8 @@
 
 
     <ListView
-        android:id="@+id/lvCoupons"
-        android:layout_width="wrap_content"
+        android:id="@+id/lvPartners"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"
         android:layout_marginLeft="10dp"

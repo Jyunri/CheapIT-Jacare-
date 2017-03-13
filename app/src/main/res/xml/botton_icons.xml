@@ -12,12 +12,18 @@
         activeColor = "@color/white"
         icon="@drawable/ic_coupon_24"
         title="Cupons" />
+    <!--<tab-->
+        <!--id="@+id/tab_fav"-->
+        <!--barColorWhenSelected="@color/bordo_red"-->
+        <!--activeColor = "@color/white"-->
+        <!--icon="@drawable/ic_favorite_white_24dp"-->
+        <!--title="Favoritos" />-->
     <tab
-        id="@+id/tab_fav"
+        id="@+id/tab_partner"
         barColorWhenSelected="@color/bordo_red"
         activeColor = "@color/white"
-        icon="@drawable/ic_favorite_white_24dp"
-        title="Favoritos" />
+        icon="@drawable/ic_local_dining_white_24dp"
+        title="Locais" />
     <tab
         id="@+id/tab_map"
         barColorWhenSelected="@color/dark_red"

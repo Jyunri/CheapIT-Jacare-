@@ -62,12 +62,12 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
 
 
         radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
-        tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvMyCouponsTitle);
+        tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvTitle);
 
-        ibSortMyCoupons = (ImageButton) header.findViewById(R.id.ibSortMyCoupons);
-        ibFilterMyCoupons =  (ImageButton) header.findViewById(R.id.ibFilterMyCoupons);
-        spSortMyCoupons = (Spinner) header.findViewById(R.id.spSortMyCoupons);
-        spFilterMyCoupons =  (Spinner) header.findViewById(R.id.spFilterMyCoupons);
+        ibSortMyCoupons = (ImageButton) header.findViewById(R.id.ibSort);
+        ibFilterMyCoupons =  (ImageButton) header.findViewById(R.id.ibFilter);
+        spSortMyCoupons = (Spinner) header.findViewById(R.id.spSort);
+        spFilterMyCoupons =  (Spinner) header.findViewById(R.id.spFilter);
 
 
         //Long pressed helpers
@@ -195,10 +195,10 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.ibSortMyCoupons:
+            case R.id.ibSort:
                 spSortMyCoupons.performClick();
                 break;
-            case R.id.ibFilterMyCoupons:
+            case R.id.ibFilter:
                 spFilterMyCoupons.performClick();
                 break;
         }
@@ -209,12 +209,12 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         // On selecting a spinner item
         String item = parent.getItemAtPosition(position).toString();
         switch (parent.getId()){
-            case R.id.spSortMyCoupons:
+            case R.id.spSort:
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
                 break;
-            case R.id.spFilterMyCoupons:
+            case R.id.spFilter:
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 

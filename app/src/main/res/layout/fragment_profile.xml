@@ -89,7 +89,7 @@
             >
 
             <ImageButton
-                android:id="@+id/ibSortMyCoupons"
+                android:id="@+id/ibSort"
                 android:layout_width="wrap_content"
                 android:layout_height="15dp"
                 android:layout_gravity="left"
@@ -100,13 +100,13 @@
                 android:scaleType="centerInside"
                 />
             <Spinner
-                android:id="@+id/spSortMyCoupons"
+                android:id="@+id/spSort"
                 android:layout_width="5dp"
                 android:layout_height="0dp">
             </Spinner>
 
             <TextView
-                android:id="@+id/tvMyCouponsTitle"
+                android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="MEUS CUPONS"
@@ -118,7 +118,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/ibFilterMyCoupons"
+                android:id="@+id/ibFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_filter"
@@ -129,7 +129,7 @@
                 android:scaleType="centerInside"
                 />
             <Spinner
-                android:id="@+id/spFilterMyCoupons"
+                android:id="@+id/spFilter"
                 android:layout_width="5dp"
                 android:layout_height="0dp"
                 android:layout_gravity="right"

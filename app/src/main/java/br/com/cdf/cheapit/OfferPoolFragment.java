@@ -2,20 +2,20 @@ package br.com.cdf.cheapit;
 
 
 import android.app.ProgressDialog;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,22 +32,26 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment implements View.OnClickListener{
+public class OfferPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    View rootView;
+    TextView tvMyCouponsTitle;
+
+    ListAdapter listAdapter;
+    ArrayList<String[]> coupons;
+    ListView lvCoupons;
     String json;
-    ListView lvExpiring;
 
-    public HomeFragment() {
+    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
+    Spinner spSortMyCoupons, spFilterMyCoupons;
+
+    public OfferPoolFragment() {
         // Required empty public constructor
     }
 
@@ -56,36 +60,89 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        View header = inflater.inflate(R.layout.fragment_home_header,null);
+        View rootView = inflater.inflate(R.layout.fragment_coupons_pool, container, false);
 
-        int[] images = new int[]{
-                R.drawable.slide1, R.drawable.slide2
-        };
+        tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvTitle);
 
-        ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
-        AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext(), images);
-        mViewPager.setAdapter(adapterView);
+        ibSortMyCoupons = (ImageButton) rootView.findViewById(R.id.ibSort);
+        ibFilterMyCoupons =  (ImageButton) rootView.findViewById(R.id.ibFilter);
+        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSort);
+        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilter);
 
-        TabLayout tabLayout = (TabLayout) header.findViewById(R.id.tabDots);
-        tabLayout.setupWithViewPager(mViewPager);
 
-        TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
-        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
-        tvCQDT.setTypeface(type);
+        //Long pressed helpers
+        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
+        ibSortMyCoupons.setOnClickListener(this);
+        ibFilterMyCoupons.setOnClickListener(this);
+
+        // Spinner click listener
+        spSortMyCoupons.setOnItemSelectedListener(this);
+        spFilterMyCoupons.setOnItemSelectedListener(this);
+
+
+        // Spinner Drop down elements
+        List<String> sortList = new ArrayList<String>();
+        sortList.add("A-Z");
+        sortList.add("Z-A");
+        sortList.add("Data");
+        sortList.add("Unidades");
+        sortList.add("Maior desconto");
+
+        List<String> filterList = new ArrayList<String>();
+        filterList.add("Todos os cupons");
+        filterList.add("Restaurantes");
+        filterList.add("Lojas");
+        filterList.add("Serviços");
+
+        // Creating adapter for spinner
+        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
+        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
+
+        // Drop down layout style - list view with radio button
+        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        spSortMyCoupons.setAdapter(sortAdapter);
+        spFilterMyCoupons.setAdapter(filterAdapter);
+        
 
         //Recebe o arquivo json do banco
         new GetCoupons().execute("","");
 
-        //recebe os dados do arquivo
-        InputStream i = getResources().openRawResource(R.raw.coupons);
-
         //pegar referencia do listview
-        lvExpiring = (ListView)rootView.findViewById(R.id.lvHome);
+        lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
 
-        lvExpiring.addHeaderView(header);
 
+        //eventos ao clicar nos itens da lista
+        lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, final View view,
+                                    int position, long id) {
+            }
+
+        });
+
+        tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lvCoupons.setSelection(0);
+            }
+        });
 
         return rootView;
     }
@@ -93,8 +150,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-
+            case R.id.ibSort:
+                spSortMyCoupons.performClick();
+                break;
+            case R.id.ibFilter:
+                spFilterMyCoupons.performClick();
+                break;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+        switch (parent.getId()){
+            case R.id.spSort:
+                // Showing selected spinner item
+                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+                break;
+            case R.id.spFilter:
+                // Showing selected spinner item
+                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+                break;
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 
     private class GetCoupons extends AsyncTask<String,String,String> {
@@ -116,21 +202,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             pdLoading.show();
 
         }
-
-//      Metodo simplificado, mas ainda em teste. O problema eh a parte que envia parametro (AppendQueryParameter)
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            HttpHandler sh = new HttpHandler();
-//
-//            // Making a request to url and getting response
-//            String url = "https://cheapit.000webhostapp.com/page_json.php";
-//            String result = sh.makeServiceCall(url);
-//
-//            // Pass data to onPostExecute method
-//            return result;
-//        }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -236,21 +307,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-
-                    //filter: only coupons with expirity before one month
-                    SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
-                    Date expires_at = dateFormatter.parse(c.getString("expires_at"));   //get date string from db and convert to Date
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(new Date());    //get current date
-                    cal.add(Calendar.MONTH,1);  //add 1 month to current date
-                    Date currentDatePlusOne = cal.getTime();
-
-
-                    if(expires_at.before(currentDatePlusOne) || (Integer.valueOf(c.getString("availability"))<4) ){
-                        Coupon_offer offer = new Coupon_offer(c.getString("id"),c.getString("partner"),c.getString("description"),c.getString("image"));
-                        offers.add(offer);
-                    }
-
+                    Coupon_offer offer = new Coupon_offer(c.getString("id"),c.getString("partner"),c.getString("description"),c.getString("image"));
+                    offers.add(offer);
                 }
 
             }catch(Exception e){
@@ -258,34 +316,31 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
             Log.d("Result",result);
 
-            //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-            //ListAdapter listAdapter = new CouponListAdapter(getContext(), couponOffer_id, clientes,descricao, imagens);
             ListAdapter listAdapter = new OfferListAdapter(getContext(),offers);
 
             //setar o adapter da listview para o nosso adapter
-            lvExpiring.setAdapter(listAdapter);
+            lvCoupons.setAdapter(listAdapter);
 
 
-        //eventos ao clicar nos itens da lista
-        lvExpiring.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, final View view,
-                                    int position, long id) {
-                Coupon_offer offer =  (Coupon_offer)parent.getItemAtPosition(position);
-                Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
-                Bundle bundle = new Bundle();
-                bundle.putString("couponOfferId", offer.id);
-                CouponInformation couponInformation = new CouponInformation();
-                couponInformation.setArguments(bundle);
-                android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                couponInformationfragmentTransaction
-                        .replace(R.id.fragment_container, couponInformation)
-                        .addToBackStack(null)
-                        .commit();
-            }
+            //eventos ao clicar nos itens da lista
+            lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view,
+                                        int position, long id) {
+                    Coupon_offer offer =  (Coupon_offer)parent.getItemAtPosition(position);
+                    Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("couponOfferId", offer.id);
+                    CouponInformation couponInformation = new CouponInformation();
+                    couponInformation.setArguments(bundle);
+                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    couponInformationfragmentTransaction
+                            .replace(R.id.fragment_container, couponInformation)
+                            .addToBackStack(null)
+                            .commit();
+                }
 
-        });
+            });
         }
     }
-
 }

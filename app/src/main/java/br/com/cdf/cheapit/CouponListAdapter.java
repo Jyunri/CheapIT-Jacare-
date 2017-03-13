@@ -56,7 +56,7 @@ public class CouponListAdapter extends ArrayAdapter<String> {
 //        tvCouponOfferId.setText(couponOfferId);
 
         String item = listaItens.get(position);
-        TextView tvItem = (TextView)customView.findViewById(R.id.tvItem);
+        TextView tvItem = (TextView)customView.findViewById(R.id.tvName);
         tvItem.setText(item);
 
         String descricao = listaDescricao.get(position);

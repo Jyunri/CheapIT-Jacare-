@@ -36,7 +36,7 @@ public class OfferListAdapter extends ArrayAdapter<Coupon_offer> {
 
         //insere a oferta baseado na posicao da lista
         String item = offers.get(position).partner;
-        TextView tvItem = (TextView)customView.findViewById(R.id.tvItem);
+        TextView tvItem = (TextView)customView.findViewById(R.id.tvName);
         tvItem.setText(item);
 
         String descricao = offers.get(position).description;
@@ -46,7 +46,7 @@ public class OfferListAdapter extends ArrayAdapter<Coupon_offer> {
         String imagem = offers.get(position).image;
         ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivCouponVoucher);
 
-        ivImagem.setImageResource(getContext().getResources().getIdentifier("drawable/"+imagem,null,getContext().getPackageName()));
+        //ivImagem.setImageResource(getContext().getResources().getIdentifier("drawable/"+imagem,null,getContext().getPackageName()));
 
         //retorna o objeto
         return customView;
