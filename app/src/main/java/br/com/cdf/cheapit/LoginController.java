@@ -10,11 +10,15 @@ import com.facebook.appevents.AppEventsLogger;
  */
 
 public class LoginController extends MultiDexApplication {
+    public static final String offerURL = "https://cheapit.000webhostapp.com/page_offers_json_jimy.php";
+    public static final String partnerURL = "https://cheapit.000webhostapp.com/page_partners_json_jimy.php";
+
     public static String CurrentFirstName = "Visitante";
     public static String CurrentUsername = "Visitante";
     public static String CurrentAvatar;
     public static String LoginMethod;
 
+    public static String CurrentUserId = "2";
 
     @Override
     public void onCreate() {

@@ -12,12 +12,12 @@ import android.widget.Button;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CouponFragment extends Fragment implements View.OnClickListener{
+public class ZOLDCouponFragment extends Fragment implements View.OnClickListener{
 
 
     Button btAvailableCoupons, btMyCoupons;
 
-    public CouponFragment() {
+    public ZOLDCouponFragment() {
         // Required empty public constructor
     }
 

@@ -7,10 +7,14 @@ public class Partner {
     String id;
     String name;
     String address;
+    String latitude;
+    String longitude;
 
-    public Partner(String id, String name, String address) {
+    public Partner(String id, String name, String address, String latitude, String longitude) {
         this.id = id;
         this.name = name;
         this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

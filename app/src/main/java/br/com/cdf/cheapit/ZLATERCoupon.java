@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by Jimy on 1/17/17.
  */
 
-public class Coupon {
+public class ZLATERCoupon {
     // Constants
     public static final int AVAILABLE = 0;	// disponivel, nenhum user associado
     public static final int ORDERED = 1;	// usuario gerou cupom mas nao utilizou

@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/bege"
-    tools:context="br.com.cdf.cheapit.FavoritesFragment">
+    tools:context="br.com.cdf.cheapit.ZLATERFavoritesFragment">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"

@@ -17,11 +17,11 @@ import java.net.URL;
  * www.androidhive.info
  */
 
-public class HttpHandler {
+public class ZLATERHttpHandler {
 
-    private static final String TAG = HttpHandler.class.getSimpleName();
+    private static final String TAG = ZLATERHttpHandler.class.getSimpleName();
 
-    public HttpHandler() {
+    public ZLATERHttpHandler() {
     }
 
     public String makeServiceCall(String reqUrl) {

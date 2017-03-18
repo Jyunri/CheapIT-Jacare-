@@ -120,10 +120,10 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_map):
-                        GuideFragment guideFragment = new GuideFragment();
+                        MapFragment mapFragment = new MapFragment();
                         android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
                         guidefragmentTransaction
-                                .replace(R.id.fragment_container, guideFragment)
+                                .replace(R.id.fragment_container, mapFragment)
                                 .commit();
                         break;
                     case (R.id.tab_logout):
@@ -168,10 +168,10 @@ public class MainActivity extends AppCompatActivity
                                 .commit();
                         break;
                     case (R.id.tab_map):
-                        GuideFragment guideFragment = new GuideFragment();
+                        MapFragment mapFragment = new MapFragment();
                         android.support.v4.app.FragmentTransaction guidefragmentTransaction = getSupportFragmentManager().beginTransaction();
                         guidefragmentTransaction
-                                .replace(R.id.fragment_container, guideFragment)
+                                .replace(R.id.fragment_container, mapFragment)
                                 .commit();
                         break;
                     case (R.id.tab_logout):

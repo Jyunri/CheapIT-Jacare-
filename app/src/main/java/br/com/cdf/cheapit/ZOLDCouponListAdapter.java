@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by Jimy on 12/1/16.
  */
 
-public class CouponListAdapter extends ArrayAdapter<String> {
+public class ZOLDCouponListAdapter extends ArrayAdapter<String> {
 
 
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
@@ -24,7 +24,7 @@ public class CouponListAdapter extends ArrayAdapter<String> {
     ArrayList<String> listaImagens;
 
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
-    public CouponListAdapter(Context context, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
+    public ZOLDCouponListAdapter(Context context, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
         super(context, R.layout.coupon_row, listaItens);
         this.listaItens = listaItens;
         this.listaDescricao = listaDescricao;
@@ -32,7 +32,7 @@ public class CouponListAdapter extends ArrayAdapter<String> {
     }
 
     //Construtor alternativo com id
-    public CouponListAdapter(Context context, ArrayList<String> listaIds,ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
+    public ZOLDCouponListAdapter(Context context, ArrayList<String> listaIds, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
         super(context, R.layout.coupon_row, listaItens);
         this.listaIds = listaIds;
         this.listaItens = listaItens;
@@ -51,9 +51,9 @@ public class CouponListAdapter extends ArrayAdapter<String> {
         //recebe os itens das listas
 
 //        Recebe ids das listas
-//        String couponOfferId = listaIds.get(position);
+//        String offer_id = listaIds.get(position);
 //        TextView tvCouponOfferId = (TextView)customView.findViewById(R.id.tvCouponOfferId);
-//        tvCouponOfferId.setText(couponOfferId);
+//        tvCouponOfferId.setText(offer_id);
 
         String item = listaItens.get(position);
         TextView tvItem = (TextView)customView.findViewById(R.id.tvName);

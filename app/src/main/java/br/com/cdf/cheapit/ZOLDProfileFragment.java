@@ -14,7 +14,7 @@ import android.widget.TextView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ZOLDProfileFragment extends Fragment {
 
     TextView tvUsername;
 
@@ -23,7 +23,7 @@ public class ProfileFragment extends Fragment {
 
 
 
-    public ProfileFragment() {
+    public ZOLDProfileFragment() {
         // Required empty public constructor
     }
 

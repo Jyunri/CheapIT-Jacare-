@@ -10,9 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,23 +26,18 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CouponInformation extends Fragment {
+public class PartnerInformation extends Fragment {
 
-    public String couponOfferId = "", couponVoucherSrc = "";
-    ImageView couponVoucher;
-    TextView expires_at, partner ,description, offer_rules;
+    public String partner_id = "";
     String json;
+    TextView tvPartnerName, tvPartnerAddress;
 
-    public CouponInformation() {
+    public PartnerInformation() {
         // Required empty public constructor
     }
 
@@ -54,27 +46,22 @@ public class CouponInformation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview = inflater.inflate(R.layout.fragment_coupon_information, container, false);
+        View rootview = inflater.inflate(R.layout.fragment_partner_information, container, false);
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            couponOfferId = bundle.getString("couponOfferId", "0");
+            partner_id = bundle.getString("partner_id", "0");
         }
 
-        couponVoucher = (ImageView)rootview.findViewById(R.id.ivCouponVoucher);
-        expires_at = (TextView)rootview.findViewById(R.id.tv_expires_at);
-        partner = (TextView)rootview.findViewById(R.id.tv_partner);
-        description = (TextView)rootview.findViewById(R.id.tv_description);
-        offer_rules = (TextView)rootview.findViewById(R.id.tv_rules);
+        tvPartnerName = (TextView)rootview.findViewById(R.id.tvPartnerName);
+        tvPartnerAddress = (TextView)rootview.findViewById(R.id.tvPartnerAddress);
 
-        // Get Offer Information
-        new GetCoupons().execute("",couponOfferId);
-
+        new GetPartnerInformation().execute(partner_id,"");
 
         return rootview;
     }
 
-    private class GetCoupons extends AsyncTask<String,String,String> {
+    private class GetPartnerInformation extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -98,7 +85,7 @@ public class CouponInformation extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL("https://cheapit.000webhostapp.com/page_json.php");
+                url = new URL(LoginController.partnerURL);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
@@ -119,8 +106,8 @@ public class CouponInformation extends Fragment {
 
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("partner", params[0])
-                        .appendQueryParameter("id", params[1]);
+                        .appendQueryParameter("partner_id", params[0])
+                        .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
                 Log.d("Query",query);
 
@@ -186,18 +173,11 @@ public class CouponInformation extends Fragment {
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
+                JSONArray coupons_array = jsonObj.getJSONArray("partners_array");
                 Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
 
-
-                String image = coupons_array.getJSONObject(0).getString("image");
-                couponVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
-                expires_at.setText("* Validade: "+coupons_array.getJSONObject(0).getString("expires_at"));
-                partner.setText("* Loja: "+coupons_array.getJSONObject(0).getString("partner"));
-                description.setText("* Descrição do cupom: "+coupons_array.getJSONObject(0).getString("description"));
-                if(!coupons_array.getJSONObject(0).getString("rules").isEmpty()){
-                    offer_rules.setText(coupons_array.getJSONObject(0).getString("rules"));
-                }
+                tvPartnerName.setText("* Loja: "+coupons_array.getJSONObject(0).getString("name"));
+                tvPartnerAddress.setText("* Endereço: "+coupons_array.getJSONObject(0).getString("address"));
 
             }catch(Exception e){
                 Log.d("erro",e.getMessage());

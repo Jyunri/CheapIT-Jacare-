@@ -159,7 +159,7 @@ public class MyCouponsFragment extends Fragment implements View.OnClickListener,
         }
 
         //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-        listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
+        listAdapter = new ZOLDCouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //pegar referencia do listview
         lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);

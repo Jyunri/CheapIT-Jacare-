@@ -14,14 +14,14 @@ import java.util.ArrayList;
  * Created by Jimy on 12/1/16.
  */
 
-public class OfferListAdapter extends ArrayAdapter<Coupon_offer> {
+public class OfferListAdapter extends ArrayAdapter<Offer> {
 
 
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
-    ArrayList<Coupon_offer> offers;
+    ArrayList<Offer> offers;
 
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
-    public OfferListAdapter(Context context, ArrayList<Coupon_offer> offers) {
+    public OfferListAdapter(Context context, ArrayList<Offer> offers) {
         super(context, R.layout.coupon_row, offers);
         this.offers = offers;
     }

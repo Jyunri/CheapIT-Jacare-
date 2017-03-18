@@ -23,13 +23,13 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FavoritesFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class ZLATERFavoritesFragment extends Fragment implements AdapterView.OnItemSelectedListener {
 
     TextView tvFavoritesTitle;
     ImageButton ibSortFavorites, ibFilterFavorites;
     Spinner spSortFavorites,spFilterFavorites;
 
-    public FavoritesFragment() {
+    public ZLATERFavoritesFragment() {
         // Required empty public constructor
     }
 
@@ -121,7 +121,7 @@ public class FavoritesFragment extends Fragment implements AdapterView.OnItemSel
         }
 
         //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-        ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
+        ListAdapter listAdapter = new ZOLDCouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //pegar referencia do listview
         final ListView lvCoupons = (ListView)rootView.findViewById(R.id.lvFavorites);

@@ -119,7 +119,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         
 
         //Recebe o arquivo json do banco
-        new GetCoupons().execute("");
+        new GetPartners().execute("","");
 
         //pegar referencia do listview
         lvPartners = (ListView)rootView.findViewById(R.id.lvPartners);
@@ -180,7 +180,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private class GetCoupons extends AsyncTask<String,String,String> {
+    private class GetPartners extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -204,12 +204,11 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL("https://cheapit.000webhostapp.com/partner_json.php");
+                url = new URL(LoginController.partnerURL);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
             try {
@@ -225,7 +224,8 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("id", params[0]);
+                        .appendQueryParameter("partner_id", params[0])
+                        .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
                 Log.d("Query",query);
 
@@ -242,7 +242,6 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
-                Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
 
@@ -267,7 +266,6 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
                     return (result.toString());
 
                 } else {
-                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
                     return ("unsuccessful");
                 }
 
@@ -303,12 +301,12 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
                 for (int j = 0; j < partners_array.length(); j++) {
                     JSONObject p = partners_array.getJSONObject(j);
-                    Partner partner = new Partner(p.getString("id"),p.getString("name"),p.getString("address"));
+                    Partner partner = new Partner(p.getString("id"),p.getString("name"),p.getString("address"),p.getString("latitude"),p.getString("longitude"));
                     partners.add(partner);
                 }
 
             }catch(Exception e){
-                Log.d("erro",e.getMessage());
+                Log.e("erro",e.getMessage());
             }
             Log.d("Result",result);
 
@@ -323,17 +321,17 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-//                    Coupon_offer offer =  (Coupon_offer)parent.getItemAtPosition(position);
-//                    Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("couponOfferId", offer.id);
-//                    CouponInformation couponInformation = new CouponInformation();
-//                    couponInformation.setArguments(bundle);
-//                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                    couponInformationfragmentTransaction
-//                            .replace(R.id.fragment_container, couponInformation)
-//                            .addToBackStack(null)
-//                            .commit();
+                    Partner partner =  (Partner) parent.getItemAtPosition(position);
+                    Toast.makeText(getContext(),partner.name,Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("partner_id", partner.id);
+                    PartnerInformation partnerInformation = new PartnerInformation();
+                    partnerInformation.setArguments(bundle);
+                    android.support.v4.app.FragmentTransaction partnerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    partnerInformationfragmentTransaction
+                            .replace(R.id.fragment_container, partnerInformation)
+                            .addToBackStack(null)
+                            .commit();
                 }
 
             });

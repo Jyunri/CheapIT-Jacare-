@@ -76,7 +76,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
         //Recebe o arquivo json do banco
-        new GetCoupons().execute("","");
+        new GetOffers().execute("","");
 
         //recebe os dados do arquivo
         InputStream i = getResources().openRawResource(R.raw.coupons);
@@ -97,7 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private class GetCoupons extends AsyncTask<String,String,String> {
+    private class GetOffers extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -136,12 +136,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL("https://cheapit.000webhostapp.com/page_json.php");
+                url = new URL(LoginController.offerURL);
 
             } catch (MalformedURLException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
-                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
             try {
@@ -157,8 +156,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("partner", params[0])
-                        .appendQueryParameter("id", params[1]);
+                        .appendQueryParameter("partner_id", params[0])
+                        .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
                 Log.d("Query",query);
 
@@ -175,7 +174,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             } catch (IOException e1) {
                 // TODO Auto-generated catch block
                 e1.printStackTrace();
-                Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
 
@@ -200,7 +198,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     return (result.toString());
 
                 } else {
-                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
                     return ("unsuccessful");
                 }
 
@@ -222,16 +219,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             json = result;
 
             //criar listas de itens
-            ArrayList<Coupon_offer> offers = new ArrayList<>();
-            final ArrayList<String> couponOffer_id = new ArrayList<>();
-            ArrayList<String> clientes = new ArrayList<>();
-            ArrayList<String> descricao = new ArrayList<>();
-            final ArrayList<String> imagens = new ArrayList<>();
+            ArrayList<Offer> offers = new ArrayList<>();
+
 
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
+                JSONArray coupons_array = jsonObj.getJSONArray("offers_array");
                 Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
 
                 for (int j = 0; j < coupons_array.length(); j++) {
@@ -247,7 +241,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
 
                     if(expires_at.before(currentDatePlusOne) || (Integer.valueOf(c.getString("availability"))<4) ){
-                        Coupon_offer offer = new Coupon_offer(c.getString("id"),c.getString("partner"),c.getString("description"),c.getString("image"));
+                        Offer offer = new Offer(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("image"));
                         offers.add(offer);
                     }
 
@@ -271,15 +265,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
-                Coupon_offer offer =  (Coupon_offer)parent.getItemAtPosition(position);
+                Offer offer =  (Offer)parent.getItemAtPosition(position);
                 Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
-                bundle.putString("couponOfferId", offer.id);
-                CouponInformation couponInformation = new CouponInformation();
-                couponInformation.setArguments(bundle);
+                bundle.putString("offer_id", offer.id);
+                OfferInformation offerInformation = new OfferInformation();
+                offerInformation.setArguments(bundle);
                 android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 couponInformationfragmentTransaction
-                        .replace(R.id.fragment_container, couponInformation)
+                        .replace(R.id.fragment_container, offerInformation)
                         .addToBackStack(null)
                         .commit();
             }

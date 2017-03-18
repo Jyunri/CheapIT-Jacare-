@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/bege"
-    tools:context="br.com.cdf.cheapit.GuideFragment">
+    tools:context="br.com.cdf.cheapit.MapFragment">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -30,10 +30,10 @@
         </Spinner>
 
         <TextView
-            android:id="@+id/tvPlaces"
+            android:id="@+id/tvMap"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:text="LOCAIS"
+            android:text="MAPA"
             android:background="@color/grey"
             android:textColor="@color/white"
             android:gravity="center"
@@ -61,86 +61,86 @@
     </android.support.v7.widget.Toolbar>
 
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
-        <HorizontalScrollView
-            android:id="@+id/horizontalView"
-            android:layout_height="match_parent"
-            android:scrollbars="horizontal|vertical"
-            android:layout_width="match_parent"
-            >
+        <!--<HorizontalScrollView-->
+            <!--android:id="@+id/horizontalView"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scrollbars="horizontal|vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--&gt;-->
 
-            <RadioGroup
-                android:id="@+id/radioGroup3"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:gravity="center"
-                android:orientation="horizontal" >
-
-
-                <RadioButton
-                    android:id="@+id/radioMap"
-                    android:layout_width="50dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:drawableRight="@drawable/ic_location_on_white_24dp"
-                    android:paddingRight="10dp"
-                    android:tint="@color/bege"
-                    android:checked="true"
-                    />
+            <!--<RadioGroup-->
+                <!--android:id="@+id/radioGroup3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="40dp"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="horizontal" >-->
 
 
-                <RadioButton
-                    android:id="@+id/radioRestaurants"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="RESTAURANTES"
-                    android:textStyle="bold"
-                    android:textSize="15dp"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-
-                <RadioButton
-                    android:id="@+id/radioStores"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="LOJAS"
-                    android:textStyle="bold"
-                    android:textSize="15dp"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
-
-                <RadioButton
-                    android:id="@+id/radioServices"
-                    android:layout_width="200dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rbtn_selector"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="SERVIÇOS"
-                    android:textStyle="bold"
-                    android:textSize="15dp"
-                    android:textColor="@drawable/rbtn_textcolor_selector" />
+                <!--<RadioButton-->
+                    <!--android:id="@+id/radioMap"-->
+                    <!--android:layout_width="50dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/rbtn_selector"-->
+                    <!--android:button="@null"-->
+                    <!--android:drawableRight="@drawable/ic_location_on_white_24dp"-->
+                    <!--android:paddingRight="10dp"-->
+                    <!--android:tint="@color/bege"-->
+                    <!--android:checked="true"-->
+                    <!--/>-->
 
 
+                <!--<RadioButton-->
+                    <!--android:id="@+id/radioRestaurants"-->
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/rbtn_selector"-->
+                    <!--android:button="@null"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="RESTAURANTES"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textColor="@drawable/rbtn_textcolor_selector" />-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/radioStores"-->
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/rbtn_selector"-->
+                    <!--android:button="@null"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="LOJAS"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textColor="@drawable/rbtn_textcolor_selector" />-->
+
+                <!--<RadioButton-->
+                    <!--android:id="@+id/radioServices"-->
+                    <!--android:layout_width="200dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:background="@drawable/rbtn_selector"-->
+                    <!--android:button="@null"-->
+                    <!--android:gravity="center"-->
+                    <!--android:padding="5dp"-->
+                    <!--android:text="SERVIÇOS"-->
+                    <!--android:textStyle="bold"-->
+                    <!--android:textSize="15dp"-->
+                    <!--android:textColor="@drawable/rbtn_textcolor_selector" />-->
 
 
 
-            </RadioGroup>
 
-        </HorizontalScrollView>
 
-    </ScrollView>
+            <!--</RadioGroup>-->
+
+        <!--</HorizontalScrollView>-->
+
+    <!--</ScrollView>-->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -157,19 +157,19 @@
                 />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lvPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="60dp"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="5.0sp"
-            >
+        <!--<ListView-->
+            <!--android:id="@+id/lvPlaces"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:paddingTop="10dp"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginBottom="60dp"-->
+            <!--android:divider="@android:color/transparent"-->
+            <!--android:dividerHeight="5.0sp"-->
+            <!--&gt;-->
 
-        </ListView>
+        <!--</ListView>-->
 
     </FrameLayout>
 </LinearLayout>

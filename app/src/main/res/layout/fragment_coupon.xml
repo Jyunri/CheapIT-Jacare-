@@ -5,7 +5,7 @@
     android:layout_marginBottom="60dp"
     android:orientation="vertical"
     android:background="@drawable/default_background"
-    tools:context="br.com.cdf.cheapit.CouponFragment">
+    tools:context="br.com.cdf.cheapit.ZOLDCouponFragment">
 
     <Button
         android:id="@+id/btAvailableCoupons"
