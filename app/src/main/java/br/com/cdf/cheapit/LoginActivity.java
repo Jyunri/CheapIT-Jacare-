@@ -119,6 +119,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             main.putExtra("first_name", profile.getFirstName());
             main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
             main.putExtra("username",profile.getName());
+            main.putExtra("facebook_id",profile.getId());
             Toast.makeText(getApplicationContext(), "Carregando..", Toast.LENGTH_SHORT).show();
             startActivity(main);
         }

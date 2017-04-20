@@ -3,8 +3,10 @@ package br.com.cdf.cheapit;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,22 +24,44 @@ import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    String loginType = "", first_name = "", avatar = "", username = "";
+    String loginType = "", first_name = "", avatar = "", username = "", facebook_id = "", json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Get data from Login Activity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             first_name = extras.getString("first_name");
             avatar = extras.getString("avatar");
             username = extras.getString("username");
+            facebook_id = extras.getString("facebook_id");
+
         }
+
+        //Check if its first access
+        new GetProfile().execute(facebook_id);
+
 
         // Set Global Current variables
         LoginController.setCurrentAvatar(avatar);
@@ -182,7 +206,130 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    // return to login screen
+    //Get profile data from facebook_id
+    private class GetProfile extends AsyncTask<String,String,String> {
+        public static final int CONNECTION_TIMEOUT=10000;
+        public static final int READ_TIMEOUT=15000;
+
+        HttpURLConnection conn;
+        URL url = null;
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // Enter URL address where your php file resides
+                url = new URL(LoginController.userURL);
+
+            } catch (MalformedURLException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                return "exception";
+            }
+            try {
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // TODO Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("facebook_id", params[0]);
+                String query = builder.build().getEncodedQuery();
+                Log.d("User Query",query);
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+
+            } catch (IOException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+                return "exception";
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "exception";
+            } finally {
+                conn.disconnect();
+            }
+
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.d("Looking for facebook_id",facebook_id);
+            json = result;
+
+
+            try {
+                JSONObject jsonObj = new JSONObject(json);
+
+                //Getting JSON Array node
+                JSONArray user_array = jsonObj.getJSONArray("users_array");
+                Log.d("Tamanho do array", String.valueOf(user_array.length()));
+
+                //No user was found, then flag new User
+                if (user_array.length() == 0) {
+                    Log.d("User", "New User");
+                }
+
+                //Expected to iterate one time (one user)
+                for (int j = 0; j < user_array.length(); j++) {
+                    Log.d("User", "User found");
+                    JSONObject c = user_array.getJSONObject(j);
+                    //TODO trocar os atributos no banco de dados
+                    LoginController.setCurrentUsername(c.getString("nome"));
+                }
+
+            } catch (Exception e) {
+                Log.d("erro", e.getMessage());
+            }
+            Log.d("Result", result);
+
+        }
+    }
+
+
+
+
+        // return to login screen
     private void goLoginScreen() {
         Toast.makeText(this,"Indo para tela de login",Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this,LoginActivity.class));

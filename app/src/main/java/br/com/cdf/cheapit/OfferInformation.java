@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -36,7 +38,7 @@ import java.net.URL;
 public class OfferInformation extends Fragment {
 
     public String offer_id = "", couponVoucherSrc = "";
-    ImageView couponVoucher;
+    ImageView offerVoucher;
     TextView expires_at, partner ,description, offer_rules;
     String json;
     Button btGetCoupon;
@@ -57,7 +59,7 @@ public class OfferInformation extends Fragment {
             offer_id = bundle.getString("offer_id", "0");
         }
 
-        couponVoucher = (ImageView)rootview.findViewById(R.id.ivCouponVoucher);
+        offerVoucher = (ImageView)rootview.findViewById(R.id.ivCouponVoucher);
         expires_at = (TextView)rootview.findViewById(R.id.tv_expires_at);
         partner = (TextView)rootview.findViewById(R.id.tv_partner);
         description = (TextView)rootview.findViewById(R.id.tv_description);
@@ -188,17 +190,18 @@ public class OfferInformation extends Fragment {
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
-                Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
+                JSONArray offers_array = jsonObj.getJSONArray("offers_array");
+                Log.d("Tamanho do array",String.valueOf(offers_array.length()));
 
 
-                String image = coupons_array.getJSONObject(0).getString("image");
-                couponVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
-                expires_at.setText("* Validade: "+coupons_array.getJSONObject(0).getString("expires_at"));
-                partner.setText("* Loja: "+coupons_array.getJSONObject(0).getString("partner_name"));
-                description.setText("* Descrição do cupom: "+coupons_array.getJSONObject(0).getString("description"));
-                if(!coupons_array.getJSONObject(0).getString("rules").isEmpty()){
-                    offer_rules.setText(coupons_array.getJSONObject(0).getString("rules"));
+                String image = offers_array.getJSONObject(0).getString("image");
+                Glide.with(getContext()).load(image).into(offerVoucher);
+                //offerVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
+                expires_at.setText("* Validade: "+offers_array.getJSONObject(0).getString("expires_at"));
+                partner.setText("* Loja: "+offers_array.getJSONObject(0).getString("partner_name"));
+                description.setText("* Descrição do cupom: "+offers_array.getJSONObject(0).getString("description"));
+                if(!offers_array.getJSONObject(0).getString("rules").isEmpty()){
+                    offer_rules.setText(offers_array.getJSONObject(0).getString("rules"));
                 }
 
             }catch(Exception e){
@@ -332,7 +335,7 @@ public class OfferInformation extends Fragment {
 //
 //
 //                String image = coupons_array.getJSONObject(0).getString("image");
-//                couponVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
+//                offerVoucher.setImageResource(getContext().getResources().getIdentifier("drawable/"+image,null,getContext().getPackageName()));
 //                expires_at.setText("* Validade: "+coupons_array.getJSONObject(0).getString("expires_at"));
 //                partner.setText("* Loja: "+coupons_array.getJSONObject(0).getString("partner"));
 //                description.setText("* Descrição do cupom: "+coupons_array.getJSONObject(0).getString("description"));

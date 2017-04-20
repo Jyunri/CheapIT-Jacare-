@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
 public class AndroidImageAdapter extends PagerAdapter {
     Context mContext;
     private  int[] sliderImagesId;
@@ -38,7 +40,8 @@ public class AndroidImageAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, int i) {
         ImageView mImageView = new ImageView(mContext);
         mImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        mImageView.setImageResource(sliderImagesId[i]);
+        Glide.with(mContext).load(sliderImagesId[i]).override(500,250).into(mImageView);
+        //mImageView.setImageResource(sliderImagesId[i]);
         ((ViewPager) container).addView(mImageView, 0);
         return mImageView;
     }
