@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        tools:context="br.com.cdf.cheapit.MyCouponsFragment">
+        tools:context="br.com.cdf.cheapit.ProfileFragment">
 
         <android.support.v7.widget.Toolbar
             android:layout_width="match_parent"

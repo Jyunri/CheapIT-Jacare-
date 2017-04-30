@@ -40,7 +40,6 @@ public class ZOLDCouponFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            //// TODO: 12/28/16 adicionar os cupons disponiveis
             case R.id.btAvailableCoupons:
                 OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                 android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -50,10 +49,10 @@ public class ZOLDCouponFragment extends Fragment implements View.OnClickListener
                         .commit();
                 break;
             case R.id.btMyCoupons:
-                MyCouponsFragment myCouponsFragment = new MyCouponsFragment();
+                ProfileFragment profileFragment = new ProfileFragment();
                 android.support.v4.app.FragmentTransaction mycouponfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 mycouponfragmentTransaction
-                        .replace(R.id.fragment_container, myCouponsFragment)
+                        .replace(R.id.fragment_container, profileFragment)
                         .addToBackStack(null)
                         .commit();
                 break;

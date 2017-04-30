@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     BottomBar bottomBar;
-    String loginType = "", first_name = "", avatar = "", username = "", facebook_id = "", json;
+    String first_name = "", avatar = "", username = "", facebook_id = "", json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,16 +56,15 @@ public class MainActivity extends AppCompatActivity
             avatar = extras.getString("avatar");
             username = extras.getString("username");
             facebook_id = extras.getString("facebook_id");
-
         }
 
-        //Check if its first access
+        // Get profile in database by facebook_id
         new GetProfile().execute(facebook_id);
 
 
         // Set Global Current variables
-        LoginController.setCurrentAvatar(avatar);
-        LoginController.setCurrentUsername(username);
+        LoginController.CurrentAvatar = avatar;
+        LoginController.CurrentUsername = username;
 
         // Welcome toast
         Toast.makeText(this,"Olá, " + first_name + "!",Toast.LENGTH_LONG).show();
@@ -79,11 +78,14 @@ public class MainActivity extends AppCompatActivity
 //                .replace(R.id.fragment_container, fragment)
 //                .commit();
 
-        // Handle Drawable Menu
+        // Handle Drawable Menu TODO: ENABLE DRAWER IN NEXT VERSIONS
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
+
+        //DISABLE DRAWER IN FIRST VERSION
+        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         toggle.setDrawerIndicatorEnabled(false); //disable "hamburger to arrow" drawable
 
@@ -121,7 +123,7 @@ public class MainActivity extends AppCompatActivity
                                 .replace(R.id.fragment_container, fragment)
                                 .commit();
                         break;
-                    case (R.id.tab_coupons):
+                    case (R.id.tab_offers):
                         OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                         android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
                         couponpoolfragmentTransaction
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity
                                 .replace(R.id.fragment_container, fragment)
                                 .commit();
                         break;
-                    case (R.id.tab_coupons):
+                    case (R.id.tab_offers):
                         OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
                         android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
                         couponpoolfragmentTransaction
@@ -206,7 +208,7 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    //Get profile data from facebook_id
+    // Get profile data from facebook_id
     private class GetProfile extends AsyncTask<String,String,String> {
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -221,7 +223,6 @@ public class MainActivity extends AppCompatActivity
                 url = new URL(LoginController.userURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 return "exception";
             }
@@ -236,11 +237,11 @@ public class MainActivity extends AppCompatActivity
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
 
-                // TODO Append parameters to URL
+                // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("facebook_id", params[0]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("User Query",query);
+                Log.i("User Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -253,7 +254,6 @@ public class MainActivity extends AppCompatActivity
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 return "exception";
             }
@@ -294,7 +294,16 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("Looking for facebook_id",facebook_id);
+            Log.i("Looking for facebook_id",facebook_id);
+
+            //TODO SHOW TUTORIAL IF NEW USER
+            //No user was found, then flag new User
+            if (result.contains("failure")) {
+                Log.w("User", "New User");
+                LoginController.setCurrentUsername("New User");
+                LoginController.CurrentUserId = 0; // TODO: 4/30/17 CREATE (INSERT) NEW USER_ID IN MYSQL
+            }
+
             json = result;
 
 
@@ -303,25 +312,23 @@ public class MainActivity extends AppCompatActivity
 
                 //Getting JSON Array node
                 JSONArray user_array = jsonObj.getJSONArray("users_array");
-                Log.d("Tamanho do array", String.valueOf(user_array.length()));
+                Log.i("Tamanho do array", String.valueOf(user_array.length()));
 
-                //No user was found, then flag new User
-                if (user_array.length() == 0) {
-                    Log.d("User", "New User");
-                }
 
                 //Expected to iterate one time (one user)
                 for (int j = 0; j < user_array.length(); j++) {
-                    Log.d("User", "User found");
+                    Log.i("User", "User found");
                     JSONObject c = user_array.getJSONObject(j);
-                    //TODO trocar os atributos no banco de dados
-                    LoginController.setCurrentUsername(c.getString("nome"));
+                    //TODO GET VALUES FROM DATABASE
+                    LoginController.setCurrentUsername(c.getString("name"));
+                    LoginController.CurrentUserId = c.getInt("id");
                 }
 
             } catch (Exception e) {
-                Log.d("erro", e.getMessage());
+                Log.e("erro", e.getMessage());
             }
-            Log.d("Result", result);
+            Log.i("Result", result);
+            Log.i("User_id",String.valueOf(LoginController.CurrentUserId));
 
         }
     }
@@ -374,13 +381,13 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_profile) {
-            MyCouponsFragment profileFragment = new MyCouponsFragment();
+            ProfileFragment profileFragment = new ProfileFragment();
             android.support.v4.app.FragmentTransaction profileFragmentTransaction = getSupportFragmentManager().beginTransaction();
             profileFragmentTransaction
                     .replace(R.id.fragment_container, profileFragment)
                     .commit();
 
-        } else if (id == R.id.nav_coupons) {
+        } else if (id == R.id.nav_offers) {
             bottomBar.getTabAtPosition(1).performClick();
             OfferPoolFragment offerPoolFragment = new OfferPoolFragment();
             android.support.v4.app.FragmentTransaction couponpoolfragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -432,7 +439,7 @@ public class MainActivity extends AppCompatActivity
                 drawer.openDrawer(GravityCompat.START);
                 break;
             case R.id.ibProfile:
-                MyCouponsFragment profileFragment = new MyCouponsFragment();
+                ProfileFragment profileFragment = new ProfileFragment();
                 android.support.v4.app.FragmentTransaction profileFragmentTransaction = getSupportFragmentManager().beginTransaction();
                 profileFragmentTransaction
                         .replace(R.id.fragment_container, profileFragment)

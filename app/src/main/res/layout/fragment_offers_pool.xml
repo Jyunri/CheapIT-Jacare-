@@ -67,7 +67,7 @@
 
 
     <ListView
-        android:id="@+id/lvCoupons"
+        android:id="@+id/lvOffers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="10dp"

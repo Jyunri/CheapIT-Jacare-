@@ -111,8 +111,8 @@ public class ZLATERFavoritesFragment extends Fragment implements AdapterView.OnI
 
         //recebe os dados do arquivo
         InputStream i = getResources().openRawResource(R.raw.coupons);
-        CSVParser csvParser = new CSVParser(i);
-        ArrayList<String[]> pizzas = csvParser.read();
+        ZOLDCSVParser ZOLDCSVParser = new ZOLDCSVParser(i);
+        ArrayList<String[]> pizzas = ZOLDCSVParser.read();
 
         for(String[] pizza:pizzas) {
             clientes.add(pizza[1].replace("\"", ""));

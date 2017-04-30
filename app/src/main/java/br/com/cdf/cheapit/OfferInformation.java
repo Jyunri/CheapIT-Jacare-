@@ -59,7 +59,7 @@ public class OfferInformation extends Fragment {
             offer_id = bundle.getString("offer_id", "0");
         }
 
-        offerVoucher = (ImageView)rootview.findViewById(R.id.ivCouponVoucher);
+        offerVoucher = (ImageView)rootview.findViewById(R.id.ivOfferVoucher);
         expires_at = (TextView)rootview.findViewById(R.id.tv_expires_at);
         partner = (TextView)rootview.findViewById(R.id.tv_partner);
         description = (TextView)rootview.findViewById(R.id.tv_description);
@@ -72,7 +72,8 @@ public class OfferInformation extends Fragment {
         btGetCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetCoupon().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,LoginController.CurrentUserId,offer_id);
+                Log.i("Coupon for user",String.valueOf(LoginController.CurrentUserId));
+                new GetCoupon().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,String.valueOf(LoginController.CurrentUserId),offer_id);
             }
         });
 
@@ -106,7 +107,6 @@ public class OfferInformation extends Fragment {
                 url = new URL(LoginController.offerURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
@@ -127,7 +127,7 @@ public class OfferInformation extends Fragment {
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("Query",query);
+                Log.i("Offer Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -140,7 +140,6 @@ public class OfferInformation extends Fragment {
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 return "exception";
             }
@@ -191,7 +190,7 @@ public class OfferInformation extends Fragment {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
                 JSONArray offers_array = jsonObj.getJSONArray("offers_array");
-                Log.d("Tamanho do array",String.valueOf(offers_array.length()));
+                Log.i("Tamanho offer_array",String.valueOf(offers_array.length()));
 
 
                 String image = offers_array.getJSONObject(0).getString("image");
@@ -205,9 +204,9 @@ public class OfferInformation extends Fragment {
                 }
 
             }catch(Exception e){
-                Log.d("erro",e.getMessage());
+                Log.e("erro",e.getMessage());
             }
-            Log.d("Result",result);
+            Log.i("Offer Result",result);
 
         }
     }
@@ -236,10 +235,9 @@ public class OfferInformation extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL("https://cheapit.000webhostapp.com/page_json_new_coupon_beta.php");
+                url = new URL(LoginController.new_couponURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
@@ -260,7 +258,7 @@ public class OfferInformation extends Fragment {
                         .appendQueryParameter("user_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("Query",query);
+                Log.i("Offer Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -273,7 +271,6 @@ public class OfferInformation extends Fragment {
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
@@ -319,11 +316,17 @@ public class OfferInformation extends Fragment {
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
 
-            if(result.contains("Error")){
-                Toast.makeText(getContext(),"Deu ruim. dev: Tem que tratar qual erro foi!",Toast.LENGTH_SHORT).show();
+            if(result.contains("success")){
+                Toast.makeText(getContext(),"Cupom criado com sucesso! Verifique no seu PERFIL!",Toast.LENGTH_SHORT).show();
+            }
+            else if(result.contains("Duplicate entry")){
+                Toast.makeText(getContext(),"Você já gerou esse cupom!",Toast.LENGTH_SHORT).show();
+            }
+            else if(result.contains("Esgotada")){
+                Toast.makeText(getContext(),"Oferta Esgotada!",Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(getContext(),"Cupom criado com sucesso!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Desculpe! Cupom nao pôde ser criado..",Toast.LENGTH_SHORT).show();
             }
 //            json = result;
 //
@@ -349,7 +352,7 @@ public class OfferInformation extends Fragment {
 
 
 
-            Log.d("Result",result);
+            Log.i("Result",result);
 
         }
     }

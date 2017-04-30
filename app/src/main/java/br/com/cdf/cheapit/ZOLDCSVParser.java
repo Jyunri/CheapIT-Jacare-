@@ -9,11 +9,11 @@ import java.util.ArrayList;
  * Created by Jimy on 12/1/16.
  */
 
-public class CSVParser {
+public class ZOLDCSVParser {
     InputStream inputStream;
     BufferedReader reader;
 
-    public CSVParser(InputStream inputStream) {
+    public ZOLDCSVParser(InputStream inputStream) {
         this.inputStream = inputStream;
         reader = new BufferedReader(new InputStreamReader(inputStream));
     }

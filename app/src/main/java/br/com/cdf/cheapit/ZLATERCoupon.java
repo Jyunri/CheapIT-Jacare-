@@ -18,17 +18,16 @@ public class ZLATERCoupon {
 //    Coupon_offer coupon_offer; // oferta associada ao cupom
 //    String coupon_code;	// codigo de cupom gerado para cada usuario
 //    int coupon_status;
-//    Date coupon_generated_at;   // TODO: 1/17/17  tem uma biblioteca Date.sql, se precisar alterar depois
+//    Date coupon_generated_at;
 //    User user;
 //
 //    public Coupon(Coupon_offer coupon_offer){
 //        this.coupon_id = getCoupon_id();	// recebe um id ao criar o cupom
 //        this.coupon_status = AVAILABLE;		// inicia o cupom como disponivel
 //        this.coupon_offer = coupon_offer;	// associa uma oferta ao cupom
-//        //COUPON_DATABASE.add(this);    // TODO: 1/17/17 inserir cupom criado ao banco de dados
+//        //COUPON_DATABASE.add(this);
 //    }
 //
-//    // TODO gerar id para o cupom
 //    public String getCoupon_id()
 //    {
 //        return "1";

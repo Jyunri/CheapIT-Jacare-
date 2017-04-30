@@ -27,7 +27,7 @@
                 android:layout_alignParentTop="true"
                 android:padding="2dp"
                 android:scaleType="fitXY"
-                android:id="@+id/ivCouponVoucher"
+                android:id="@+id/ivOfferVoucher"
                 android:background="@drawable/rectangle_red"
                 />
 

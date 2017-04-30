@@ -7,7 +7,7 @@
         icon="@drawable/ic_home_black_24dp"
         title="Início" />
     <tab
-        id="@+id/tab_coupons"
+        id="@+id/tab_offers"
         barColorWhenSelected="@color/dark_red"
         activeColor = "@color/white"
         icon="@drawable/ic_coupon_24"

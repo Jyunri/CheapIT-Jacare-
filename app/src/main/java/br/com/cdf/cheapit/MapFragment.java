@@ -70,7 +70,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     LatLng latLng;
     Marker currLocationMarker;
 
-//    ListView lvCoupons;
+//    ListView lvOffers;
 //    RadioGroup radioGroup3;
 
     TextView tvMap;
@@ -171,12 +171,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //                {
 //                    case R.id.radioRestaurants:
 //                        Toast.makeText(getContext(), "Exibindo Estabelecimentos", Toast.LENGTH_SHORT).show();
-//                        lvCoupons.setVisibility(View.VISIBLE);
+//                        lvOffers.setVisibility(View.VISIBLE);
 //                        mapView.setVisibility(View.GONE);
 //                        break;
 //                    case R.id.radioMap:
 //                        Toast.makeText(getContext(), "Exibindo Mapa", Toast.LENGTH_SHORT).show();
-//                        lvCoupons.setVisibility(GONE);
+//                        lvOffers.setVisibility(GONE);
 //                        mapView.setVisibility(View.VISIBLE);
 //                        break;
 //                    default:
@@ -205,18 +205,18 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 //        ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
 //
 //        //pegar referencia do listview
-//        lvCoupons = (ListView)rootView.findViewById(R.id.lvPlaces);
+//        lvOffers = (ListView)rootView.findViewById(R.id.lvPlaces);
 //
 //        //setar o adapter da listview para o nosso adapter
-//        lvCoupons.setAdapter(listAdapter);
+//        lvOffers.setAdapter(listAdapter);
 //
 //        //iniciar o listview como invisivel
-//        lvCoupons.setVisibility(GONE);
+//        lvOffers.setVisibility(GONE);
 //
 //        tvMap.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                lvCoupons.setSelection(0);
+//                lvOffers.setSelection(0);
 //            }
 //        });
 
@@ -251,7 +251,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 url = new URL(LoginController.partnerURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
                 Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
@@ -272,7 +271,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("Query",query);
+                Log.i("Map Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -285,7 +284,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
@@ -337,7 +335,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
                 JSONArray partners_array = jsonObj.getJSONArray("partners_array");
-                Log.d("Tamanho do array",String.valueOf(partners_array.length()));
+                Log.i("Tamanho partner_array",String.valueOf(partners_array.length()));
 
                 for (int j = 0; j < partners_array.length(); j++) {
                     JSONObject p = partners_array.getJSONObject(j);
@@ -352,9 +350,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 }
 
             }catch(Exception e){
-                Log.d("erro",e.getMessage());
+                Log.e("erro",e.getMessage());
             }
-            Log.d("Result",result);
+            Log.i("Result",result);
 
         }
     }
@@ -387,7 +385,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         //connect to GoogleAPIClient
         mGoogleApiClient.connect();
 
-        //add markers
+        //add markers, get partners from database
         new GetPartners().execute("","");
 
     }

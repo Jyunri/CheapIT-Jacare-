@@ -3,6 +3,7 @@ package br.com.cdf.cheapit;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,7 +21,9 @@ import com.facebook.login.widget.LoginButton;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    //TODO test guestLogin
     Button guestLogin;
+
     private LoginButton fbLogin;
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
@@ -120,6 +123,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
             main.putExtra("username",profile.getName());
             main.putExtra("facebook_id",profile.getId());
+            Log.i("Facebook_id",profile.getId());
             Toast.makeText(getApplicationContext(), "Carregando..", Toast.LENGTH_SHORT).show();
             startActivity(main);
         }

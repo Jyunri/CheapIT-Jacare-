@@ -1,0 +1,62 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    android:orientation="vertical"
+    android:background="@drawable/default_background"
+    android:padding="20dp"
+    tools:context="br.com.cdf.cheapit.PartnerInformation">
+
+
+    <ImageView
+        android:id="@+id/ivPartnerLogo"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="40dp"
+        android:src="@drawable/cheapit_logo3"
+        />
+
+    <TextView
+        android:id="@+id/tvPartnerName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/bege"
+        android:textStyle="bold"
+        android:text="Partner name" />
+
+    <TextView
+        android:id="@+id/tvPartnerAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:textColor="@color/bege"
+        android:textStyle="bold"
+        android:text="Partner address" />
+
+    <TextView
+        android:id="@+id/tvPartnerDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+
+        android:textColor="@color/bege"
+        android:textStyle="bold"
+        android:text="Partner Description" />
+
+    <TextView
+        android:id="@+id/tvPartnerFacebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/bege"
+        android:textStyle="bold"
+        android:text="Partner Facebook"/>
+
+</LinearLayout>
+</FrameLayout>

@@ -16,16 +16,16 @@ import java.util.ArrayList;
  * Created by Jimy on 12/1/16.
  */
 
-public class OfferListAdapter extends ArrayAdapter<Offer> {
+public class CouponListAdapter extends ArrayAdapter<Coupon> {
 
 
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
-    ArrayList<Offer> offers;
+    ArrayList<Coupon> coupons;
 
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
-    public OfferListAdapter(Context context, ArrayList<Offer> offers) {
-        super(context, R.layout.offer_row, offers);
-        this.offers = offers;
+    public CouponListAdapter(Context context, ArrayList<Coupon> coupons) {
+        super(context, R.layout.coupon_row, coupons);
+        this.coupons = coupons;
     }
 
     //Retorna o objeto que compoe um row
@@ -34,19 +34,19 @@ public class OfferListAdapter extends ArrayAdapter<Offer> {
 
         //seta qual row sera utilizado para mostrar os dados
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View customView = inflater.inflate(R.layout.offer_row, parent, false);
+        View customView = inflater.inflate(R.layout.coupon_row, parent, false);
 
         //insere a oferta baseado na posicao da lista
-        String item = offers.get(position).partner;
+        String item = coupons.get(position).partner;
         TextView tvItem = (TextView)customView.findViewById(R.id.tvName);
         tvItem.setText(item);
 
-        String descricao = offers.get(position).description;
+        String descricao = coupons.get(position).description;
         TextView tvDescricao = (TextView)customView.findViewById(R.id.tvDescription);
         tvDescricao.setText(descricao);
 
-        String imagem = offers.get(position).image;
-        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivOfferVoucher);
+        String imagem = coupons.get(position).image;
+        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivCouponVoucher);
 
         //ivImagem.setImageResource(getContext().getResources().getIdentifier("drawable/"+imagem,null,getContext().getPackageName()));
         Glide.with(getContext()).load(imagem).into(ivImagem);

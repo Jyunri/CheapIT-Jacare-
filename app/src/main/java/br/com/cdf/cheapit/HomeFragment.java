@@ -59,31 +59,33 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
         View header = inflater.inflate(R.layout.fragment_home_header,null);
 
+        // SLIDESHOW
         int[] images = new int[]{
                 R.drawable.slide1, R.drawable.slide2
         };
 
+        // Images from SLIDESHOW
         ViewPager mViewPager = (ViewPager) header.findViewById(R.id.viewPageAndroid); // detalhe importante: troquei o rootview pelo header.find(...)
         AndroidImageAdapter adapterView = new AndroidImageAdapter(getContext(), images);
         mViewPager.setAdapter(adapterView);
 
+        // Dots from SLIDESHOW
         TabLayout tabLayout = (TabLayout) header.findViewById(R.id.tabDots);
         tabLayout.setupWithViewPager(mViewPager);
 
+        // Customizing #CORREQUEDATEMPO text
         TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
         Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
         tvCQDT.setTypeface(type);
 
 
-        //Recebe o arquivo json do banco
+        // Get offers from database (#CORREQUEDATEMPO/expiring only)
         new GetOffers().execute("","");
 
-        //recebe os dados do arquivo
-        InputStream i = getResources().openRawResource(R.raw.coupons);
-
-        //pegar referencia do listview
+        //Get listview reference
         lvExpiring = (ListView)rootView.findViewById(R.id.lvHome);
 
+        //Adding header to listview
         lvExpiring.addHeaderView(header);
 
 
@@ -97,6 +99,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    //MAJOR TODO: TRY TO SIMPLIFY ALL HTTP REQUESTS
     private class GetOffers extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
@@ -117,20 +120,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         }
 
-//      Metodo simplificado, mas ainda em teste. O problema eh a parte que envia parametro (AppendQueryParameter)
-//
-//        @Override
-//        protected String doInBackground(String... params) {
-//            HttpHandler sh = new HttpHandler();
-//
-//            // Making a request to url and getting response
-//            String url = "https://cheapit.000webhostapp.com/page_json.php";
-//            String result = sh.makeServiceCall(url);
-//
-//            // Pass data to onPostExecute method
-//            return result;
-//        }
-
 
         @Override
         protected String doInBackground(String... params) {
@@ -139,9 +128,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 url = new URL(LoginController.offerURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "exception";
+                return "Bad URL";
             }
             try {
                 // Setup HttpURLConnection class to send and receive data from php and mysql
@@ -154,12 +142,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
 
-                // Append parameters to URL
+                // Append parameters to URL (Wont be used)
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("Query",query);
+                Log.i("Home_Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -172,7 +160,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 return "exception";
             }
@@ -218,20 +205,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
             json = result;
 
-            //criar listas de itens
+            // Create offer list
             ArrayList<Offer> offers = new ArrayList<>();
 
 
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("offers_array");
-                Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
+                JSONArray offers_array = jsonObj.getJSONArray("offers_array");
+                Log.i("Tamanho do offer_array",String.valueOf(offers_array.length()));
 
-                for (int j = 0; j < coupons_array.length(); j++) {
-                    JSONObject c = coupons_array.getJSONObject(j);
+                for (int j = 0; j < offers_array.length(); j++) {
+                    JSONObject c = offers_array.getJSONObject(j);
 
-                    //filter: only coupons with expirity before one month
+                    //filter: only offers with expirity before one month TODO: TRY TO SET THIS ON SQL
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date expires_at = dateFormatter.parse(c.getString("expires_at"));   //get date string from db and convert to Date
                     Calendar cal = Calendar.getInstance();
@@ -248,19 +235,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 }
 
             }catch(Exception e){
-                Log.d("erro",e.getMessage());
+                Log.e("erro",e.getMessage());
             }
-            Log.d("Result",result);
+            Log.i("Home_Result",result);
 
-            //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-            //ListAdapter listAdapter = new CouponListAdapter(getContext(), couponOffer_id, clientes,descricao, imagens);
             ListAdapter listAdapter = new OfferListAdapter(getContext(),offers);
 
-            //setar o adapter da listview para o nosso adapter
+            //set our custom listAdapter to listview
             lvExpiring.setAdapter(listAdapter);
 
 
-        //eventos ao clicar nos itens da lista
+        // Check offer information by clicking on list elements
         lvExpiring.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
@@ -271,8 +256,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 bundle.putString("offer_id", offer.id);
                 OfferInformation offerInformation = new OfferInformation();
                 offerInformation.setArguments(bundle);
-                android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                couponInformationfragmentTransaction
+                android.support.v4.app.FragmentTransaction offerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                offerInformationfragmentTransaction
                         .replace(R.id.fragment_container, offerInformation)
                         .addToBackStack(null)
                         .commit();

@@ -10,18 +10,19 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvCouponOfferId"
-            android:visibility="gone"/>
+        <!--TODO CHECK IF LEGACY-->
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/tvOfferId"-->
+            <!--android:visibility="gone"/>-->
 
         <ImageView
             android:layout_width="160dp"
             android:layout_height="100dp"
             android:padding="6dp"
             android:scaleType="fitXY"
-            android:id="@+id/ivCouponVoucher"
+            android:id="@+id/ivOfferVoucher"
             android:src="@drawable/coupon_example"
             />
 
@@ -45,7 +46,7 @@
             android:textStyle="bold"
             />
         <TextView
-            android:id="@+id/tvDescricao"
+            android:id="@+id/tvDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Desconto de 20% no X-bacon"

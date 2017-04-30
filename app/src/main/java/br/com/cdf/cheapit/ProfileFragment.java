@@ -13,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,16 +41,17 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PartnerPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class ProfileFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener{
 
-    TextView tvTitle;
-    ListView lvPartners;
-    String json;
+    private RadioGroup radioGroup1;
+    TextView tvUsername,tvMyCouponsTitle, tvCheapitPoints;
 
-    ImageButton ibSort, ibFilter;
-    Spinner spSort, spFilter;
+    ListView lvCoupons;
 
-    public PartnerPoolFragment() {
+    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
+    Spinner spSortMyCoupons, spFilterMyCoupons;
+
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
@@ -57,25 +60,39 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_partner_pool, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_mycoupons, container, false);
+        View header = inflater.inflate(R.layout.fragment_profile,null);
 
-        tvTitle = (TextView)rootView.findViewById(R.id.tvTitle);
+        // Header (profile)
+        if(LoginController.LoginMethod.equals("facebook")) {
+            new DownloadImage((ImageView) header.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
+            tvUsername = (TextView)header.findViewById(R.id.tvUsername);
+            tvUsername.setText(LoginController.getCurrentUsername());
+        }
 
-        ibSort = (ImageButton) rootView.findViewById(R.id.ibSort);
-        ibFilter =  (ImageButton) rootView.findViewById(R.id.ibFilter);
-        spSort = (Spinner) rootView.findViewById(R.id.spSort);
-        spFilter =  (Spinner) rootView.findViewById(R.id.spFilter);
+        tvCheapitPoints = (TextView)header.findViewById(R.id.tvCheapitPoints);
+        tvCheapitPoints.setOnClickListener(this);
+
+
+
+        radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
+        tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvTitle);
+
+        ibSortMyCoupons = (ImageButton) header.findViewById(R.id.ibSort);
+        ibFilterMyCoupons =  (ImageButton) header.findViewById(R.id.ibFilter);
+        spSortMyCoupons = (Spinner) header.findViewById(R.id.spSort);
+        spFilterMyCoupons =  (Spinner) header.findViewById(R.id.spFilter);
 
 
         //Long pressed helpers
-        ibSort.setOnLongClickListener(new View.OnLongClickListener() {
+        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
-        ibFilter.setOnLongClickListener(new View.OnLongClickListener() {
+        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
@@ -83,12 +100,12 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
             }
         });
 
-        ibSort.setOnClickListener(this);
-        ibFilter.setOnClickListener(this);
+        ibSortMyCoupons.setOnClickListener(this);
+        ibFilterMyCoupons.setOnClickListener(this);
 
         // Spinner click listener
-        spSort.setOnItemSelectedListener(this);
-        spFilter.setOnItemSelectedListener(this);
+        spSortMyCoupons.setOnItemSelectedListener(this);
+        spFilterMyCoupons.setOnItemSelectedListener(this);
 
 
         // Spinner Drop down elements
@@ -114,30 +131,75 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-        spSort.setAdapter(sortAdapter);
-        spFilter.setAdapter(filterAdapter);
-        
+        spSortMyCoupons.setAdapter(sortAdapter);
+        spFilterMyCoupons.setAdapter(filterAdapter);
 
-        //Recebe o arquivo json do banco
-        new GetPartners().execute("","");
 
-        //pegar referencia do listview
-        lvPartners = (ListView)rootView.findViewById(R.id.lvPartners);
+        // Checked change Listener for RadioGroup 1
+        radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId)
+            {
+                switch (checkedId)
+                {
+                    case R.id.radioAtivos:
+                        Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radioUsed:
+                        Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
 
+        //Get offers from user_id
+        //new GetMyOffers().execute(LoginController.CurrentUserId,"ORDERED");
+        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+
+//        //criar listas de itens
+//        ArrayList<String> clientes = new ArrayList<>();
+//        ArrayList<String> descricao = new ArrayList<>();
+//        ArrayList<String> imagens = new ArrayList<>();
+
+//        //recebe os dados do arquivo
+//        InputStream i = getResources().openRawResource(R.raw.coupons);
+//        CSVParser csvParser = new CSVParser(i);
+//        coupons = csvParser.read();
+
+//        for(String[] coupon: coupons) {
+//            clientes.add(coupon[1].replace("\"", ""));
+//            descricao.add(coupon[2].replace("\"", ""));
+//            imagens.add(coupon[3].replace("\"", ""));
+//        }
+
+//        //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
+//        listAdapter = new ZOLDCouponListAdapter(getContext(), clientes,descricao, imagens);
+
+        //get listView reference
+        lvCoupons = (ListView)rootView.findViewById(R.id.lvOffers);
+
+        //Adding header to listview
+        lvCoupons.addHeaderView(header);
 
         //eventos ao clicar nos itens da lista
-        lvPartners.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view,
                                     int position, long id) {
+                Toast.makeText(getContext(),parent.getItemAtPosition(position).toString(),Toast.LENGTH_SHORT).show();
             }
 
         });
 
-        tvTitle.setOnClickListener(new View.OnClickListener() {
+
+        //retornar ao inicio da lista ao clicar no toolbar
+        tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lvPartners.setSelection(0);
+                lvCoupons.setSelection(0);
             }
         });
 
@@ -148,10 +210,10 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ibSort:
-                spSort.performClick();
+                spSortMyCoupons.performClick();
                 break;
             case R.id.ibFilter:
-                spFilter.performClick();
+                spFilterMyCoupons.performClick();
                 break;
         }
     }
@@ -163,12 +225,12 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         switch (parent.getId()){
             case R.id.spSort:
                 // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
                 break;
             case R.id.spFilter:
                 // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
 
                 break;
         }
@@ -180,8 +242,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
     }
 
-    private class GetPartners extends AsyncTask<String,String,String> {
-
+    private class GetMyOffers extends AsyncTask<String,String,String> {
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
 
@@ -204,7 +265,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL(LoginController.partnerURL);
+                url = new URL(LoginController.my_couponURL);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -221,12 +282,12 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
 
-                // Append parameters to URL
+                // Append parameters to URL TODO: change to user_id
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("partner_id", params[0])
-                        .appendQueryParameter("offer_id", params[1]);
+                        .appendQueryParameter("facebook_id", params[0])
+                        .appendQueryParameter("status", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.i("Partner Query",query);
+                Log.i("Profile Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -264,6 +325,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
                     return (result.toString());
 
                 } else {
+                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
                     return ("unsuccessful");
                 }
 
@@ -282,57 +344,53 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
 
-            json = result;
+            String json = result;
 
             //criar listas de itens
-            ArrayList<Partner> partners = new ArrayList<>();
-            final ArrayList<String> couponOffer_id = new ArrayList<>();
-            ArrayList<String> clientes = new ArrayList<>();
-            ArrayList<String> descricao = new ArrayList<>();
-            final ArrayList<String> imagens = new ArrayList<>();
+            ArrayList<Coupon> coupons = new ArrayList<>();
 
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray partners_array = jsonObj.getJSONArray("partners_array");
-                Log.i("Tamanho do array",String.valueOf(partners_array.length()));
+                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
+                Log.i("Tamanho do coupon_array",String.valueOf(coupons_array.length()));
 
-                for (int j = 0; j < partners_array.length(); j++) {
-                    JSONObject p = partners_array.getJSONObject(j);
-                    Partner partner = new Partner(p.getString("id"),p.getString("name"),p.getString("address"),p.getString("latitude"),p.getString("longitude"));
-                    partners.add(partner);
+                for (int j = 0; j < coupons_array.length(); j++) {
+                    JSONObject c = coupons_array.getJSONObject(j);
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("offer_id"),c.getString("coupon_code"),"http://media.dontpayfull.com/media/deals/mac-cosmetics-promo-code.jpg"); //TODO set correct params
+                    coupons.add(coupon);
                 }
 
             }catch(Exception e){
                 Log.e("erro",e.getMessage());
             }
-            Log.i("Partner pool",result);
+            Log.i("Result",result);
 
-            ListAdapter listAdapter = new PartnerListAdapter(getContext(),partners);
+            ListAdapter listAdapter = new CouponListAdapter(getContext(),coupons);
 
             //setar o adapter da listview para o nosso adapter
-            lvPartners.setAdapter(listAdapter);
+            lvCoupons.setAdapter(listAdapter);
 
 
-            //eventos ao clicar nos itens da lista
-            lvPartners.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    Partner partner =  (Partner) parent.getItemAtPosition(position);
-                    Toast.makeText(getContext(),partner.name,Toast.LENGTH_SHORT).show();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("partner_id", partner.id);
-                    PartnerInformation partnerInformation = new PartnerInformation();
-                    partnerInformation.setArguments(bundle);
-                    android.support.v4.app.FragmentTransaction partnerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    partnerInformationfragmentTransaction
-                            .replace(R.id.fragment_container, partnerInformation)
-                            .addToBackStack(null)
-                            .commit();
-                }
-
-            });
+//            //eventos ao clicar nos itens da lista
+//            lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, final View view,
+//                                        int position, long id) {
+//                    Offer offer =  (Offer)parent.getItemAtPosition(position);
+//                    Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("offer_id", offer.id);
+//                    OfferInformation offerInformation = new OfferInformation();
+//                    offerInformation.setArguments(bundle);
+//                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+//                    couponInformationfragmentTransaction
+//                            .replace(R.id.fragment_container, offerInformation)
+//                            .addToBackStack(null)
+//                            .commit();
+//                }
+//
+//            });
         }
     }
 }

@@ -7,7 +7,7 @@
             android:icon="@drawable/ic_account_circle_black_24dp"
             android:title="Perfil" />
         <item
-            android:id="@+id/nav_coupons"
+            android:id="@+id/nav_offers"
             android:icon="@drawable/ic_coupon"
             android:title="Cupons" />
         <item

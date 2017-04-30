@@ -25,7 +25,7 @@ public class ZOLDCouponListAdapter extends ArrayAdapter<String> {
 
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
     public ZOLDCouponListAdapter(Context context, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
-        super(context, R.layout.coupon_row, listaItens);
+        super(context, R.layout.offer_row, listaItens);
         this.listaItens = listaItens;
         this.listaDescricao = listaDescricao;
         this.listaImagens = listaImagens;
@@ -33,7 +33,7 @@ public class ZOLDCouponListAdapter extends ArrayAdapter<String> {
 
     //Construtor alternativo com id
     public ZOLDCouponListAdapter(Context context, ArrayList<String> listaIds, ArrayList<String> listaItens, ArrayList<String> listaDescricao, ArrayList<String> listaImagens) {
-        super(context, R.layout.coupon_row, listaItens);
+        super(context, R.layout.offer_row, listaItens);
         this.listaIds = listaIds;
         this.listaItens = listaItens;
         this.listaDescricao = listaDescricao;
@@ -46,7 +46,7 @@ public class ZOLDCouponListAdapter extends ArrayAdapter<String> {
 
         //seta qual row sera utilizado para mostrar os dados
         LayoutInflater inflater = LayoutInflater.from(getContext());
-        View customView = inflater.inflate(R.layout.coupon_row, parent, false);
+        View customView = inflater.inflate(R.layout.offer_row, parent, false);
 
         //recebe os itens das listas
 
@@ -60,11 +60,11 @@ public class ZOLDCouponListAdapter extends ArrayAdapter<String> {
         tvItem.setText(item);
 
         String descricao = listaDescricao.get(position);
-        TextView tvDescricao = (TextView)customView.findViewById(R.id.tvDescricao);
+        TextView tvDescricao = (TextView)customView.findViewById(R.id.tvDescription);
         tvDescricao.setText(descricao);
 
         String imagem = listaImagens.get(position);
-        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivCouponVoucher);
+        ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivOfferVoucher);
 
         ivImagem.setImageResource(getContext().getResources().getIdentifier("drawable/"+imagem,null,getContext().getPackageName()));
 

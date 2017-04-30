@@ -41,12 +41,12 @@ import java.util.List;
  */
 public class OfferPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
-    TextView tvMyCouponsTitle;
-    ListView lvCoupons;
+    TextView tvMyOffersTitle;
+    ListView lvOffers;
     String json;
 
-    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
-    Spinner spSortMyCoupons, spFilterMyCoupons;
+    ImageButton ibSortMyOffers, ibFilterMyOffers;
+    Spinner spSortMyOffers, spFilterMyOffers;
 
     public OfferPoolFragment() {
         // Required empty public constructor
@@ -57,25 +57,25 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_coupons_pool, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_offers_pool, container, false);
 
-        tvMyCouponsTitle = (TextView)rootView.findViewById(R.id.tvTitle);
+        tvMyOffersTitle = (TextView)rootView.findViewById(R.id.tvTitle);
 
-        ibSortMyCoupons = (ImageButton) rootView.findViewById(R.id.ibSort);
-        ibFilterMyCoupons =  (ImageButton) rootView.findViewById(R.id.ibFilter);
-        spSortMyCoupons = (Spinner) rootView.findViewById(R.id.spSort);
-        spFilterMyCoupons =  (Spinner) rootView.findViewById(R.id.spFilter);
+        ibSortMyOffers = (ImageButton) rootView.findViewById(R.id.ibSort);
+        ibFilterMyOffers =  (ImageButton) rootView.findViewById(R.id.ibFilter);
+        spSortMyOffers = (Spinner) rootView.findViewById(R.id.spSort);
+        spFilterMyOffers =  (Spinner) rootView.findViewById(R.id.spFilter);
 
 
         //Long pressed helpers
-        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+        ibSortMyOffers.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
-        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
+        ibFilterMyOffers.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
@@ -83,12 +83,12 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        ibSortMyCoupons.setOnClickListener(this);
-        ibFilterMyCoupons.setOnClickListener(this);
+        ibSortMyOffers.setOnClickListener(this);
+        ibFilterMyOffers.setOnClickListener(this);
 
         // Spinner click listener
-        spSortMyCoupons.setOnItemSelectedListener(this);
-        spFilterMyCoupons.setOnItemSelectedListener(this);
+        spSortMyOffers.setOnItemSelectedListener(this);
+        spFilterMyOffers.setOnItemSelectedListener(this);
 
 
         // Spinner Drop down elements
@@ -114,20 +114,20 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         // attaching data adapter to spinner
-        spSortMyCoupons.setAdapter(sortAdapter);
-        spFilterMyCoupons.setAdapter(filterAdapter);
+        spSortMyOffers.setAdapter(sortAdapter);
+        spFilterMyOffers.setAdapter(filterAdapter);
         
 
-        //Recebe o arquivo json do banco
+        // get offers JSON from database (no specific partner nor offer)
         new GetOffers().execute("","");
 
-        //pegar referencia do listview
-        lvCoupons = (ListView)rootView.findViewById(R.id.lvCoupons);
+        //get listView reference
+        lvOffers = (ListView)rootView.findViewById(R.id.lvOffers);
 
-        tvMyCouponsTitle.setOnClickListener(new View.OnClickListener() {
+        tvMyOffersTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lvCoupons.setSelection(0);
+                lvOffers.setSelection(0);
             }
         });
 
@@ -138,14 +138,15 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ibSort:
-                spSortMyCoupons.performClick();
+                spSortMyOffers.performClick();
                 break;
             case R.id.ibFilter:
-                spFilterMyCoupons.performClick();
+                spFilterMyOffers.performClick();
                 break;
         }
     }
 
+    //TODO CHECK IF IS LEGACY
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -184,9 +185,8 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
                 url = new URL(LoginController.offerURL);
 
             } catch (MalformedURLException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
-                return "exception";
+                return "Bad URL";
             }
             try {
                 // Setup HttpURLConnection class to send and receive data from php and mysql
@@ -199,12 +199,12 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
 
-                // Append parameters to URL
+                // Append parameters to URL (Wont be used)
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.d("Query",query);
+                Log.i("Offers_Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -217,7 +217,6 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
                 conn.connect();
 
             } catch (IOException e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
                 return "exception";
             }
@@ -264,34 +263,34 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
 
             json = result;
 
-            //criar listas de itens
+            // create list of offers
             ArrayList<Offer> offers = new ArrayList<>();
 
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("offers_array");
-                Log.d("Tamanho do array",String.valueOf(coupons_array.length()));
+                JSONArray offers_array = jsonObj.getJSONArray("offers_array");
+                Log.i("Tamanho do offers_array",String.valueOf(offers_array.length()));
 
-                for (int j = 0; j < coupons_array.length(); j++) {
-                    JSONObject c = coupons_array.getJSONObject(j);
-                    Offer offer = new Offer(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("image"));
+                for (int j = 0; j < offers_array.length(); j++) {
+                    JSONObject o = offers_array.getJSONObject(j);
+                    Offer offer = new Offer(o.getString("id"),o.getString("partner_name"),o.getString("description"),o.getString("image"));
                     offers.add(offer);
                 }
 
             }catch(Exception e){
-                Log.d("erro",e.getMessage());
+                Log.e("erro",e.getMessage());
             }
-            Log.d("Result",result);
+            Log.i("Result",result);
 
             ListAdapter listAdapter = new OfferListAdapter(getContext(),offers);
 
-            //setar o adapter da listview para o nosso adapter
-            lvCoupons.setAdapter(listAdapter);
+            //set our custom listAdapter to listview
+            lvOffers.setAdapter(listAdapter);
 
 
-            //eventos ao clicar nos itens da lista
-            lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            // Check offer information by clicking on list elements
+            lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
@@ -301,8 +300,8 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
                     bundle.putString("offer_id", offer.id);
                     OfferInformation offerInformation = new OfferInformation();
                     offerInformation.setArguments(bundle);
-                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    couponInformationfragmentTransaction
+                    android.support.v4.app.FragmentTransaction offerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    offerInformationfragmentTransaction
                             .replace(R.id.fragment_container, offerInformation)
                             .addToBackStack(null)
                             .commit();
