@@ -55,6 +55,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="5dp"
             />
+        <TextView
+            android:id="@+id/tvCouponCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Código do cupom: XLASDUYS"
+            android:textColor="@color/white"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="5dp"
+            />
     </LinearLayout>
 
 </LinearLayout>

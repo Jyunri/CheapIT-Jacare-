@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Jimy on 3/11/17.
@@ -17,17 +19,23 @@ public class PartnerListAdapter extends ArrayAdapter<Partner> {
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
     ArrayList<Partner> partners;
 
+    ArrayList<Partner> filterList;  // Auxiliar arrayList to searchView
+
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
-    public PartnerListAdapter(Context context, ArrayList<Partner> partners) {
-        super(context, R.layout.partner_row,partners);
-        this.partners = partners;
+    public PartnerListAdapter(Context context, ArrayList<Partner> dbPartners) {
+        super(context, R.layout.partner_row,dbPartners);
+        this.partners = dbPartners;
+
+        // create a new instance to copy only values, not reference
+        filterList = new ArrayList<>();
+        this.filterList.addAll(dbPartners);
     }
 
-    //Retorna o objeto que compoe um row
+    // Returns the object that populate a row
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        //seta qual row sera utilizado para mostrar os dados
+        //set the row used to display data
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View customView = inflater.inflate(R.layout.partner_row, parent, false);
 
@@ -53,4 +61,23 @@ public class PartnerListAdapter extends ArrayAdapter<Partner> {
         //retorna o objeto
         return customView;
     }
+
+    public void filter(String filterText)
+    {
+        Log.i("Adapter Filter","Filtering "+filterText);
+        filterText = filterText.toLowerCase(Locale.getDefault());
+        partners.clear();
+        if (filterText.length() == 0) {
+            partners.addAll(filterList);
+        } else{
+            for(Partner p:filterList){
+                if (p.name.toLowerCase(Locale.getDefault()).contains(filterText)) {
+                    Log.i("Partner on filter",p.name);
+                    partners.add(p);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
 }

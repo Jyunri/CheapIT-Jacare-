@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by Jimy on 12/1/16.
@@ -22,10 +24,15 @@ public class OfferListAdapter extends ArrayAdapter<Offer> {
     //Lista de itens para popular a ListView. Essas Listas serao enviadas como argumento.
     ArrayList<Offer> offers;
 
+    ArrayList<Offer> filterList;  // Auxiliar arrayList to searchView
+
     //Construtor do Adapter. Colocar o numero de parametros necessarios para criar as listas de dados
     public OfferListAdapter(Context context, ArrayList<Offer> offers) {
         super(context, R.layout.offer_row, offers);
         this.offers = offers;
+
+        filterList = new ArrayList<>();
+        filterList.addAll(offers);
     }
 
     //Retorna o objeto que compoe um row
@@ -54,5 +61,23 @@ public class OfferListAdapter extends ArrayAdapter<Offer> {
 
         //retorna o objeto
         return customView;
+    }
+
+    public void filter(String filterText)
+    {
+        Log.i("Adapter Filter","Filtering "+filterText);
+        filterText = filterText.toLowerCase(Locale.getDefault());
+        offers.clear();
+        if (filterText.length() == 0) {
+            offers.addAll(filterList);
+        } else{
+            for(Offer o:filterList){
+                if (o.partner.toLowerCase(Locale.getDefault()).contains(filterText)) {
+                    Log.i("Offer on filter",o.partner);
+                    offers.add(o);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

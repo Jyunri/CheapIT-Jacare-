@@ -51,6 +51,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
     ImageButton ibSortMyCoupons, ibFilterMyCoupons;
     Spinner spSortMyCoupons, spFilterMyCoupons;
 
+    // TODO: 5/6/17 VERIFY IF THE ACTIVE/USED BUTTON IS NEEDED [PROJECT DECISION]
+
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -282,9 +284,9 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
                 conn.setDoInput(true);
                 conn.setDoOutput(true);
 
-                // Append parameters to URL TODO: change to user_id
+                // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("facebook_id", params[0])
+                        .appendQueryParameter("user_id", params[0])
                         .appendQueryParameter("status", params[1]);
                 String query = builder.build().getEncodedQuery();
                 Log.i("Profile Query",query);
@@ -357,7 +359,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    Coupon coupon = new Coupon(c.getString("id"),c.getString("offer_id"),c.getString("coupon_code"),"http://media.dontpayfull.com/media/deals/mac-cosmetics-promo-code.jpg"); //TODO set correct params
+                    //TODO set correct params FROM OFFERS TABLE
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("offer_id"),c.getString("coupon_code"),"http://media.dontpayfull.com/media/deals/mac-cosmetics-promo-code.jpg");
                     coupons.add(coupon);
                 }
 

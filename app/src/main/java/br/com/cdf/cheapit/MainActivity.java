@@ -1,11 +1,17 @@
 package br.com.cdf.cheapit;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -20,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.google.android.gms.location.LocationListener;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -39,10 +46,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, LocationListener {
 
     BottomBar bottomBar;
-    String first_name = "", avatar = "", username = "", facebook_id = "", json;
+    String first_name = "", last_name = "", avatar = "", username = "", facebook_id = "", json;
+    String fb_email = "", fb_birthday = "";
+    LocationManager locationManager;
+    String provider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +63,51 @@ public class MainActivity extends AppCompatActivity
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             first_name = extras.getString("first_name");
+            last_name = extras.getString("last_name");
             avatar = extras.getString("avatar");
             username = extras.getString("username");
             facebook_id = extras.getString("facebook_id");
+            fb_email = extras.getString("email");
+            fb_birthday = extras.getString("birthday");
         }
 
         // Get profile in database by facebook_id
-        new GetProfile().execute(facebook_id);
+        // TODO: 5/2/17 send email and birthday
+        new GetProfile().execute(first_name, last_name, facebook_id, "0");
 
 
         // Set Global Current variables
         LoginController.CurrentAvatar = avatar;
         LoginController.CurrentUsername = username;
+        LoginController.CurrentEmail = fb_email;
+
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        Criteria criteria = new Criteria();
+        provider = locationManager.getBestProvider(criteria, false);
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: IF NO PERMISSION EXCEPTION
+            //    Consider calling ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        Location location = locationManager.getLastKnownLocation(provider);
+
+        // Initialize the location fields
+        if (location != null) {
+            onLocationChanged(location);
+        } else {
+            LoginController.currentLatitude = 0;
+            LoginController.currentLongitude = 0;
+        }
+
 
         // Welcome toast
         Toast.makeText(this,"Olá, " + first_name + "!",Toast.LENGTH_LONG).show();
@@ -96,18 +139,19 @@ public class MainActivity extends AppCompatActivity
 
         // Handle Toolbar Logo
         ImageButton ibHomeLogo = (ImageButton)findViewById(R.id.ibHomeLogo);
-        ibHomeLogo.setOnClickListener(this);
-        ibHomeLogo.setOnLongClickListener(new View.OnLongClickListener() {
+        ibHomeLogo.setOnClickListener(this); //enable drawer
+
+
+        // Handle Toolbar Profile Icon
+        ImageButton ibProfile = (ImageButton)findViewById(R.id.ibProfile);
+        ibProfile.setOnClickListener(this);
+        ibProfile.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 Toast.makeText(getApplicationContext(),"Meus Cupons",Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
-
-        // Handle Toolbar Profile Icon
-        ImageButton ibProfile = (ImageButton)findViewById(R.id.ibProfile);
-        ibProfile.setOnClickListener(this);
 
 
         // Handle Bottom Bar
@@ -208,6 +252,8 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+
+
     // Get profile data from facebook_id
     private class GetProfile extends AsyncTask<String,String,String> {
         public static final int CONNECTION_TIMEOUT=10000;
@@ -239,7 +285,10 @@ public class MainActivity extends AppCompatActivity
 
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("facebook_id", params[0]);
+                        .appendQueryParameter("first_name", params[0])
+                        .appendQueryParameter("last_name", params[1])
+                        .appendQueryParameter("facebook_id", params[2])
+                        .appendQueryParameter("age", params[3]);
                 String query = builder.build().getEncodedQuery();
                 Log.i("User Query",query);
 
@@ -296,16 +345,17 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(String result) {
             Log.i("Looking for facebook_id",facebook_id);
 
-            //TODO SHOW TUTORIAL IF NEW USER
-            //No user was found, then flag new User
-            if (result.contains("failure")) {
-                Log.w("User", "New User");
-                LoginController.setCurrentUsername("New User");
-                LoginController.CurrentUserId = 0; // TODO: 4/30/17 CREATE (INSERT) NEW USER_ID IN MYSQL
-            }
-
             json = result;
 
+            //TODO SHOW TUTORIAL IF NEW USER
+            //No user was found, then flag new User
+            // If the json doesnt contain the facebook_id column that implies that its a new user
+            if(!json.contains("facebook_id")){
+                LoginController.NewUser = true;
+                Log.w("User", "New User");
+            }else{
+                Log.w("User","Old User");
+            }
 
             try {
                 JSONObject jsonObj = new JSONObject(json);
@@ -319,8 +369,7 @@ public class MainActivity extends AppCompatActivity
                 for (int j = 0; j < user_array.length(); j++) {
                     Log.i("User", "User found");
                     JSONObject c = user_array.getJSONObject(j);
-                    //TODO GET VALUES FROM DATABASE
-                    LoginController.setCurrentUsername(c.getString("name"));
+                    LoginController.setCurrentUsername(c.getString("first_name")+" "+c.getString("last_name"));
                     LoginController.CurrentUserId = c.getInt("id");
                 }
 
@@ -334,7 +383,16 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
+    // Get Location Methods
+    @Override
+    public void onLocationChanged(Location location) {
+        float lat = (float) (location.getLatitude());
+        float lng = (float) (location.getLongitude());
+        LoginController.currentLatitude = lat;
+        LoginController.currentLongitude = lng;
+        Log.i("Lat",String.valueOf(lat));
+        Log.i("Lng",String.valueOf(lng));
+    }
 
         // return to login screen
     private void goLoginScreen() {

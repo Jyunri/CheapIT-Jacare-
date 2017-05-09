@@ -34,7 +34,7 @@ public class PointsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_prizes, container, false);
-        View header = inflater.inflate(R.layout.header_prizes,null);
+        View header = inflater.inflate(R.layout.fragment_prizes_header,null);
 
 
         expListView = (ExpandableListView) rootView.findViewById(R.id.lvPoints);

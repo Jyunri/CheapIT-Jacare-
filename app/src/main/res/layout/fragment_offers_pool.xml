@@ -66,6 +66,13 @@
     </android.support.v7.widget.Toolbar>
 
 
+    <SearchView
+        android:id="@+id/svOffers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Buscar Ofertas"/>
+
     <ListView
         android:id="@+id/lvOffers"
         android:layout_width="wrap_content"

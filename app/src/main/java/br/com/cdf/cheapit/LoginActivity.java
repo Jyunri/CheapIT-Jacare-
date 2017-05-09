@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,10 +15,18 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,6 +37,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CallbackManager callbackManager;
     private AccessTokenTracker accessTokenTracker;
     private ProfileTracker profileTracker;
+
+    public String fb_birthday = "";
+    public String fb_email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbLogin = (LoginButton) findViewById(R.id.lbFbLogin);
         guestLogin = (Button) findViewById(R.id.ibGuestLogin);
 
+        fbLogin.setReadPermissions(Arrays.asList("email","user_birthday"));
+
+
         //Facebook Login
         FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
             @Override
@@ -68,6 +83,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     profileTracker.startTracking();
                 }
                 else {
+
+                    GraphRequest request = GraphRequest.newMeRequest(
+                            loginResult.getAccessToken(),
+                            new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(
+                                        JSONObject object,
+                                        GraphResponse response) {
+                                    Log.v("LoginActivity Response ", response.toString());
+
+                                    try {
+                                        fb_birthday = object.getString("user_birthday");
+                                        fb_email = object.getString("email");
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "id,name,email,gender,birthday");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+
                     nextActivity(profile);
                 }
             }
@@ -120,6 +160,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             LoginController.setLoginMethod("facebook");
             Intent main = new Intent(LoginActivity.this, MainActivity.class);
             main.putExtra("first_name", profile.getFirstName());
+            main.putExtra("last_name", profile.getLastName());
+            // TODO: 4/30/17 get email
+            main.putExtra("email",fb_email);
+            main.putExtra("birthday",fb_birthday);
             main.putExtra("avatar", profile.getProfilePictureUri(200,200).toString());
             main.putExtra("username",profile.getName());
             main.putExtra("facebook_id",profile.getId());

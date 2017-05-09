@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -33,6 +34,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -47,6 +50,11 @@ public class PartnerInformation extends Fragment {
     TextView tvPartnerName, tvPartnerAddress, tvPartnerDescription, tvPartnerFacebook;
     ListView lvPartnerOffers;
 
+    ExpandableListAdapter listAdapter;
+    ExpandableListView expListView;
+    List<String> listDataHeader;
+    HashMap<String, List<String>> listDataChild;
+
     public PartnerInformation() {
         // Required empty public constructor
     }
@@ -58,25 +66,34 @@ public class PartnerInformation extends Fragment {
         // Inflate the layout for this fragment
         rootview = inflater.inflate(R.layout.fragment_partner_information, container, false);
         View header = inflater.inflate(R.layout.fragment_partner_information_header,null);
+        View test = inflater.inflate(R.layout.fragment_prizes_header,null);
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             partner_id = bundle.getString("partner_id", "0");
         }
 
-        ivPartnerLogo = (ImageView)header.findViewById(R.id.ivPartnerLogo);
-        tvPartnerName = (TextView)header.findViewById(R.id.tvPartnerName);
-        tvPartnerAddress = (TextView)header.findViewById(R.id.tvPartnerAddress);
-        tvPartnerDescription = (TextView)header.findViewById(R.id.tvPartnerDescription);
-        tvPartnerFacebook = (TextView)header.findViewById(R.id.tvPartnerFacebook);
+        expListView = (ExpandableListView) header.findViewById(R.id.lvPartnerInformation);
 
-        // Get Partner Information in a new thread
-        new GetPartnerInformation().execute(partner_id,"");
+
+        ivPartnerLogo = (ImageView)header.findViewById(R.id.ivPartnerLogo);
+
+//        tvPartnerName = (TextView)header.findViewById(R.id.tvPartnerName);
+//        tvPartnerAddress = (TextView)header.findViewById(R.id.tvPartnerAddress);
+//        tvPartnerDescription = (TextView)header.findViewById(R.id.tvPartnerDescription);
+//        tvPartnerFacebook = (TextView)header.findViewById(R.id.tvPartnerFacebook);
+//
 
         // Get ListView reference
         lvPartnerOffers = (ListView)rootview.findViewById(R.id.lvPartnerOffers);
 
+        // Get Partner Information in a new thread
+        new GetPartnerInformation().execute(partner_id,"");
+
         lvPartnerOffers.addHeaderView(header);
+        //lvPartnerOffers.addHeaderView(test);
+
 
         // Get Partner Offers in a second thread
         new GetPartnerOffers().execute(partner_id,"");
@@ -199,13 +216,45 @@ public class PartnerInformation extends Fragment {
 
                 Glide.with(getContext()).load(coupons_array.getJSONObject(0).getString("logo_url")).override(200,120).into(ivPartnerLogo);
 
+                listDataHeader = new ArrayList<String>();
+                listDataChild = new HashMap<String,List<String>>();
+
+                listDataHeader.add("Nome da Loja");
+                listDataHeader.add("Endereco");
+                listDataHeader.add("Facebook/Site");
+                listDataHeader.add("Descrição");
+
+                List<String> name = new ArrayList<String>();
+                name.add(coupons_array.getJSONObject(0).getString("name"));
+                listDataChild.put(listDataHeader.get(0),name);
+
+                List<String> address = new ArrayList<String>();
+                address.add(coupons_array.getJSONObject(0).getString("address"));
+                listDataChild.put(listDataHeader.get(1),address);
+
+                List<String> website = new ArrayList<String>();
+                website.add(coupons_array.getJSONObject(0).getString("facebook"));
+                listDataChild.put(listDataHeader.get(2),website);
+
+                // TODO: 5/6/17 VERIFY MAX LENGTH (NUM OF CHARS) TO DESCRIPTION
+                List<String> description = new ArrayList<String>();
+                description.add(coupons_array.getJSONObject(0).getString("description"));
+                listDataChild.put(listDataHeader.get(3),description);
+
+                /*
                 tvPartnerName.setText("* Loja: "+coupons_array.getJSONObject(0).getString("name"));
                 tvPartnerAddress.setText("* Endereço: "+coupons_array.getJSONObject(0).getString("address"));
                 tvPartnerFacebook.setText("* Facebook: "+coupons_array.getJSONObject(0).getString("facebook"));
                 tvPartnerDescription.setText("* Descrição: "+coupons_array.getJSONObject(0).getString("description"));
+                */
+
+                listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
+
+                //setting list adapter
+                expListView.setAdapter(listAdapter);
 
             }catch(Exception e){
-                Log.i("erro",e.getMessage());
+                //Log.e("erro",e.getMessage());
             }
             Log.i("Partner_array",result);
 

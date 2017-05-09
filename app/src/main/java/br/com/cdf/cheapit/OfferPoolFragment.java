@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OfferPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class OfferPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
     TextView tvMyOffersTitle;
     ListView lvOffers;
@@ -47,6 +48,10 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
 
     ImageButton ibSortMyOffers, ibFilterMyOffers;
     Spinner spSortMyOffers, spFilterMyOffers;
+
+    SearchView svOffers;
+    OfferListAdapter listAdapter;
+
 
     public OfferPoolFragment() {
         // Required empty public constructor
@@ -116,8 +121,16 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         // attaching data adapter to spinner
         spSortMyOffers.setAdapter(sortAdapter);
         spFilterMyOffers.setAdapter(filterAdapter);
-        
 
+        //SEARCHVIEW
+        // Get searchView reference
+        svOffers = (SearchView)rootView.findViewById(R.id.svOffers);
+
+        // Set searchView listeners to events
+        svOffers.setOnQueryTextListener(this);
+
+
+        //DATABASE
         // get offers JSON from database (no specific partner nor offer)
         new GetOffers().execute("","");
 
@@ -155,6 +168,21 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    //SEARCHVIEW LISTENERS
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.i("OfferSearch","Submit "+query);
+        listAdapter.filter(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.i("OfferSearch","TextChange "+newText);
+        listAdapter.filter(newText);
+        return false;
     }
 
 
@@ -283,7 +311,7 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
             }
             Log.i("Result",result);
 
-            ListAdapter listAdapter = new OfferListAdapter(getContext(),offers);
+            listAdapter = new OfferListAdapter(getContext(),offers);
 
             //set our custom listAdapter to listview
             lvOffers.setAdapter(listAdapter);

@@ -65,6 +65,12 @@
 
     </android.support.v7.widget.Toolbar>
 
+    <SearchView
+        android:id="@+id/svPartner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Buscar Locais"/>
 
     <ListView
         android:id="@+id/lvPartners"

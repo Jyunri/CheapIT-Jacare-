@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,7 +40,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PartnerPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class PartnerPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
 
     TextView tvTitle;
     ListView lvPartners;
@@ -47,6 +48,9 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
     ImageButton ibSort, ibFilter;
     Spinner spSort, spFilter;
+
+    SearchView svPartner;
+    PartnerListAdapter listAdapter;
 
     public PartnerPoolFragment() {
         // Required empty public constructor
@@ -118,6 +122,14 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         spFilter.setAdapter(filterAdapter);
         
 
+        //SEARCHVIEW
+        // Get searchView reference
+        svPartner = (SearchView)rootView.findViewById(R.id.svPartner);
+
+        // Set searchView listeners to events
+        svPartner.setOnQueryTextListener(this);
+
+        //DATABASE
         //Recebe o arquivo json do banco
         new GetPartners().execute("","");
 
@@ -178,6 +190,21 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    // TODO: 5/8/17 VERIFY THE NEED OF TEXTCHANGE LISTENER [PROJECT DECISION]
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        Log.i("Search","Submit "+query);
+        listAdapter.filter(query);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        Log.i("Search","TextChange "+newText);
+        listAdapter.filter(newText);
+        return false;
     }
 
     private class GetPartners extends AsyncTask<String,String,String> {
@@ -308,7 +335,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
             }
             Log.i("Partner pool",result);
 
-            ListAdapter listAdapter = new PartnerListAdapter(getContext(),partners);
+            listAdapter = new PartnerListAdapter(getContext(),partners);
 
             //setar o adapter da listview para o nosso adapter
             lvPartners.setAdapter(listAdapter);

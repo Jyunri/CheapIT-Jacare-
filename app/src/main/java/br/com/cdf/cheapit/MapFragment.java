@@ -81,7 +81,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     String json;
     ArrayList<Partner> partners;
 
-
+    // TODO: 5/8/17 GO TO PARTNER INFORMATION ON CLICK
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
