@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity
 
             json = result;
 
-            //TODO SHOW TUTORIAL IF NEW USER
+            //TODO SHOW TUTORIAL IF NEW USER [UX]
             //No user was found, then flag new User
             // If the json doesnt contain the facebook_id column that implies that its a new user
             if(!json.contains("facebook_id")){

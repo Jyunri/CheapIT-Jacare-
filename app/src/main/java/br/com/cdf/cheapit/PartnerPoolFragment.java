@@ -192,7 +192,7 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
 
     }
 
-    // TODO: 5/8/17 VERIFY THE NEED OF TEXTCHANGE LISTENER [PROJECT DECISION]
+    // TODO: 5/8/17 VERIFY THE NEED OF TEXTCHANGE LISTENER [UX]
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.i("Search","Submit "+query);

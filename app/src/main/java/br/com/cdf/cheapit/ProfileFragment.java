@@ -51,7 +51,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
     ImageButton ibSortMyCoupons, ibFilterMyCoupons;
     Spinner spSortMyCoupons, spFilterMyCoupons;
 
-    // TODO: 5/6/17 VERIFY IF THE ACTIVE/USED BUTTON IS NEEDED [PROJECT DECISION]
+    // TODO: 5/6/17 VERIFY IF THE ACTIVE/USED BUTTON IS NEEDED [UX]
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -359,7 +359,7 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    //TODO set correct params FROM OFFERS TABLE
+                    //TODO [URGENT] set correct params FROM OFFERS TABLE
                     Coupon coupon = new Coupon(c.getString("id"),c.getString("offer_id"),c.getString("coupon_code"),"http://media.dontpayfull.com/media/deals/mac-cosmetics-promo-code.jpg");
                     coupons.add(coupon);
                 }

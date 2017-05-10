@@ -170,6 +170,7 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
 
     }
 
+    // TODO: 5/9/17 TRY TO MAKE SEARCHVIEW QUERY ON SQL
     //SEARCHVIEW LISTENERS
     @Override
     public boolean onQueryTextSubmit(String query) {

@@ -51,6 +51,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -60,7 +61,7 @@ import static br.com.cdf.cheapit.R.id.lvPartners;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnInfoWindowClickListener {
 
     MapView mapView;
 
@@ -81,7 +82,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     String json;
     ArrayList<Partner> partners;
 
-    // TODO: 5/8/17 GO TO PARTNER INFORMATION ON CLICK
+    HashMap<Marker,String> markerHash = new HashMap<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
@@ -159,6 +161,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         spSortPlaces.setAdapter(sortAdapter);
         spFilterPlaces.setAdapter(filterAdapter);
 
+
 //        radioGroup3 = (RadioGroup)rootView.findViewById(R.id.radioGroup3);
 //
 //        // Checked change Listener for RadioGroup 1
@@ -224,7 +227,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
     //database connection methods
-    private class GetPartners extends AsyncTask<String,String,String> {
+    private class GetPartners extends AsyncTask<String,String,String>{
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -347,6 +350,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             .position(new LatLng(Float.valueOf(partner.latitude), Float.valueOf(partner.longitude)))
                             .title(partner.name)
                             .snippet(partner.address));
+
+                    markerHash.put(marker,partner.id);
+
                 }
 
             }catch(Exception e){
@@ -355,6 +361,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             Log.i("Result",result);
 
         }
+//
+//        @Override
+//        public boolean onMarkerClick(Marker marker) {
+//            if(markerClicked.get(marker)){
+//                markerClicked.put(marker,false);
+//                Log.i("Marker click","set false");
+//            }
+//            else {
+//                markerClicked.put(marker, false);
+//                Log.i("Marker click","set true");
+//            }
+//            return false;
+//        }
     }
 
 
@@ -379,6 +398,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         }
         mGoogleMap.setMyLocationEnabled(true);
 
+        mGoogleMap.setOnInfoWindowClickListener(this);
+
+
         //callbacks to connect to GoogleAPIClient
         buildGoogleApiClient();
 
@@ -396,6 +418,22 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+    }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.i("Map","Clicking marker window");
+        String partner_id =  markerHash.get(marker);
+        Bundle bundle = new Bundle();
+        bundle.putString("partner_id", partner_id);
+        PartnerInformation partnerInformation = new PartnerInformation();
+        partnerInformation.setArguments(bundle);
+        android.support.v4.app.FragmentTransaction partnerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        partnerInformationfragmentTransaction
+                .replace(R.id.fragment_container, partnerInformation)
+                .addToBackStack(null)
+                .commit();
+
     }
 
     @Override
