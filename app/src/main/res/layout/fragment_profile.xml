@@ -15,11 +15,11 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:padding="5dp"
+            android:padding="2dp"
             android:layout_gravity="left"
             android:id="@+id/ivAvatar"
-            android:background="@drawable/rectangle_bege"
-            android:src="@drawable/default_avatar"/>
+            android:background="@drawable/circle_bege"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -88,23 +88,6 @@
             android:orientation="horizontal"
             >
 
-            <ImageButton
-                android:id="@+id/ibSort"
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_gravity="left"
-                android:layout_marginLeft="30dp"
-                android:background="@null"
-                android:src="@drawable/ic_sort"
-                android:tint="@color/white"
-                android:scaleType="centerInside"
-                />
-            <Spinner
-                android:id="@+id/spSort"
-                android:layout_width="5dp"
-                android:layout_height="0dp">
-            </Spinner>
-
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
@@ -116,25 +99,6 @@
                 android:textStyle="bold"
                 android:textSize="13sp"
                 />
-
-            <ImageButton
-                android:id="@+id/ibFilter"
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_filter"
-                android:tint="@color/white"
-                android:background="@null"
-                android:layout_gravity="right"
-                android:layout_marginRight="30dp"
-                android:scaleType="centerInside"
-                />
-            <Spinner
-                android:id="@+id/spFilter"
-                android:layout_width="5dp"
-                android:layout_height="0dp"
-                android:layout_gravity="right"
-                >
-            </Spinner>
 
         </android.support.v7.widget.Toolbar>
         <RadioGroup

@@ -1,10 +1,13 @@
 package br.com.cdf.cheapit;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import java.io.InputStream;
 
@@ -12,10 +15,12 @@ import java.io.InputStream;
  * Created by Jimy on 1/18/17.
  */
 
-public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
+public class ZOLDDownloadImage extends AsyncTask<String, Void, Bitmap> {
     ImageView bmImage;
+    Context mContext;
 
-    public DownloadImage(ImageView bmImage) {
+    public ZOLDDownloadImage(Context context, ImageView bmImage) {
+        this.mContext  = context;
         this.bmImage = bmImage;
     }
 
@@ -33,6 +38,7 @@ public class DownloadImage extends AsyncTask<String, Void, Bitmap> {
     }
 
     protected void onPostExecute(Bitmap result) {
-        bmImage.setImageBitmap(result);
+        //bmImage.setImageBitmap(result);
+        Glide.with(mContext).load(result).override(200,120).into(bmImage);
     }
 }

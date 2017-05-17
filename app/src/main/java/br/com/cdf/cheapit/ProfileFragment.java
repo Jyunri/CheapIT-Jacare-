@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -41,15 +43,14 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements View.OnClickListener,AdapterView.OnItemSelectedListener{
+public class ProfileFragment extends Fragment{
 
     private RadioGroup radioGroup1;
     TextView tvUsername,tvMyCouponsTitle, tvCheapitPoints;
+    ImageView ivProfile;
 
     ListView lvCoupons;
 
-    ImageButton ibSortMyCoupons, ibFilterMyCoupons;
-    Spinner spSortMyCoupons, spFilterMyCoupons;
 
     // TODO: 5/6/17 VERIFY IF THE ACTIVE/USED BUTTON IS NEEDED [UX]
 
@@ -67,74 +68,20 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
 
         // Header (profile)
         if(LoginController.LoginMethod.equals("facebook")) {
-            new DownloadImage((ImageView) header.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
+            ivProfile = (ImageView)header.findViewById(R.id.ivAvatar);
+            Glide.with(getContext())
+                    .load(LoginController.getCurrentAvatar())
+                    .transform(new CircleTransform(getContext()))
+                    .override(220,140)
+                    .into(ivProfile);
             tvUsername = (TextView)header.findViewById(R.id.tvUsername);
             tvUsername.setText(LoginController.getCurrentUsername());
         }
 
         tvCheapitPoints = (TextView)header.findViewById(R.id.tvCheapitPoints);
-        tvCheapitPoints.setOnClickListener(this);
-
-
 
         radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvTitle);
-
-        ibSortMyCoupons = (ImageButton) header.findViewById(R.id.ibSort);
-        ibFilterMyCoupons =  (ImageButton) header.findViewById(R.id.ibFilter);
-        spSortMyCoupons = (Spinner) header.findViewById(R.id.spSort);
-        spFilterMyCoupons =  (Spinner) header.findViewById(R.id.spFilter);
-
-
-        //Long pressed helpers
-        ibSortMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        ibFilterMyCoupons.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        ibSortMyCoupons.setOnClickListener(this);
-        ibFilterMyCoupons.setOnClickListener(this);
-
-        // Spinner click listener
-        spSortMyCoupons.setOnItemSelectedListener(this);
-        spFilterMyCoupons.setOnItemSelectedListener(this);
-
-
-        // Spinner Drop down elements
-        List<String> sortList = new ArrayList<String>();
-        sortList.add("A-Z");
-        sortList.add("Z-A");
-        sortList.add("Data");
-        sortList.add("Unidades");
-        sortList.add("Maior desconto");
-
-        List<String> filterList = new ArrayList<String>();
-        filterList.add("Todos os cupons");
-        filterList.add("Restaurantes");
-        filterList.add("Lojas");
-        filterList.add("Serviços");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
-
-        // Drop down layout style - list view with radio button
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spSortMyCoupons.setAdapter(sortAdapter);
-        spFilterMyCoupons.setAdapter(filterAdapter);
 
 
         // Checked change Listener for RadioGroup 1
@@ -160,25 +107,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
         //Get offers from user_id
         //new GetMyOffers().execute(LoginController.CurrentUserId,"ORDERED");
         new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
-
-//        //criar listas de itens
-//        ArrayList<String> clientes = new ArrayList<>();
-//        ArrayList<String> descricao = new ArrayList<>();
-//        ArrayList<String> imagens = new ArrayList<>();
-
-//        //recebe os dados do arquivo
-//        InputStream i = getResources().openRawResource(R.raw.coupons);
-//        CSVParser csvParser = new CSVParser(i);
-//        coupons = csvParser.read();
-
-//        for(String[] coupon: coupons) {
-//            clientes.add(coupon[1].replace("\"", ""));
-//            descricao.add(coupon[2].replace("\"", ""));
-//            imagens.add(coupon[3].replace("\"", ""));
-//        }
-
-//        //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-//        listAdapter = new ZOLDCouponListAdapter(getContext(), clientes,descricao, imagens);
 
         //get listView reference
         lvCoupons = (ListView)rootView.findViewById(R.id.lvOffers);
@@ -208,47 +136,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
         return rootView;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ibSort:
-                spSortMyCoupons.performClick();
-                break;
-            case R.id.ibFilter:
-                spFilterMyCoupons.performClick();
-                break;
-        }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        switch (parent.getId()){
-            case R.id.spSort:
-                // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
-                break;
-            case R.id.spFilter:
-                // Showing selected spinner item
-                Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
-                break;
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     private class GetMyOffers extends AsyncTask<String,String,String> {
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
 
-        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        ProgressDialog pdLoading = new ProgressDialog(getActivity());
         HttpURLConnection conn;
         URL url = null;
 
@@ -345,6 +238,8 @@ public class ProfileFragment extends Fragment implements View.OnClickListener,Ad
             // Dismiss the progress dialog
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
+
+            pdLoading = null;
 
             String json = result;
 

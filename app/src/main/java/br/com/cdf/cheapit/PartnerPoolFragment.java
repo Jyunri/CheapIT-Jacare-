@@ -40,14 +40,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PartnerPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
+public class PartnerPoolFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     TextView tvTitle;
     ListView lvPartners;
     String json;
-
-    ImageButton ibSort, ibFilter;
-    Spinner spSort, spFilter;
 
     SearchView svPartner;
     PartnerListAdapter listAdapter;
@@ -64,63 +61,6 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         View rootView = inflater.inflate(R.layout.fragment_partner_pool, container, false);
 
         tvTitle = (TextView)rootView.findViewById(R.id.tvTitle);
-
-        ibSort = (ImageButton) rootView.findViewById(R.id.ibSort);
-        ibFilter =  (ImageButton) rootView.findViewById(R.id.ibFilter);
-        spSort = (Spinner) rootView.findViewById(R.id.spSort);
-        spFilter =  (Spinner) rootView.findViewById(R.id.spFilter);
-
-
-        //Long pressed helpers
-        ibSort.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        ibFilter.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        ibSort.setOnClickListener(this);
-        ibFilter.setOnClickListener(this);
-
-        // Spinner click listener
-        spSort.setOnItemSelectedListener(this);
-        spFilter.setOnItemSelectedListener(this);
-
-
-        // Spinner Drop down elements
-        List<String> sortList = new ArrayList<String>();
-        sortList.add("A-Z");
-        sortList.add("Z-A");
-        sortList.add("Data");
-        sortList.add("Unidades");
-        sortList.add("Maior desconto");
-
-        List<String> filterList = new ArrayList<String>();
-        filterList.add("Todos os cupons");
-        filterList.add("Restaurantes");
-        filterList.add("Lojas");
-        filterList.add("Serviços");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
-
-        // Drop down layout style - list view with radio button
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spSort.setAdapter(sortAdapter);
-        spFilter.setAdapter(filterAdapter);
-        
 
         //SEARCHVIEW
         // Get searchView reference
@@ -156,41 +96,6 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
         return rootView;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ibSort:
-                spSort.performClick();
-                break;
-            case R.id.ibFilter:
-                spFilter.performClick();
-                break;
-        }
-    }
-
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        switch (parent.getId()){
-            case R.id.spSort:
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
-                break;
-            case R.id.spFilter:
-                // Showing selected spinner item
-                //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
-
-                break;
-        }
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
     // TODO: 5/8/17 VERIFY THE NEED OF TEXTCHANGE LISTENER [UX]
     @Override
@@ -308,6 +213,8 @@ public class PartnerPoolFragment extends Fragment implements View.OnClickListene
             // Dismiss the progress dialog
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
+
+            pdLoading = null;
 
             json = result;
 

@@ -1,6 +1,7 @@
 package br.com.cdf.cheapit;
 
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -61,7 +62,7 @@ import static br.com.cdf.cheapit.R.id.lvPartners;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, AdapterView.OnItemSelectedListener, GoogleMap.OnInfoWindowClickListener {
+public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener, GoogleMap.OnInfoWindowClickListener {
 
     MapView mapView;
 
@@ -71,12 +72,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     LatLng latLng;
     Marker currLocationMarker;
 
-//    ListView lvOffers;
-//    RadioGroup radioGroup3;
 
     TextView tvMap;
-    ImageButton ibSortPlaces, ibFilterPlaces;
-    Spinner spSortPlaces,spFilterPlaces;
 
     //database connection
     String json;
@@ -89,11 +86,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
         tvMap = (TextView)rootView.findViewById(R.id.tvMap);
 
-        ibSortPlaces = (ImageButton)rootView.findViewById(R.id.ibSortPlaces);
-        ibFilterPlaces =  (ImageButton)rootView.findViewById(R.id.ibFilterPlaces);
-        spSortPlaces = (Spinner) rootView.findViewById(R.id.spSortPlaces);
-        spFilterPlaces =  (Spinner) rootView.findViewById(R.id.spFilterPlaces);
-
         //get partners from database
         partners = new ArrayList<>();
 
@@ -101,127 +93,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mapView = (MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(savedInstanceState);
         mapView.getMapAsync(this);
-
-
-        //Long pressed helpers
-        ibSortPlaces.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        ibFilterPlaces.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        //Sorts and Filters
-        ibSortPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spSortPlaces.performClick();            }
-        });
-        ibFilterPlaces.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                spFilterPlaces.performClick();            }
-        });
-
-        // Spinner click listener
-        spSortPlaces.setOnItemSelectedListener(this);
-        spFilterPlaces.setOnItemSelectedListener(this);
-
-        // Spinner Drop down elements
-        List<String> sortList = new ArrayList<String>();
-        sortList.add("A-Z");
-        sortList.add("Z-A");
-        sortList.add("Data");
-        sortList.add("Unidades");
-        sortList.add("Maior desconto");
-
-        List<String> filterList = new ArrayList<String>();
-        filterList.add("Todos os cupons");
-        filterList.add("Restaurantes");
-        filterList.add("Lojas");
-        filterList.add("Serviços");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
-
-        // Drop down layout style - list view with radio button
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spSortPlaces.setAdapter(sortAdapter);
-        spFilterPlaces.setAdapter(filterAdapter);
-
-
-//        radioGroup3 = (RadioGroup)rootView.findViewById(R.id.radioGroup3);
-//
-//        // Checked change Listener for RadioGroup 1
-//        radioGroup3.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-//        {
-//            @Override
-//            public void onCheckedChanged(RadioGroup group, int checkedId)
-//            {
-//                switch (checkedId)
-//                {
-//                    case R.id.radioRestaurants:
-//                        Toast.makeText(getContext(), "Exibindo Estabelecimentos", Toast.LENGTH_SHORT).show();
-//                        lvOffers.setVisibility(View.VISIBLE);
-//                        mapView.setVisibility(View.GONE);
-//                        break;
-//                    case R.id.radioMap:
-//                        Toast.makeText(getContext(), "Exibindo Mapa", Toast.LENGTH_SHORT).show();
-//                        lvOffers.setVisibility(GONE);
-//                        mapView.setVisibility(View.VISIBLE);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
-//
-//        //criar listas de itens
-//        ArrayList<String> clientes = new ArrayList<>();
-//        ArrayList<String> descricao = new ArrayList<>();
-//        ArrayList<String> imagens = new ArrayList<>();
-//
-//        //recebe os dados do arquivo
-//        InputStream i = getResources().openRawResource(R.raw.coupons);
-//        CSVParser csvParser = new CSVParser(i);
-//        ArrayList<String[]> pizzas = csvParser.read();
-//
-//        for(String[] pizza:pizzas) {
-//            clientes.add(pizza[1].replace("\"", ""));
-//            descricao.add(pizza[2].replace("\"", ""));
-//            imagens.add(pizza[3].replace("\"", ""));
-//        }
-
-//        //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-//        ListAdapter listAdapter = new CouponListAdapter(getContext(), clientes,descricao, imagens);
-//
-//        //pegar referencia do listview
-//        lvOffers = (ListView)rootView.findViewById(R.id.lvPlaces);
-//
-//        //setar o adapter da listview para o nosso adapter
-//        lvOffers.setAdapter(listAdapter);
-//
-//        //iniciar o listview como invisivel
-//        lvOffers.setVisibility(GONE);
-//
-//        tvMap.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                lvOffers.setSelection(0);
-//            }
-//        });
 
         return rootView;
     }
@@ -361,19 +232,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             Log.i("Result",result);
 
         }
-//
-//        @Override
-//        public boolean onMarkerClick(Marker marker) {
-//            if(markerClicked.get(marker)){
-//                markerClicked.put(marker,false);
-//                Log.i("Marker click","set false");
-//            }
-//            else {
-//                markerClicked.put(marker, false);
-//                Log.i("Marker click","set true");
-//            }
-//            return false;
-//        }
     }
 
 
@@ -438,9 +296,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     @Override
     public void onConnected(Bundle bundle) {
+        // TODO: 5/17/17 CHECK IF CHECKSELFPERMISSION IS RETURNING NULLPOINTER EXCEPTION [BUG]
         //checking PERMISSIONS
-        if (ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (ActivityCompat.checkSelfPermission((Activity)getContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                            android.Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
 
         //get LastLocation (currentLocation)
@@ -511,13 +372,4 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 }

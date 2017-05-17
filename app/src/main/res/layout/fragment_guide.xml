@@ -13,22 +13,6 @@
         android:background="@color/grey"
         android:orientation="horizontal"
         >
-        <ImageButton
-            android:id="@+id/ibSortPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="30dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:src="@drawable/ic_sort"
-            android:scaleType="centerInside"/>
-        <Spinner
-            android:id="@+id/spSortPlaces"
-            android:layout_width="5dp"
-            android:layout_height="0dp">
-        </Spinner>
-
         <TextView
             android:id="@+id/tvMap"
             android:layout_width="wrap_content"
@@ -41,22 +25,6 @@
             android:textStyle="bold"
             android:textSize="13sp"
             />
-        <ImageButton
-            android:id="@+id/ibFilterPlaces"
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginRight="30dp"
-            android:background="@null"
-            android:tint="@color/white"
-            android:layout_gravity="right"
-            android:src="@drawable/ic_filter"
-            android:scaleType="centerInside"/>
-        <Spinner
-            android:id="@+id/spFilterPlaces"
-            android:layout_width="5dp"
-            android:layout_height="0dp"
-            android:layout_gravity="right">
-        </Spinner>
 
     </android.support.v7.widget.Toolbar>
 

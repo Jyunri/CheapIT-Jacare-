@@ -40,14 +40,11 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OfferPoolFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, SearchView.OnQueryTextListener {
+public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTextListener {
 
     TextView tvMyOffersTitle;
     ListView lvOffers;
     String json;
-
-    ImageButton ibSortMyOffers, ibFilterMyOffers;
-    Spinner spSortMyOffers, spFilterMyOffers;
 
     SearchView svOffers;
     OfferListAdapter listAdapter;
@@ -65,62 +62,6 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         View rootView = inflater.inflate(R.layout.fragment_offers_pool, container, false);
 
         tvMyOffersTitle = (TextView)rootView.findViewById(R.id.tvTitle);
-
-        ibSortMyOffers = (ImageButton) rootView.findViewById(R.id.ibSort);
-        ibFilterMyOffers =  (ImageButton) rootView.findViewById(R.id.ibFilter);
-        spSortMyOffers = (Spinner) rootView.findViewById(R.id.spSort);
-        spFilterMyOffers =  (Spinner) rootView.findViewById(R.id.spFilter);
-
-
-        //Long pressed helpers
-        ibSortMyOffers.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Ordenar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        ibFilterMyOffers.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Toast.makeText(getContext(),"Filtrar por...",Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        ibSortMyOffers.setOnClickListener(this);
-        ibFilterMyOffers.setOnClickListener(this);
-
-        // Spinner click listener
-        spSortMyOffers.setOnItemSelectedListener(this);
-        spFilterMyOffers.setOnItemSelectedListener(this);
-
-
-        // Spinner Drop down elements
-        List<String> sortList = new ArrayList<String>();
-        sortList.add("A-Z");
-        sortList.add("Z-A");
-        sortList.add("Data");
-        sortList.add("Unidades");
-        sortList.add("Maior desconto");
-
-        List<String> filterList = new ArrayList<String>();
-        filterList.add("Todos os cupons");
-        filterList.add("Restaurantes");
-        filterList.add("Lojas");
-        filterList.add("Serviços");
-
-        // Creating adapter for spinner
-        ArrayAdapter<String> sortAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, sortList);
-        ArrayAdapter<String> filterAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, filterList);
-
-        // Drop down layout style - list view with radio button
-        sortAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        filterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-        spSortMyOffers.setAdapter(sortAdapter);
-        spFilterMyOffers.setAdapter(filterAdapter);
 
         //SEARCHVIEW
         // Get searchView reference
@@ -147,29 +88,6 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         return rootView;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.ibSort:
-                spSortMyOffers.performClick();
-                break;
-            case R.id.ibFilter:
-                spFilterMyOffers.performClick();
-                break;
-        }
-    }
-
-    //TODO CHECK IF IS LEGACY
-    @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
-
     // TODO: 5/9/17 TRY TO MAKE SEARCHVIEW QUERY ON SQL
     //SEARCHVIEW LISTENERS
     @Override
@@ -186,13 +104,13 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         return false;
     }
 
-
+    // TODO: 5/16/17 MAKE ALWAYS RETURN IN NEAREST LOCATION SORT 
     private class GetOffers extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
 
-        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        ProgressDialog pdLoading = new ProgressDialog(getActivity());
         HttpURLConnection conn;
         URL url = null;
 
@@ -200,6 +118,7 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
         protected void onPreExecute() {
             super.onPreExecute();
 
+            // TODO: 5/16/17 THIS IS CAUSING WINDOWLEAK [BUG]
             //this method will be running on UI thread
             pdLoading.setMessage("\tCarregando...");
             pdLoading.setCancelable(false);
@@ -289,6 +208,7 @@ public class OfferPoolFragment extends Fragment implements View.OnClickListener,
             // Dismiss the progress dialog
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
+            pdLoading = null;
 
             json = result;
 

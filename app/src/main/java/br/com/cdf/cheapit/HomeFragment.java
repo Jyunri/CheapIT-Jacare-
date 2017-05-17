@@ -88,7 +88,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         //Adding header to listview
         lvExpiring.addHeaderView(header);
 
-
         return rootView;
     }
 
@@ -202,7 +201,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             // Dismiss the progress dialog
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
-
+            pdLoading = null;
             json = result;
 
             // Create offer list

@@ -34,7 +34,7 @@ public class ZOLDProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.fragment_profile, container, false);
         if(LoginController.LoginMethod.equals("facebook")) {
-            new DownloadImage((ImageView) rootView.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
+            new ZOLDDownloadImage(getContext(),(ImageView) rootView.findViewById(R.id.ivAvatar)).execute(LoginController.getCurrentAvatar());
             tvUsername = (TextView)rootView.findViewById(R.id.tvUsername);
             tvUsername.setText(LoginController.getCurrentUsername());
         }

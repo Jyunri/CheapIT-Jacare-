@@ -241,12 +241,6 @@ public class PartnerInformation extends Fragment {
                 description.add(coupons_array.getJSONObject(0).getString("description"));
                 listDataChild.put(listDataHeader.get(3),description);
 
-                /*
-                tvPartnerName.setText("* Loja: "+coupons_array.getJSONObject(0).getString("name"));
-                tvPartnerAddress.setText("* Endereço: "+coupons_array.getJSONObject(0).getString("address"));
-                tvPartnerFacebook.setText("* Facebook: "+coupons_array.getJSONObject(0).getString("facebook"));
-                tvPartnerDescription.setText("* Descrição: "+coupons_array.getJSONObject(0).getString("description"));
-                */
 
                 listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
 
