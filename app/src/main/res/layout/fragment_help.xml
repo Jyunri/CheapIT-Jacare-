@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.com.cdf.cheapit.HelpFragment"
-    android:background="@drawable/default_background"
+    android:background="@color/bordo_red"
     android:orientation="vertical"
     android:paddingBottom="60dp">
 

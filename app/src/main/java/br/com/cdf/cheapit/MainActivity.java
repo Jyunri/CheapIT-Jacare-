@@ -122,9 +122,9 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
 
         //DISABLE DRAWER IN FIRST VERSION
-        drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        toggle.setDrawerIndicatorEnabled(false); //disable "hamburger to arrow" drawable
+        //toggle.setDrawerIndicatorEnabled(false); //disable "hamburger to arrow" drawable
 
         toggle.syncState();
 

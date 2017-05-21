@@ -73,6 +73,15 @@ public class PartnerPoolFragment extends Fragment implements SearchView.OnQueryT
         //Recebe o arquivo json do banco
         new GetPartners().execute("","");
 
+        /* REFRESH BUTTON */
+        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetPartners().execute("","");
+            }
+        });
+
         //pegar referencia do listview
         lvPartners = (ListView)rootView.findViewById(R.id.lvPartners);
 
@@ -126,9 +135,13 @@ public class PartnerPoolFragment extends Fragment implements SearchView.OnQueryT
             super.onPreExecute();
 
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 

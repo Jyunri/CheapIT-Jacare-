@@ -6,12 +6,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -74,7 +76,9 @@ public class PartnerInformation extends Fragment {
             partner_id = bundle.getString("partner_id", "0");
         }
 
-        expListView = (ExpandableListView) header.findViewById(R.id.lvPartnerInformation);
+        // Get ListView reference
+        lvPartnerOffers = (ListView)rootview.findViewById(R.id.lvPartnerOffers);
+
 
 
         ivPartnerLogo = (ImageView)header.findViewById(R.id.ivPartnerLogo);
@@ -85,18 +89,26 @@ public class PartnerInformation extends Fragment {
 //        tvPartnerFacebook = (TextView)header.findViewById(R.id.tvPartnerFacebook);
 //
 
-        // Get ListView reference
-        lvPartnerOffers = (ListView)rootview.findViewById(R.id.lvPartnerOffers);
+        expListView = (ExpandableListView) rootview.findViewById(R.id.lvPartnerInformation);
 
         // Get Partner Information in a new thread
         new GetPartnerInformation().execute(partner_id,"");
 
-        lvPartnerOffers.addHeaderView(header);
+        expListView.addHeaderView(header);
         //lvPartnerOffers.addHeaderView(test);
 
 
         // Get Partner Offers in a second thread
         new GetPartnerOffers().execute(partner_id,"");
+
+        /* REFRESH BUTTON */
+        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetPartnerOffers().execute(partner_id,"");
+            }
+        });
 
         return rootview;
     }
@@ -214,32 +226,34 @@ public class PartnerInformation extends Fragment {
                 JSONArray coupons_array = jsonObj.getJSONArray("partners_array");
                 Log.i("Tamanho do array",String.valueOf(coupons_array.length()));
 
-                Glide.with(getContext()).load(coupons_array.getJSONObject(0).getString("logo_url")).override(200,120).into(ivPartnerLogo);
+                JSONObject jsonObject = coupons_array.getJSONObject(0);
+
+                Glide.with(getContext()).load(jsonObject.getString("logo_url")).into(ivPartnerLogo);
+                int background = getActivity().getResources().getIdentifier(jsonObject.getString("background"),"color",getActivity().getPackageName());
+                ivPartnerLogo.setBackgroundColor(ContextCompat.getColor(getContext(),background));
 
                 listDataHeader = new ArrayList<String>();
                 listDataChild = new HashMap<String,List<String>>();
 
-                listDataHeader.add("Nome da Loja");
-                listDataHeader.add("Endereco");
-                listDataHeader.add("Facebook/Site");
-                listDataHeader.add("Descrição");
+                listDataHeader.add("Informações");
+                listDataHeader.add("Contato");
 
                 List<String> name = new ArrayList<String>();
-                name.add(coupons_array.getJSONObject(0).getString("name"));
+                name.add(jsonObject.getString("name"));
                 listDataChild.put(listDataHeader.get(0),name);
 
                 List<String> address = new ArrayList<String>();
-                address.add(coupons_array.getJSONObject(0).getString("address"));
+                address.add(jsonObject.getString("address"));
                 listDataChild.put(listDataHeader.get(1),address);
 
-                List<String> website = new ArrayList<String>();
-                website.add(coupons_array.getJSONObject(0).getString("facebook"));
-                listDataChild.put(listDataHeader.get(2),website);
-
-                // TODO: 5/6/17 VERIFY MAX LENGTH (NUM OF CHARS) TO DESCRIPTION
-                List<String> description = new ArrayList<String>();
-                description.add(coupons_array.getJSONObject(0).getString("description"));
-                listDataChild.put(listDataHeader.get(3),description);
+//                List<String> website = new ArrayList<String>();
+//                website.add(jsonObject.getString("facebook"));
+//                listDataChild.put(listDataHeader.get(2),website);
+//
+//                // TODO: 5/6/17 VERIFY MAX LENGTH (NUM OF CHARS) TO DESCRIPTION
+//                List<String> description = new ArrayList<String>();
+//                description.add(jsonObject.getString("description"));
+//                listDataChild.put(listDataHeader.get(3),description);
 
 
                 listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
@@ -260,8 +274,20 @@ public class PartnerInformation extends Fragment {
         public static final int CONNECTION_TIMEOUT = 10000;
         public static final int READ_TIMEOUT = 15000;
 
+        ProgressDialog pdLoading = new ProgressDialog(getContext());
         HttpURLConnection conn;
         URL url = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tCarregando...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -343,6 +369,12 @@ public class PartnerInformation extends Fragment {
         protected void onPostExecute(String result) {
 
             json = result;
+
+            // Dismiss the progress dialog
+            if (pdLoading.isShowing())
+                pdLoading.dismiss();
+
+            pdLoading = null;
 
             //criar listas de itens
             ArrayList<Offer> offers = new ArrayList<>();

@@ -5,16 +5,17 @@
     android:orientation="vertical"
     android:padding="15dp"
     android:fitsSystemWindows="true"
-    android:background="@drawable/default_background">
+    android:background="@color/bordo_red">
 
     <ImageView
         android:id="@+id/ivLogo"
         android:scaleType="fitCenter"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="260dp"
+        android:layout_height="260dp"
         android:layout_marginBottom="200dp"
         android:layout_centerHorizontal="true"
         android:src="@drawable/cheapit_logo2"
+
         />
 
     <View

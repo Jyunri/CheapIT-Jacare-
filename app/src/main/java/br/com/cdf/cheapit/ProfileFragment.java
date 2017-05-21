@@ -83,7 +83,6 @@ public class ProfileFragment extends Fragment{
         radioGroup1 = (RadioGroup)header.findViewById(R.id.radioGroup1);
         tvMyCouponsTitle = (TextView)header.findViewById(R.id.tvTitle);
 
-
         // Checked change Listener for RadioGroup 1
         radioGroup1.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -94,9 +93,11 @@ public class ProfileFragment extends Fragment{
                 {
                     case R.id.radioAtivos:
                         Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
                         break;
                     case R.id.radioUsed:
                         Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"USED");
                         break;
                     default:
                         break;
@@ -105,8 +106,16 @@ public class ProfileFragment extends Fragment{
         });
 
         //Get offers from user_id
-        //new GetMyOffers().execute(LoginController.CurrentUserId,"ORDERED");
         new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+
+        /* REFRESH BUTTON */
+        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+            }
+        });
 
         //get listView reference
         lvCoupons = (ListView)rootView.findViewById(R.id.lvOffers);
@@ -150,9 +159,13 @@ public class ProfileFragment extends Fragment{
             super.onPreExecute();
 
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 
@@ -255,7 +268,7 @@ public class ProfileFragment extends Fragment{
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
                     //TODO [URGENT] set correct params FROM OFFERS TABLE
-                    Coupon coupon = new Coupon(c.getString("id"),c.getString("offer_id"),c.getString("coupon_code"),"http://media.dontpayfull.com/media/deals/mac-cosmetics-promo-code.jpg");
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"));
                     coupons.add(coupon);
                 }
 

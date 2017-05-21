@@ -75,6 +75,15 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
         // get offers JSON from database (no specific partner nor offer)
         new GetOffers().execute("","");
 
+        /* REFRESH BUTTON */
+        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetOffers().execute("","");
+            }
+        });
+
         //get listView reference
         lvOffers = (ListView)rootView.findViewById(R.id.lvOffers);
 
@@ -120,9 +129,13 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
 
             // TODO: 5/16/17 THIS IS CAUSING WINDOWLEAK [BUG]
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 

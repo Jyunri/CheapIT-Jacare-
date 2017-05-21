@@ -4,24 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@drawable/default_background"
+    android:background="@color/bordo_red"
+    android:paddingBottom="60dp"
     tools:context="br.com.cdf.cheapit.PartnerInformation">
 
 
-    <LinearLayout
+    <ExpandableListView
+        android:id="@+id/lvPartnerInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ExpandableListView>
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        >
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lvPartnerOffers"
-            android:divider="@android:color/transparent"
-            android:dividerHeight="5.0sp">
+        android:paddingTop="30dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:id="@+id/lvPartnerOffers"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="5.0sp">
 
-        </ListView>
-    </LinearLayout>
+    </ListView>
+
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="60dp"-->
+        <!--&gt;-->
+        <!--<ListView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/lvPartnerOffers"-->
+            <!--android:divider="@android:color/transparent"-->
+            <!--android:dividerHeight="5.0sp">-->
+
+        <!--</ListView>-->
+    <!--</LinearLayout>-->
 
 
 </LinearLayout>

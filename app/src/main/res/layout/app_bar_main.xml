@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@drawable/default_background"
+    android:background="@color/bordo_red"
     tools:context="br.com.cdf.cheapit.MainActivity">
 
     <LinearLayout
@@ -21,31 +21,48 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="@color/dark_red"
+                android:layout_height="50dp"
+                android:background="@color/bordo_red"
                 >
 
                 <ImageButton
                     android:id="@+id/ibHomeLogo"
-                    android:layout_width="200dp"
-                    android:layout_height="70dp"
-                    android:layout_margin="2dp"
-                    android:scaleType="centerInside"
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:paddingTop="5dp"
+                    android:scaleType="fitStart"
                     android:background="@null"
                     android:src="@drawable/cheapit_logo3"
                     />
 
-                <ImageButton
-                    android:id="@+id/ibProfile"
-                    android:layout_width="80dp"
+                <LinearLayout
+                    android:layout_width="120dp"
                     android:layout_height="match_parent"
-                    android:padding="20dp"
-                    android:scaleType="fitCenter"
-                    android:background="@drawable/stripped_bg"
-                    android:src="@drawable/ic_account_circle_black_24dp"
-                    android:tint="@color/bege"
+                    android:orientation="horizontal"
                     android:layout_gravity="right"
-                    />
+                    >
+
+                    <ImageButton
+                        android:id="@+id/ibRefresh"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/bege"
+                        android:background="@drawable/ic_refresh_black_24dp"
+                        />
+
+
+                    <ImageButton
+                        android:id="@+id/ibProfile"
+                        android:layout_width="80dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="20dp"
+                        android:padding="20dp"
+                        android:background="@drawable/stripped_bg"
+                        android:src="@drawable/ic_account_circle_black_24dp"
+                        android:tint="@color/bege"
+                        />
+                </LinearLayout>
 
 
             </android.support.v7.widget.Toolbar>

@@ -112,9 +112,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             super.onPreExecute();
 
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 

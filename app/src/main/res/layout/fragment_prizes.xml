@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="br.com.cdf.cheapit.PointsFragment"
-    android:background="@drawable/default_background"
+    android:background="@color/bordo_red"
     android:paddingBottom="60dp">
 
     <ExpandableListView

@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -46,6 +48,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     View rootView;
     String json;
     ListView lvExpiring;
+    LinearLayout llMyCoupons, llOffers, llPlaces, llMap, llPoints, llHelp;
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,9 +61,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_home, container, false);
-        View header = inflater.inflate(R.layout.fragment_home_header,null);
+        //View header = inflater.inflate(R.layout.fragment_home_header,null);
+        View header = inflater.inflate(R.layout.fragment_feed,null);
 
-        // SLIDESHOW
+        /* SLIDESHOW */
         int[] images = new int[]{
                 R.drawable.slide1, R.drawable.slide2
         };
@@ -74,13 +79,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         tabLayout.setupWithViewPager(mViewPager);
 
         // Customizing #CORREQUEDATEMPO text
-        TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
-        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
-        tvCQDT.setTypeface(type);
+//        TextView tvCQDT = (TextView) header.findViewById(R.id.tvCQDT);
+//        Typeface type = Typeface.createFromAsset(getActivity().getAssets(),"fonts/bebas.ttf");
+//        tvCQDT.setTypeface(type);
 
+
+        /* BUTTON GRID*/
+        llMyCoupons = (LinearLayout)header.findViewById(R.id.llMyCoupons);
+        llOffers = (LinearLayout)header.findViewById(R.id.llOffers);
+        llPlaces = (LinearLayout)header.findViewById(R.id.llPlaces);
+        llMap = (LinearLayout)header.findViewById(R.id.llMap);
+        llPoints = (LinearLayout)header.findViewById(R.id.llPoints);
+        llHelp = (LinearLayout)header.findViewById(R.id.llHelp);
+
+        llMyCoupons.setOnClickListener(this);
+        llOffers.setOnClickListener(this);
+        llPlaces.setOnClickListener(this);
+        llMap.setOnClickListener(this);
+        llPoints.setOnClickListener(this);
+        llHelp.setOnClickListener(this);
 
         // Get offers from database (#CORREQUEDATEMPO/expiring only)
         new GetOffers().execute("","");
+
+        /* REFRESH BUTTON */
+        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new GetOffers().execute("","");
+            }
+        });
 
         //Get listview reference
         lvExpiring = (ListView)rootView.findViewById(R.id.lvHome);
@@ -93,8 +122,45 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        Fragment fragment;
+        android.support.v4.app.FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         switch (v.getId()){
-
+            case R.id.llMyCoupons:
+                fragment = new ProfileFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
+            case R.id.llOffers:
+                fragment = new OfferPoolFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
+            case R.id.llPlaces:
+                fragment = new PartnerPoolFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
+            case R.id.llMap:
+                fragment = new MapFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
+            case R.id.llPoints:
+                fragment = new PointsFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
+            case R.id.llHelp:
+                fragment = new HelpFragment();
+                fragmentTransaction
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                break;
         }
     }
 
@@ -113,9 +179,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             super.onPreExecute();
 
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 
