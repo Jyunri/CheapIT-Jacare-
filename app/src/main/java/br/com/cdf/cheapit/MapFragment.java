@@ -115,7 +115,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             try {
                 pdLoading.setMessage("\tCarregando...");
                 pdLoading.setCancelable(false);
-                pdLoading.show();
+                //pdLoading.show();
             }catch (Exception e){
                 Log.e("ProgressDialog",e.getMessage());
             }
@@ -163,7 +163,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
             } catch (IOException e1) {
                 e1.printStackTrace();
-                Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
 
@@ -188,7 +187,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                     return (result.toString());
 
                 } else {
-                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
                     return ("unsuccessful");
                 }
 
