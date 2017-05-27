@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,21 +44,21 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PartnerInformation extends Fragment {
+public class OfferInformation2 extends Fragment {
 
     View rootview;
-    public String partner_id = "";
+    public String offer_id = "";
     String json;
-    ImageView ivPartnerLogo;
-    TextView tvPartnerName, tvPartnerAddress, tvPartnerDescription, tvPartnerFacebook;
-    ListView lvPartnerOffers;
+    ImageView ivOfferVoucher;
+    Button btGetCoupon;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
-    public PartnerInformation() {
+
+    public OfferInformation2() {
         // Required empty public constructor
     }
 
@@ -66,21 +67,17 @@ public class PartnerInformation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootview = inflater.inflate(R.layout.fragment_partner_information, container, false);
-        View header = inflater.inflate(R.layout.fragment_partner_information_header,null);
+        rootview = inflater.inflate(R.layout.fragment_offer_information, container, false);
+        View header = inflater.inflate(R.layout.fragment_offer_information_header,null);
 
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            partner_id = bundle.getString("partner_id", "0");
+            offer_id = bundle.getString("offer_id", "0");
         }
 
-        // Get ListView reference
-        lvPartnerOffers = (ListView)rootview.findViewById(R.id.lvPartnerOffers);
 
-
-
-        ivPartnerLogo = (ImageView)header.findViewById(R.id.ivPartnerLogo);
+        ivOfferVoucher = (ImageView)header.findViewById(R.id.ivOfferVoucher);
 
 //        tvPartnerName = (TextView)header.findViewById(R.id.tvPartnerName);
 //        tvPartnerAddress = (TextView)header.findViewById(R.id.tvPartnerAddress);
@@ -88,31 +85,39 @@ public class PartnerInformation extends Fragment {
 //        tvPartnerFacebook = (TextView)header.findViewById(R.id.tvPartnerFacebook);
 //
 
-        expListView = (ExpandableListView) rootview.findViewById(R.id.lvPartnerInformation);
+        expListView = (ExpandableListView) rootview.findViewById(R.id.lvOfferInformation);
 
-        // Get Partner Information in a new thread
-        new GetPartnerInformation().execute(partner_id,"");
+        // Get Offer Information in a new thread
+        new GetOfferInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"", offer_id);
 
         expListView.addHeaderView(header);
         //lvPartnerOffers.addHeaderView(test);
 
 
-        // Get Partner Offers in a second thread
-        new GetPartnerOffers().execute(partner_id,"");
+        btGetCoupon = (Button)rootview.findViewById(R.id.btGetCoupon);
+
+        // Get Coupon in a second thread
+        btGetCoupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Coupon for user",String.valueOf(LoginController.CurrentUserId));
+                new GetCoupon().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,String.valueOf(LoginController.CurrentUserId),offer_id);
+            }
+        });
 
         /* REFRESH BUTTON */
         ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetPartnerOffers().execute(partner_id,"");
+                new GetOfferInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"", offer_id);
             }
         });
 
         return rootview;
     }
 
-    private class GetPartnerInformation extends AsyncTask<String,String,String> {
+    private class GetOfferInformation extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -136,7 +141,7 @@ public class PartnerInformation extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL(LoginController.partnerURL);
+                url = new URL(LoginController.offerURL);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -159,7 +164,167 @@ public class PartnerInformation extends Fragment {
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.i("Partner Query",query);
+                Log.i("Offer Query",query);
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return "exception";
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "exception";
+            } finally {
+                conn.disconnect();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // Dismiss the progress dialog
+            if (pdLoading.isShowing())
+                pdLoading.dismiss();
+
+            json = result;
+
+            try {
+                JSONObject jsonObj = new JSONObject(json);
+                // Getting JSON Array node
+                JSONArray offers_array = jsonObj.getJSONArray("offers_array");
+                Log.i("Tamanho offer_array",String.valueOf(offers_array.length()));
+
+                JSONObject jsonObject = offers_array.getJSONObject(0);
+
+//                expires_at.setText("* Validade: "+offers_array.getJSONObject(0).getString("expires_at"));
+//                partner.setText("* Loja: "+offers_array.getJSONObject(0).getString("partner_name"));
+//                description.setText("* Descrição do cupom: "+offers_array.getJSONObject(0).getString("description"));
+//                if(!offers_array.getJSONObject(0).getString("rules").isEmpty()){
+//                    offer_rules.setText(offers_array.getJSONObject(0).getString("rules"));
+//                }
+
+                Glide.with(getContext()).load(jsonObject.getString("image")).into(ivOfferVoucher);
+                ivOfferVoucher.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.red));
+
+                listDataHeader = new ArrayList<String>();
+                listDataChild = new HashMap<String,List<String>>();
+
+                listDataHeader.add("Informações Gerais");
+                listDataHeader.add("Descrição do cupom");
+                listDataHeader.add("Avisos e Regras");
+
+                List<String> info = new ArrayList<String>();
+                info.add(jsonObject.getString("partner_name"));
+                listDataChild.put(listDataHeader.get(0),info);
+
+                List<String> address = new ArrayList<String>();
+                address.add(jsonObject.getString("description"));
+                listDataChild.put(listDataHeader.get(1),address);
+
+                List<String> rules = new ArrayList<String>();
+                rules.add(jsonObject.getString("rules"));
+                listDataChild.put(listDataHeader.get(2),rules);
+
+                listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
+
+                //setting list adapter
+                expListView.setAdapter(listAdapter);
+
+                //expand first box by default
+                expListView.expandGroup(0);
+
+
+            }catch(Exception e){
+                Log.e("erro",e.getMessage());
+            }
+            Log.i("Offer Result",result);
+
+        }
+    }
+
+    private class GetCoupon extends AsyncTask<String,String,String> {
+
+        public static final int CONNECTION_TIMEOUT=10000;
+        public static final int READ_TIMEOUT=15000;
+
+        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        HttpURLConnection conn;
+        URL url = null;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            //this method will be running on UI thread
+            pdLoading.setMessage("\tCarregando...");
+            pdLoading.setCancelable(false);
+            pdLoading.show();
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // Enter URL address where your php file resides
+                url = new URL(LoginController.new_couponURL);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
+                return "exception";
+            }
+            try {
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("user_id", params[0])
+                        .appendQueryParameter("offer_id", params[1]);
+                String query = builder.build().getEncodedQuery();
+                Log.i("Offer Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -217,211 +382,21 @@ public class PartnerInformation extends Fragment {
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
 
-            json = result;
-
-            try {
-                JSONObject jsonObj = new JSONObject(json);
-                // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("partners_array");
-                Log.i("Tamanho do array",String.valueOf(coupons_array.length()));
-
-                JSONObject jsonObject = coupons_array.getJSONObject(0);
-
-                Glide.with(getContext()).load(jsonObject.getString("logo_url")).into(ivPartnerLogo);
-                int background = getActivity().getResources().getIdentifier(jsonObject.getString("background"),"color",getActivity().getPackageName());
-                ivPartnerLogo.setBackgroundColor(ContextCompat.getColor(getContext(),background));
-
-                listDataHeader = new ArrayList<String>();
-                listDataChild = new HashMap<String,List<String>>();
-
-                listDataHeader.add("Informações");
-                listDataHeader.add("Contato");
-
-                List<String> name = new ArrayList<String>();
-                name.add(jsonObject.getString("name"));
-                listDataChild.put(listDataHeader.get(0),name);
-
-                List<String> address = new ArrayList<String>();
-                address.add(jsonObject.getString("address"));
-                listDataChild.put(listDataHeader.get(1),address);
-
-//                List<String> website = new ArrayList<String>();
-//                website.add(jsonObject.getString("facebook"));
-//                listDataChild.put(listDataHeader.get(2),website);
-//
-//                // TODO: 5/6/17 VERIFY MAX LENGTH (NUM OF CHARS) TO DESCRIPTION
-//                List<String> description = new ArrayList<String>();
-//                description.add(jsonObject.getString("description"));
-//                listDataChild.put(listDataHeader.get(3),description);
-
-
-                listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
-
-                //setting list adapter
-                expListView.setAdapter(listAdapter);
-
-            }catch(Exception e){
-                //Log.e("erro",e.getMessage());
+            if(result.contains("success")){
+                Toast.makeText(getContext(),"Cupom criado com sucesso! Verifique no seu PERFIL!",Toast.LENGTH_SHORT).show();
             }
-            Log.i("Partner_array",result);
-
-        }
-    }
-
-    private class GetPartnerOffers extends AsyncTask<String,String,String> {
-
-        public static final int CONNECTION_TIMEOUT = 10000;
-        public static final int READ_TIMEOUT = 15000;
-
-        ProgressDialog pdLoading = new ProgressDialog(getContext());
-        HttpURLConnection conn;
-        URL url = null;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
-
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                // Enter URL address where your php file resides
-                url = new URL(LoginController.offerURL);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-                return "exception";
+            else if(result.contains("Duplicate entry")){
+                Toast.makeText(getContext(),"Você já gerou esse cupom!",Toast.LENGTH_SHORT).show();
             }
-            try {
-                // Setup HttpURLConnection class to send and receive data from php and mysql
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setReadTimeout(READ_TIMEOUT);
-                conn.setConnectTimeout(CONNECTION_TIMEOUT);
-                conn.setRequestMethod("POST");
-
-                // setDoInput and setDoOutput method depict handling of both send and receive
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-
-                // Append parameters to URL
-                Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("partner_id", params[0])
-                        .appendQueryParameter("offer_id", params[1]);
-                String query = builder.build().getEncodedQuery();
-                Log.i("Partner Query", query);
-
-                // Open connection for sending data
-                OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
-                writer.write(query);
-                writer.flush();
-                writer.close();
-                os.close();
-                conn.connect();
-
-            } catch (IOException e1) {
-                e1.printStackTrace();
-                return "exception";
+            else if(result.contains("Esgotada")){
+                Toast.makeText(getContext(),"Oferta Esgotada!",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(getContext(),"Desculpe! Cupom nao pôde ser criado..",Toast.LENGTH_SHORT).show();
             }
 
-            try {
+            Log.i("Result",result);
 
-                int response_code = conn.getResponseCode();
-
-                // Check if successful connection made
-                if (response_code == HttpURLConnection.HTTP_OK) {
-
-                    // Read data sent from server
-                    InputStream input = conn.getInputStream();
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                    StringBuilder result = new StringBuilder();
-                    String line;
-
-                    while ((line = reader.readLine()) != null) {
-                        result.append(line);
-                    }
-
-                    // Pass data to onPostExecute method
-                    return (result.toString());
-
-                } else {
-                    return ("unsuccessful");
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                return "exception";
-            } finally {
-                conn.disconnect();
-            }
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            json = result;
-
-            // Dismiss the progress dialog
-            if (pdLoading.isShowing())
-                pdLoading.dismiss();
-
-            pdLoading = null;
-
-            //criar listas de itens
-            ArrayList<Offer> offers = new ArrayList<>();
-
-
-            try {
-                JSONObject jsonObj = new JSONObject(json);
-                // Getting JSON Array node
-                JSONArray coupons_array = jsonObj.getJSONArray("offers_array");
-                Log.i("Tamanho do offer_array", String.valueOf(coupons_array.length()));
-
-                for (int j = 0; j < coupons_array.length(); j++) {
-                    JSONObject c = coupons_array.getJSONObject(j);
-                    Offer offer = new Offer(c.getString("id"), c.getString("partner_name"), c.getString("description"), c.getString("image"));
-                    offers.add(offer);
-                }
-
-            } catch (Exception e) {
-                Log.e("erro", e.getMessage());
-            }
-            Log.i("Result", result);
-
-            //instanciar o nosso adapter enviando como argumento nossas listas ao construtor
-            //ListAdapter listAdapter = new CouponListAdapter(getContext(), couponOffer_id, clientes,descricao, imagens);
-            ListAdapter listAdapter = new OfferListAdapter(getContext(), offers);
-
-            //setar o adapter da listview para o nosso adapter
-            lvPartnerOffers.setAdapter(listAdapter);
-
-            //eventos ao clicar nos itens da lista
-            lvPartnerOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    Offer offer =  (Offer)parent.getItemAtPosition(position);
-                    Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
-                    Bundle bundle = new Bundle();
-                    bundle.putString("offer_id", offer.id);
-                    OfferInformation offerInformation = new OfferInformation();
-                    offerInformation.setArguments(bundle);
-                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    couponInformationfragmentTransaction
-                            .replace(R.id.fragment_container, offerInformation)
-                            .addToBackStack(null)
-                            .commit();
-                }
-
-            });
         }
     }
 }

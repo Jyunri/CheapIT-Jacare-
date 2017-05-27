@@ -42,6 +42,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         final String childText = (String) getChild(groupPosition, childPosition);
 
+        // INFLATE THE ITEM INSIDE THE EXPANDED GROUP
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

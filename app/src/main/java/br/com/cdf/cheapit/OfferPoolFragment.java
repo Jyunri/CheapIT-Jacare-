@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -36,11 +38,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTextListener {
+public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTextListener, View.OnTouchListener {
 
     TextView tvMyOffersTitle;
     ListView lvOffers;
@@ -94,6 +98,10 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
             }
         });
 
+
+        //HIDE KEYBOARD IF BACKGROUND IS CLICKED
+        rootView.setOnTouchListener(this);
+
         return rootView;
     }
 
@@ -111,6 +119,15 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
         Log.i("OfferSearch","TextChange "+newText);
         listAdapter.filter(newText);
         return false;
+    }
+
+    // TODO: 5/27/17 DO THE SAME WITH ALL FRAG. WITH SEARCHVIEW
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        return true;
     }
 
     // TODO: 5/16/17 MAKE ALWAYS RETURN IN NEAREST LOCATION SORT 
@@ -260,7 +277,7 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
                     Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString("offer_id", offer.id);
-                    OfferInformation offerInformation = new OfferInformation();
+                    OfferInformation2 offerInformation = new OfferInformation2();
                     offerInformation.setArguments(bundle);
                     android.support.v4.app.FragmentTransaction offerInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     offerInformationfragmentTransaction

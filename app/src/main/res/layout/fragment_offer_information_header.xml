@@ -1,0 +1,82 @@
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bordo_red"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <ImageView
+        android:id="@+id/ivOfferVoucher"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:padding="20dp"
+        android:src="@drawable/cheapit_logo3"
+        android:background="@color/light_grey"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@android:color/black"
+        />
+
+    <!--<TextView-->
+        <!--android:id="@+id/tvPartnerName"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:textColor="@color/bege"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Partner name" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/tvPartnerAddress"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="5dp"-->
+        <!--android:textColor="@color/bege"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Partner address" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/tvPartnerDescription"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="5dp"-->
+
+        <!--android:textColor="@color/bege"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Partner Description" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/tvPartnerFacebook"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/bege"-->
+        <!--android:textStyle="bold"-->
+        <!--android:text="Partner Facebook"/>-->
+
+
+    <!--<ListView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:paddingBottom="20dp"-->
+        <!--android:layout_marginLeft="10dp"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:id="@+id/lvPartnerOffers"-->
+        <!--android:divider="@android:color/transparent"-->
+        <!--android:dividerHeight="5.0sp">-->
+
+    <!--</ListView>-->
+
+    <!--<ExpandableListView-->
+        <!--android:id="@+id/lvPartnerInformation"-->
+        <!--android:layout_marginTop="10dp"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="90dp" >-->
+    <!--</ExpandableListView>-->
+
+</LinearLayout>
