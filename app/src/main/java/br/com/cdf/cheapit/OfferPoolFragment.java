@@ -121,7 +121,7 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
         return false;
     }
 
-    // TODO: 5/27/17 DO THE SAME WITH ALL FRAG. WITH SEARCHVIEW
+    // TODO: 5/27/17 LOOK FOR BETTER WAY TO DISABLE SOFT KEYBOARD
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);

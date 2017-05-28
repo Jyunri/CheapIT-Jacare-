@@ -52,8 +52,6 @@ public class ProfileFragment extends Fragment{
     ListView lvCoupons;
 
 
-    // TODO: 5/6/17 VERIFY IF THE ACTIVE/USED BUTTON IS NEEDED [UX]
-
     public ProfileFragment() {
         // Required empty public constructor
     }
@@ -67,16 +65,15 @@ public class ProfileFragment extends Fragment{
         View header = inflater.inflate(R.layout.fragment_profile,null);
 
         // Header (profile)
-        if(LoginController.LoginMethod.equals("facebook")) {
-            ivProfile = (ImageView)header.findViewById(R.id.ivAvatar);
-            Glide.with(getContext())
-                    .load(LoginController.getCurrentAvatar())
-                    .transform(new CircleTransform(getContext()))
-                    .override(220,140)
-                    .into(ivProfile);
-            tvUsername = (TextView)header.findViewById(R.id.tvUsername);
-            tvUsername.setText(LoginController.getCurrentUsername());
-        }
+        ivProfile = (ImageView)header.findViewById(R.id.ivAvatar);
+        Glide.with(getContext())
+                .load(LoginController.getCurrentAvatar())
+                .transform(new CircleTransform(getContext()))
+                .override(220,140)
+                .into(ivProfile);
+        tvUsername = (TextView)header.findViewById(R.id.tvUsername);
+        tvUsername.setText(LoginController.getCurrentUsername());
+
 
         tvCheapitPoints = (TextView)header.findViewById(R.id.tvCheapitPoints);
 
@@ -93,11 +90,11 @@ public class ProfileFragment extends Fragment{
                 {
                     case R.id.radioAtivos:
                         Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
-                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","");
                         break;
                     case R.id.radioUsed:
                         Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
-                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"USED");
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"USED","");
                         break;
                     default:
                         break;
@@ -106,14 +103,14 @@ public class ProfileFragment extends Fragment{
         });
 
         //Get offers from user_id
-        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","");
 
         /* REFRESH BUTTON */
         ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED");
+                new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","");
             }
         });
 
@@ -193,7 +190,8 @@ public class ProfileFragment extends Fragment{
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("user_id", params[0])
-                        .appendQueryParameter("status", params[1]);
+                        .appendQueryParameter("status", params[1])
+                        .appendQueryParameter("coupon_id", params[2]);
                 String query = builder.build().getEncodedQuery();
                 Log.i("Profile Query",query);
 
@@ -267,8 +265,7 @@ public class ProfileFragment extends Fragment{
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    //TODO [URGENT] set correct params FROM OFFERS TABLE
-                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"));
+                    Coupon coupon = new Coupon(c.getString("coupon_id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"));
                     coupons.add(coupon);
                 }
 
@@ -283,25 +280,25 @@ public class ProfileFragment extends Fragment{
             lvCoupons.setAdapter(listAdapter);
 
 
-//            //eventos ao clicar nos itens da lista
-//            lvOffers.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, final View view,
-//                                        int position, long id) {
-//                    Offer offer =  (Offer)parent.getItemAtPosition(position);
-//                    Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("offer_id", offer.id);
-//                    OfferInformation offerInformation = new OfferInformation();
-//                    offerInformation.setArguments(bundle);
-//                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-//                    couponInformationfragmentTransaction
-//                            .replace(R.id.fragment_container, offerInformation)
-//                            .addToBackStack(null)
-//                            .commit();
-//                }
-//
-//            });
+            //CLICKING ON LISTVIEW
+            lvCoupons.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, final View view,
+                                        int position, long id) {
+                    Coupon coupon =  (Coupon)parent.getItemAtPosition(position);
+                    Toast.makeText(getContext(),coupon.partner,Toast.LENGTH_SHORT).show();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("coupon_id", coupon.id);
+                    CouponInformation couponInformation = new CouponInformation();
+                    couponInformation.setArguments(bundle);
+                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    couponInformationfragmentTransaction
+                            .replace(R.id.fragment_container, couponInformation)
+                            .addToBackStack(null)
+                            .commit();
+                }
+
+            });
         }
     }
 }

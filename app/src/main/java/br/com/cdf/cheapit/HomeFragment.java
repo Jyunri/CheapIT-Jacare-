@@ -287,7 +287,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 for (int j = 0; j < offers_array.length(); j++) {
                     JSONObject c = offers_array.getJSONObject(j);
 
-                    //filter: only offers with expirity before one month TODO: TRY TO SET THIS ON SQL
+                    //filter: only offers with expirity before one month TODO: TRY TO SET THIS ON SQL [BD]
                     // TODO: 5/9/17 MODIFY NAME [PD]
                     SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
                     Date expires_at = dateFormatter.parse(c.getString("expires_at"));   //get date string from db and convert to Date

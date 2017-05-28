@@ -115,13 +115,12 @@ public class MainActivity extends AppCompatActivity
 //                .replace(R.id.fragment_container, fragment)
 //                .commit();
 
-        // Handle Drawable Menu TODO: ENABLE DRAWER IN NEXT VERSIONS
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
 
-        //DISABLE DRAWER IN FIRST VERSION
+        //DISABLE DRAWER
         //drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         //toggle.setDrawerIndicatorEnabled(false); //disable "hamburger to arrow" drawable

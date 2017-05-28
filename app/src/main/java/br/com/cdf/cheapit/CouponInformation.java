@@ -2,6 +2,7 @@ package br.com.cdf.cheapit;
 
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,17 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+
+import net.glxn.qrgen.android.QRCode;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,21 +43,22 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OfferInformation2 extends Fragment {
+public class CouponInformation extends Fragment {
 
     View rootview;
-    public String offer_id = "";
+    public String coupon_id = "";
     String json;
     ImageView ivOfferVoucher;
-    Button btGetCoupon;
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
 
+    ImageView ivQrcode;
 
-    public OfferInformation2() {
+
+    public CouponInformation() {
         // Required empty public constructor
     }
 
@@ -67,16 +67,20 @@ public class OfferInformation2 extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootview = inflater.inflate(R.layout.fragment_offer_information, container, false);
-        View header = inflater.inflate(R.layout.fragment_offer_information_header,null);
+        rootview = inflater.inflate(R.layout.fragment_coupon_information2, container, false);
+        View header = inflater.inflate(R.layout.fragment_coupon_information_header,null);
+        View footer = inflater.inflate(R.layout.fragment_coupon_information_footer,null);
+
 
         Bundle bundle = this.getArguments();
         if (bundle != null) {
-            offer_id = bundle.getString("offer_id", "0");
+            coupon_id = bundle.getString("coupon_id", "0");
         }
 
 
         ivOfferVoucher = (ImageView)header.findViewById(R.id.ivOfferVoucher);
+        ivQrcode =(ImageView) footer.findViewById(R.id.ivQrcode);
+
 
 //        tvPartnerName = (TextView)header.findViewById(R.id.tvPartnerName);
 //        tvPartnerAddress = (TextView)header.findViewById(R.id.tvPartnerAddress);
@@ -84,39 +88,30 @@ public class OfferInformation2 extends Fragment {
 //        tvPartnerFacebook = (TextView)header.findViewById(R.id.tvPartnerFacebook);
 //
 
-        expListView = (ExpandableListView) rootview.findViewById(R.id.lvOfferInformation);
+        expListView = (ExpandableListView) rootview.findViewById(R.id.lvCouponInformation);
+
 
         // Get Offer Information in a new thread
-        new GetOfferInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"", offer_id);
+        new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id);
 
         expListView.addHeaderView(header);
+        expListView.addFooterView(footer);
         //lvPartnerOffers.addHeaderView(test);
 
-
-        btGetCoupon = (Button)rootview.findViewById(R.id.btGetCoupon);
-
-        // Get Coupon in a second thread
-        btGetCoupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("Coupon for user",String.valueOf(LoginController.CurrentUserId));
-                new GetCoupon().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,String.valueOf(LoginController.CurrentUserId),offer_id);
-            }
-        });
 
         /* REFRESH BUTTON */
         ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetOfferInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"", offer_id);
+                new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id);
             }
         });
 
         return rootview;
     }
 
-    private class GetOfferInformation extends AsyncTask<String,String,String> {
+    private class GetCouponInformation extends AsyncTask<String,String,String> {
 
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
@@ -140,7 +135,7 @@ public class OfferInformation2 extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL(LoginController.offerURL);
+                url = new URL(LoginController.my_couponURL);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -160,10 +155,11 @@ public class OfferInformation2 extends Fragment {
 
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
-                        .appendQueryParameter("partner_id", params[0])
-                        .appendQueryParameter("offer_id", params[1]);
+                        .appendQueryParameter("user_id", params[0])
+                        .appendQueryParameter("status", params[1])
+                        .appendQueryParameter("coupon_id", params[2]);
                 String query = builder.build().getEncodedQuery();
-                Log.i("Offer Query",query);
+                Log.i("Coupon Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -225,10 +221,10 @@ public class OfferInformation2 extends Fragment {
             try {
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
-                JSONArray offers_array = jsonObj.getJSONArray("offers_array");
-                Log.i("Tamanho offer_array",String.valueOf(offers_array.length()));
+                JSONArray coupon_array = jsonObj.getJSONArray("coupons_array");
+                Log.i("Tamanho coupon_array",String.valueOf(coupon_array.length()));
 
-                JSONObject jsonObject = offers_array.getJSONObject(0);
+                JSONObject jsonObject = coupon_array.getJSONObject(0);
 
 //                expires_at.setText("* Validade: "+offers_array.getJSONObject(0).getString("expires_at"));
 //                partner.setText("* Loja: "+offers_array.getJSONObject(0).getString("partner_name"));
@@ -237,6 +233,7 @@ public class OfferInformation2 extends Fragment {
 //                    offer_rules.setText(offers_array.getJSONObject(0).getString("rules"));
 //                }
 
+                // TODO: 5/28/17 CHANGE IN DATABASE IMAGE -> VOUCHER
                 Glide.with(getContext()).load(jsonObject.getString("image")).into(ivOfferVoucher);
                 ivOfferVoucher.setBackgroundColor(ContextCompat.getColor(getContext(),R.color.red));
 
@@ -246,30 +243,41 @@ public class OfferInformation2 extends Fragment {
                 listDataHeader.add("Informações Gerais");
                 listDataHeader.add("Descrição do Cupom");
                 listDataHeader.add("Avisos e Regras");
+                listDataHeader.add("Código do Cupom");
 
+
+
+                //OFFER DETAILS
                 String
                         partner_name = jsonObject.getString("partner_name"),
                         expires_at = jsonObject.getString("expires_at"),
-                        availability = jsonObject.getString("availability"),
                         description = jsonObject.getString("description"),
                         custom_rules = jsonObject.getString("rules")
                 ;
 
+                //COUPON DETAILS
+                String
+                        coupon_code = jsonObject.getString("coupon_code");
+                ;
+
                 String default_rules = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
+                List<String> info_array = new ArrayList<String>();
+                info_array.add(partner_name+"\n* Válido até: "+expires_at);
+                listDataChild.put(listDataHeader.get(0),info_array);
 
-                List<String> info = new ArrayList<String>();
-                info.add(partner_name+"\n* Válido até: "+expires_at+"\n* Cupons Disponíveis: "+availability);
-                listDataChild.put(listDataHeader.get(0),info);
+                List<String> description_array = new ArrayList<String>();
+                description_array.add(description);
+                listDataChild.put(listDataHeader.get(1),description_array);
 
-                List<String> address = new ArrayList<String>();
-                address.add(description);
-                listDataChild.put(listDataHeader.get(1),address);
+                List<String> rules_array = new ArrayList<String>();
+                if(custom_rules.isEmpty())  rules_array.add(default_rules);
+                else    rules_array.add(custom_rules);
+                listDataChild.put(listDataHeader.get(2),rules_array);
 
-                List<String> rules = new ArrayList<String>();
-                if(custom_rules.isEmpty())  rules.add(default_rules);
-                else    rules.add(custom_rules);
-                listDataChild.put(listDataHeader.get(2),rules);
+                List<String> coupon_code_array = new ArrayList<String>();
+                coupon_code_array.add(coupon_code);
+                listDataChild.put(listDataHeader.get(3),coupon_code_array);
 
                 listAdapter = new ExpandableListAdapter(getContext(), listDataHeader, listDataChild);
 
@@ -278,6 +286,11 @@ public class OfferInformation2 extends Fragment {
 
                 //expand first box by default
                 expListView.expandGroup(0);
+
+                // TODO: 5/28/17 ADD QR CODE BASED ON CODE STRING
+                Bitmap qrBitmap = QRCode.from(coupon_code).bitmap();
+
+                ivQrcode.setImageBitmap(qrBitmap);
 
 
             }catch(Exception e){
@@ -288,12 +301,11 @@ public class OfferInformation2 extends Fragment {
         }
     }
 
-    private class GetCoupon extends AsyncTask<String,String,String> {
-
+    private class GetMyOffers extends AsyncTask<String,String,String> {
         public static final int CONNECTION_TIMEOUT=10000;
         public static final int READ_TIMEOUT=15000;
 
-        ProgressDialog pdLoading = new ProgressDialog(getContext());
+        ProgressDialog pdLoading = new ProgressDialog(getActivity());
         HttpURLConnection conn;
         URL url = null;
 
@@ -302,9 +314,13 @@ public class OfferInformation2 extends Fragment {
             super.onPreExecute();
 
             //this method will be running on UI thread
-            pdLoading.setMessage("\tCarregando...");
-            pdLoading.setCancelable(false);
-            pdLoading.show();
+            try {
+                pdLoading.setMessage("\tCarregando...");
+                pdLoading.setCancelable(false);
+                pdLoading.show();
+            }catch (Exception e){
+                Log.e("ProgressDialog",e.getMessage());
+            }
 
         }
 
@@ -312,11 +328,10 @@ public class OfferInformation2 extends Fragment {
         protected String doInBackground(String... params) {
             try {
                 // Enter URL address where your php file resides
-                url = new URL(LoginController.new_couponURL);
+                url = new URL(LoginController.my_couponURL);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
             try {
@@ -333,9 +348,10 @@ public class OfferInformation2 extends Fragment {
                 // Append parameters to URL
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("user_id", params[0])
-                        .appendQueryParameter("offer_id", params[1]);
+                        .appendQueryParameter("status", params[1])
+                        .appendQueryParameter("coupon_id", params[2]);
                 String query = builder.build().getEncodedQuery();
-                Log.i("Offer Query",query);
+                Log.i("Coupon Query",query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -349,7 +365,6 @@ public class OfferInformation2 extends Fragment {
 
             } catch (IOException e1) {
                 e1.printStackTrace();
-                Toast.makeText(getContext(),"e1",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
 
@@ -393,19 +408,28 @@ public class OfferInformation2 extends Fragment {
             if (pdLoading.isShowing())
                 pdLoading.dismiss();
 
-            if(result.contains("success")){
-                Toast.makeText(getContext(),"Cupom criado com sucesso! Verifique no seu PERFIL!",Toast.LENGTH_SHORT).show();
-            }
-            else if(result.contains("Duplicate entry")){
-                Toast.makeText(getContext(),"Você já gerou esse cupom!",Toast.LENGTH_SHORT).show();
-            }
-            else if(result.contains("Esgotada")){
-                Toast.makeText(getContext(),"Oferta Esgotada!",Toast.LENGTH_SHORT).show();
-            }
-            else{
-                Toast.makeText(getContext(),"Desculpe! Cupom nao pôde ser criado..",Toast.LENGTH_SHORT).show();
-            }
+            pdLoading = null;
 
+            String json = result;
+
+            //criar listas de itens
+            ArrayList<Coupon> coupons = new ArrayList<>();
+
+            try {
+                JSONObject jsonObj = new JSONObject(json);
+                // Getting JSON Array node
+                JSONArray coupons_array = jsonObj.getJSONArray("coupons_array");
+                Log.i("Tamanho do coupon_array",String.valueOf(coupons_array.length()));
+
+                for (int j = 0; j < coupons_array.length(); j++) {
+                    JSONObject c = coupons_array.getJSONObject(j);
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"));
+                    coupons.add(coupon);
+                }
+
+            }catch(Exception e){
+                Log.e("erro",e.getMessage());
+            }
             Log.i("Result",result);
 
         }

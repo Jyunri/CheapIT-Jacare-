@@ -12,6 +12,6 @@
         android:paddingBottom="5dp"
         android:paddingLeft="50dp"
         android:textColor="@color/bege"
-        android:text="assadas"/>
+        android:lineSpacingMultiplier="1.4"/>
 
 </LinearLayout>

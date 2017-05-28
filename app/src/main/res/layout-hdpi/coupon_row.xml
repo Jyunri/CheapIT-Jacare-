@@ -10,13 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         >
-        <!--TODO CHECK IF LEGACY-->
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/tvOfferId"-->
-            <!--android:visibility="gone"/>-->
-
         <ImageView
             android:layout_width="160dp"
             android:layout_height="100dp"

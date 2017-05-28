@@ -106,7 +106,6 @@ public class PartnerPoolFragment extends Fragment implements SearchView.OnQueryT
     }
 
 
-    // TODO: 5/8/17 VERIFY THE NEED OF TEXTCHANGE LISTENER [UX]
     @Override
     public boolean onQueryTextSubmit(String query) {
         Log.i("Search","Submit "+query);
