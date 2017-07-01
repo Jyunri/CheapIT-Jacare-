@@ -92,7 +92,7 @@ public class CouponInformation extends Fragment {
 
 
         // Get Offer Information in a new thread
-        new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id,"");
+        new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","", coupon_id,"");
 
         expListView.addHeaderView(header);
         expListView.addFooterView(footer);
@@ -104,7 +104,7 @@ public class CouponInformation extends Fragment {
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id,"");
+                new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","", coupon_id,"");
             }
         });
 
@@ -423,7 +423,7 @@ public class CouponInformation extends Fragment {
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"),c.getString("expires_at"));
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"),c.getString("expires_at"),c.getString("status"),c.getString("points"));
                     coupons.add(coupon);
                 }
 

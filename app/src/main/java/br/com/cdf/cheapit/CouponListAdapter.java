@@ -41,7 +41,6 @@ public class CouponListAdapter extends ArrayAdapter<Coupon> {
         TextView tvItem = (TextView)customView.findViewById(R.id.tvName);
         tvItem.setText(item);
 
-        // TODO: 5/18/17 VERIFY NEED OF DESCRIPTION [UX]
         //String descricao = coupons.get(position).description;
         //TextView tvDescricao = (TextView)customView.findViewById(R.id.tvDescription);
         //tvDescricao.setText(descricao);

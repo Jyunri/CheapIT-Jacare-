@@ -3,6 +3,7 @@ package br.com.cdf.cheapit;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
@@ -23,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -72,6 +74,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     LatLng latLng;
     Marker currLocationMarker;
 
+    Context mContext;
 
     TextView tvMap;
 
@@ -79,12 +82,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     String json;
     ArrayList<Partner> partners;
 
-    HashMap<Marker,String> markerHash = new HashMap<>();
+    HashMap<Marker, String> markerHash = new HashMap<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_guide, container, false);
-        tvMap = (TextView)rootView.findViewById(R.id.tvMap);
+        tvMap = (TextView) rootView.findViewById(R.id.tvMap);
 
         //get partners from database
         partners = new ArrayList<>();
@@ -98,10 +101,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
     }
 
     //database connection methods
-    private class GetPartners extends AsyncTask<String,String,String>{
+    private class GetPartners extends AsyncTask<String, String, String> {
 
-        public static final int CONNECTION_TIMEOUT=10000;
-        public static final int READ_TIMEOUT=15000;
+        public static final int CONNECTION_TIMEOUT = 10000;
+        public static final int READ_TIMEOUT = 15000;
 
         ProgressDialog pdLoading = new ProgressDialog(getContext());
         HttpURLConnection conn;
@@ -116,8 +119,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 pdLoading.setMessage("\tCarregando...");
                 pdLoading.setCancelable(false);
                 //pdLoading.show();
-            }catch (Exception e){
-                Log.e("ProgressDialog",e.getMessage());
+            } catch (Exception e) {
+                Log.e("ProgressDialog", e.getMessage());
             }
 
         }
@@ -130,7 +133,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Malformed", Toast.LENGTH_SHORT).show();
                 return "exception";
             }
             try {
@@ -149,7 +152,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                         .appendQueryParameter("partner_id", params[0])
                         .appendQueryParameter("offer_id", params[1]);
                 String query = builder.build().getEncodedQuery();
-                Log.i("Map Query",query);
+                Log.i("Map Query", query);
 
                 // Open connection for sending data
                 OutputStream os = conn.getOutputStream();
@@ -211,11 +214,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                 JSONObject jsonObj = new JSONObject(json);
                 // Getting JSON Array node
                 JSONArray partners_array = jsonObj.getJSONArray("partners_array");
-                Log.i("Tamanho partner_array",String.valueOf(partners_array.length()));
+                Log.i("Tamanho partner_array", String.valueOf(partners_array.length()));
 
                 for (int j = 0; j < partners_array.length(); j++) {
                     JSONObject p = partners_array.getJSONObject(j);
-                    Partner partner = new Partner(p.getString("id"),p.getString("name"),p.getString("address"),p.getString("latitude"),p.getString("longitude"));
+                    Partner partner = new Partner(p.getString("id"), p.getString("name"), p.getString("address"), p.getString("latitude"), p.getString("longitude"));
                     partners.add(partner);
 
                     //Add marker in google map
@@ -224,14 +227,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             .title(partner.name)
                             .snippet(partner.address));
 
-                    markerHash.put(marker,partner.id);
+                    markerHash.put(marker, partner.id);
 
                 }
 
-            }catch(Exception e){
-                Log.e("erro",e.getMessage());
+            } catch (Exception e) {
+                Log.e("erro", e.getMessage());
             }
-            Log.i("Result",result);
+            Log.i("Result", result);
 
         }
     }
@@ -270,7 +273,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
         mGoogleApiClient.connect();
 
         //add markers, get partners from database
-        new GetPartners().execute("","");
+        new GetPartners().execute("", "");
 
     }
 
@@ -284,8 +287,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
 
     @Override
     public void onInfoWindowClick(Marker marker) {
-        Log.i("Map","Clicking marker window");
-        String partner_id =  markerHash.get(marker);
+        Log.i("Map", "Clicking marker window");
+        String partner_id = markerHash.get(marker);
         Bundle bundle = new Bundle();
         bundle.putString("partner_id", partner_id);
         PartnerInformation partnerInformation = new PartnerInformation();
@@ -308,7 +311,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
                             android.Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
 
-        //get LastLocation (currentLocation)
+
+
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(
                 mGoogleApiClient);
         if (mLastLocation != null) {

@@ -1,7 +1,9 @@
 package br.com.cdf.cheapit;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.util.Util;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -51,6 +54,11 @@ public class ProfileFragment extends Fragment{
 
     ListView lvCoupons;
 
+    String status;
+    ImageButton ibRefresh;
+
+
+    // TODO: 01/07/17 GET points, coupons_ordered and coupons_used
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -90,11 +98,13 @@ public class ProfileFragment extends Fragment{
                 {
                     case R.id.radioAtivos:
                         Toast.makeText(getContext(), "Cupons Ativos", Toast.LENGTH_SHORT).show();
-                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","","");
+                        status = "ORDERED";
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),status,"","");
                         break;
                     case R.id.radioUsed:
                         Toast.makeText(getContext(), "Cupons Encerrados", Toast.LENGTH_SHORT).show();
-                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"USED","","");
+                        status = "USED";
+                        new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),status,"","");
                         break;
                     default:
                         break;
@@ -106,11 +116,11 @@ public class ProfileFragment extends Fragment{
         new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","","");
 
         /* REFRESH BUTTON */
-        ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
+        ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),"ORDERED","","");
+                new GetMyOffers().execute(String.valueOf(LoginController.CurrentUserId),status,"","");
             }
         });
 
@@ -266,7 +276,7 @@ public class ProfileFragment extends Fragment{
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    Coupon coupon = new Coupon(c.getString("coupon_id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"),c.getString("expires_at"));
+                    Coupon coupon = new Coupon(c.getString("coupon_id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"),c.getString("expires_at"),c.getString("status"),c.getString("points"));
                     coupons.add(coupon);
                 }
 
@@ -286,20 +296,144 @@ public class ProfileFragment extends Fragment{
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
-                    Coupon coupon =  (Coupon)parent.getItemAtPosition(position);
-                    Toast.makeText(getContext(),coupon.partner,Toast.LENGTH_SHORT).show();
+                    final Coupon coupon =  (Coupon)parent.getItemAtPosition(position);
                     Bundle bundle = new Bundle();
                     bundle.putString("coupon_id", coupon.id);
-                    CouponInformation couponInformation = new CouponInformation();
-                    couponInformation.setArguments(bundle);
-                    android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                    couponInformationfragmentTransaction
-                            .replace(R.id.fragment_container, couponInformation)
-                            .addToBackStack(null)
-                            .commit();
+
+                    if(coupon.status.equals("ORDERED")) {
+                        CouponInformation couponInformation = new CouponInformation();
+                        couponInformation.setArguments(bundle);
+                        android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        couponInformationfragmentTransaction
+                                .replace(R.id.fragment_container, couponInformation)
+                                .addToBackStack(null)
+                                .commit();
+                    }
+
+                    else if(coupon.status.equals("USED")){
+                        Log.i("Used Coupon","Resgatar cheapit points");
+
+
+                        //RESCUE CHEAPIT POINTS
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setTitle("Resgatar Cheapit Points?");
+
+                        builder.setPositiveButton("Sim",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Log.i("Used Coupon","Resgatados");
+                                        Toast.makeText(getContext(),"Parabéns! Você ganhou "+coupon.points+" Cheapit Points!",Toast.LENGTH_SHORT).show();
+                                        // TODO: 01/07/17 GIVE POINTS TO USER
+                                        new UpdateCouponStatus().execute(coupon.id,"RESCUED");
+                                        ibRefresh.performClick();
+
+                                    }
+                                });
+                        builder.setNegativeButton(
+                                "Nao",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                    }
+                                });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
                 }
 
             });
+        }
+    }
+
+    private class UpdateCouponStatus extends AsyncTask<String,String,String> {
+        public static final int CONNECTION_TIMEOUT=10000;
+        public static final int READ_TIMEOUT=15000;
+
+        HttpURLConnection conn;
+        URL url = null;
+
+
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                // Enter URL address where your php file resides
+                url = new URL(LoginController.update_coupon_URL);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return "exception";
+            }
+            try {
+                // Setup HttpURLConnection class to send and receive data from php and mysql
+                conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(READ_TIMEOUT);
+                conn.setConnectTimeout(CONNECTION_TIMEOUT);
+                conn.setRequestMethod("POST");
+
+                // setDoInput and setDoOutput method depict handling of both send and receive
+                conn.setDoInput(true);
+                conn.setDoOutput(true);
+
+                // Append parameters to URL
+                Uri.Builder builder = new Uri.Builder()
+                        .appendQueryParameter("coupon_id", params[0])
+                        .appendQueryParameter("status", params[1]);
+                String query = builder.build().getEncodedQuery();
+                Log.i("Update Coupon Query",query);
+
+                // Open connection for sending data
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write(query);
+                writer.flush();
+                writer.close();
+                os.close();
+                conn.connect();
+
+            } catch (IOException e1) {
+                e1.printStackTrace();
+                return "exception";
+            }
+
+            try {
+
+                int response_code = conn.getResponseCode();
+
+                // Check if successful connection made
+                if (response_code == HttpURLConnection.HTTP_OK) {
+
+                    // Read data sent from server
+                    InputStream input = conn.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+                    StringBuilder result = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+
+                    // Pass data to onPostExecute method
+                    return (result.toString());
+
+                } else {
+                    Toast.makeText(getContext(),"connectionbad",Toast.LENGTH_SHORT).show();
+                    return ("unsuccessful");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "exception";
+            } finally {
+                conn.disconnect();
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.i("Result",result);
         }
     }
 }
