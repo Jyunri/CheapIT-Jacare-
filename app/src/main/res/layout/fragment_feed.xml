@@ -5,11 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/llHeader"
     android:orientation="vertical"
-    android:background="@color/bege">
+    android:background="@color/red">
 
     <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
         android:fillViewport="true">
 
         <LinearLayout
@@ -62,7 +63,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"
@@ -92,7 +93,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"
@@ -129,7 +130,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"
@@ -159,7 +160,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"
@@ -197,7 +198,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"
@@ -227,7 +228,7 @@
                         android:layout_margin="2dp"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:background="@color/bordo_red">
+                        android:background="@drawable/button_red2">
 
                         <ImageView
                             android:layout_width="70dp"

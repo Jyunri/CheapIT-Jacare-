@@ -257,6 +257,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleA
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
+        mGoogleMap.getUiSettings().setZoomControlsEnabled(true);
+
 
         mGoogleMap.setOnInfoWindowClickListener(this);
 

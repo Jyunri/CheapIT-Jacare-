@@ -249,7 +249,6 @@ public class PartnerInformation extends Fragment {
 //                website.add(jsonObject.getString("facebook"));
 //                listDataChild.put(listDataHeader.get(2),website);
 //
-//                // TODO: 5/6/17 VERIFY MAX LENGTH (NUM OF CHARS) TO DESCRIPTION
 //                List<String> description = new ArrayList<String>();
 //                description.add(jsonObject.getString("description"));
 //                listDataChild.put(listDataHeader.get(3),description);
@@ -412,7 +411,7 @@ public class PartnerInformation extends Fragment {
                     Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();
                     bundle.putString("offer_id", offer.id);
-                    OfferInformation offerInformation = new OfferInformation();
+                    OfferInformation2 offerInformation = new OfferInformation2();
                     offerInformation.setArguments(bundle);
                     android.support.v4.app.FragmentTransaction couponInformationfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                     couponInformationfragmentTransaction

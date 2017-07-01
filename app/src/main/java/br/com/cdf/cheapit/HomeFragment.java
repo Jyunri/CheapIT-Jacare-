@@ -100,7 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         llHelp.setOnClickListener(this);
 
         // Get offers from database (#CORREQUEDATEMPO/expiring only)
-        new GetOffers().execute("","");
+        //new GetOffers().execute("","");
 
         /* REFRESH BUTTON */
         ImageButton ibRefresh = (ImageButton)getActivity().findViewById(R.id.ibRefresh);
@@ -117,7 +117,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         //Adding header to listview
         lvExpiring.addHeaderView(header);
 
-        return rootView;
+        //return rootView; IN CASE I WANT TO SHOW LISTVIEW
+        return header;
     }
 
     @Override

@@ -2,6 +2,7 @@ package br.com.cdf.cheapit;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -121,7 +122,7 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
         return false;
     }
 
-    // TODO: 5/27/17 LOOK FOR BETTER WAY TO DISABLE SOFT KEYBOARD
+    // TODO: 5/27/17 LOOK FOR BETTER WAY TO DISABLE SOFT KEYBOARD [BUG]
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(INPUT_METHOD_SERVICE);
@@ -260,7 +261,7 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
             }catch(Exception e){
                 Log.e("erro",e.getMessage());
             }
-            Log.i("Result",result);
+            Log.i("Results",result);
 
             listAdapter = new OfferListAdapter(getContext(),offers);
 
@@ -273,6 +274,10 @@ public class OfferPoolFragment extends Fragment implements SearchView.OnQueryTex
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
+                    //HIDE SOFT KEYBOARD
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                     Offer offer =  (Offer)parent.getItemAtPosition(position);
                     Toast.makeText(getContext(),offer.partner,Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();

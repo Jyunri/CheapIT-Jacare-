@@ -2,6 +2,7 @@ package br.com.cdf.cheapit;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -265,6 +267,10 @@ public class PartnerPoolFragment extends Fragment implements SearchView.OnQueryT
                 @Override
                 public void onItemClick(AdapterView<?> parent, final View view,
                                         int position, long id) {
+                    //HIDE SOFT KEYBOARD
+                    InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
                     Partner partner =  (Partner) parent.getItemAtPosition(position);
                     Toast.makeText(getContext(),partner.name,Toast.LENGTH_SHORT).show();
                     Bundle bundle = new Bundle();

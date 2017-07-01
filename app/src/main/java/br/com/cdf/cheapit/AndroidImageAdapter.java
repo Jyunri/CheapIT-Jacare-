@@ -27,9 +27,9 @@ public class AndroidImageAdapter extends PagerAdapter {
         return sliderImagesId.length;
     }
 
-    private int[] images = new int[]{
-            R.drawable.slide1, R.drawable.slide1
-    };
+//    private int[] images = new int[]{
+//            R.drawable.slide1, R.drawable.slide1
+//    };
 
     @Override
     public boolean isViewFromObject(View v, Object obj) {

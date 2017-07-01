@@ -46,9 +46,9 @@ public class CouponListAdapter extends ArrayAdapter<Coupon> {
         //TextView tvDescricao = (TextView)customView.findViewById(R.id.tvDescription);
         //tvDescricao.setText(descricao);
 
-        String couponCode = coupons.get(position).couponCode;
-        TextView tvCouponCode = (TextView)customView.findViewById(R.id.tvCouponCode);
-        tvCouponCode.setText("Código do cupom:\n"+couponCode);
+        String couponExpirity = coupons.get(position).expires_at;
+        TextView tvCouponExpirity = (TextView)customView.findViewById(R.id.tvCouponExpirity);
+        tvCouponExpirity.setText(couponExpirity);
 
         String imagem = coupons.get(position).image;
         ImageView ivImagem = (ImageView)customView.findViewById(R.id.ivCouponVoucher);

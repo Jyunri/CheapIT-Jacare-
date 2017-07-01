@@ -92,7 +92,7 @@ public class CouponInformation extends Fragment {
 
 
         // Get Offer Information in a new thread
-        new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id);
+        new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id,"");
 
         expListView.addHeaderView(header);
         expListView.addFooterView(footer);
@@ -104,7 +104,7 @@ public class CouponInformation extends Fragment {
         ibRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id);
+                new GetCouponInformation().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,"","ORDERED", coupon_id,"");
             }
         });
 
@@ -157,7 +157,8 @@ public class CouponInformation extends Fragment {
                 Uri.Builder builder = new Uri.Builder()
                         .appendQueryParameter("user_id", params[0])
                         .appendQueryParameter("status", params[1])
-                        .appendQueryParameter("coupon_id", params[2]);
+                        .appendQueryParameter("coupon_id", params[2])
+                        .appendQueryParameter("coupon_code", params[3]);
                 String query = builder.build().getEncodedQuery();
                 Log.i("Coupon Query",query);
 
@@ -287,7 +288,6 @@ public class CouponInformation extends Fragment {
                 //expand first box by default
                 expListView.expandGroup(0);
 
-                // TODO: 5/28/17 ADD QR CODE BASED ON CODE STRING
                 Bitmap qrBitmap = QRCode.from(coupon_code).bitmap();
 
                 ivQrcode.setImageBitmap(qrBitmap);
@@ -423,7 +423,7 @@ public class CouponInformation extends Fragment {
 
                 for (int j = 0; j < coupons_array.length(); j++) {
                     JSONObject c = coupons_array.getJSONObject(j);
-                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"));
+                    Coupon coupon = new Coupon(c.getString("id"),c.getString("partner_name"),c.getString("description"),c.getString("coupon_code"),c.getString("image"),c.getString("expires_at"));
                     coupons.add(coupon);
                 }
 

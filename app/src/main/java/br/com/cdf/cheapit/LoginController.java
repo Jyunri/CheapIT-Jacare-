@@ -15,6 +15,7 @@ public class LoginController extends MultiDexApplication {
     public static final String userURL = "https://cheapit.000webhostapp.com/page_users_json.php";
     public static final String new_couponURL = "https://cheapit.000webhostapp.com/page_json_new_coupon_beta.php";
     public static final String my_couponURL = "https://cheapit.000webhostapp.com/page_coupons_ordered_json.php";
+    public static final String update_coupon_URL = "https://cheapit.000webhostapp.com/update_coupon.php";
 
     public static String CurrentFirstName = "Visitante";
     public static String CurrentUsername = "Visitante";
