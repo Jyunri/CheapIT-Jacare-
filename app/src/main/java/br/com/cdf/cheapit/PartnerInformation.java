@@ -140,7 +140,7 @@ public class PartnerInformation extends Fragment {
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                Toast.makeText(getContext(),"Malformed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Malformed URL",Toast.LENGTH_SHORT).show();
                 return "exception";
             }
             try {

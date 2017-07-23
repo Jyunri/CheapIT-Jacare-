@@ -10,12 +10,21 @@ import com.facebook.appevents.AppEventsLogger;
  */
 
 public class LoginController extends MultiDexApplication {
-    public static final String offerURL = "https://cheapit.000webhostapp.com/page_offers_json_jimy.php";
-    public static final String partnerURL = "https://cheapit.000webhostapp.com/page_partners_json_jimy.php";
-    public static final String userURL = "https://cheapit.000webhostapp.com/page_users_json.php";
-    public static final String new_couponURL = "https://cheapit.000webhostapp.com/page_json_new_coupon_beta.php";
-    public static final String my_couponURL = "https://cheapit.000webhostapp.com/page_coupons_ordered_json.php";
-    public static final String update_coupon_URL = "https://cheapit.000webhostapp.com/update_coupon.php";
+//    public static final String offerURL = "https://cheapit.000webhostapp.com/page_offers_json_jimy.php";
+//    public static final String partnerURL = "https://cheapit.000webhostapp.com/page_partners_json_jimy.php";
+//    public static final String userURL = "https://cheapit.000webhostapp.com/page_users_json.php";
+//    public static final String new_couponURL = "https://cheapit.000webhostapp.com/page_json_new_coupon_beta.php";
+//    public static final String my_couponURL = "https://cheapit.000webhostapp.com/page_coupons_ordered_json.php";
+//    public static final String update_coupon_URL = "https://cheapit.000webhostapp.com/update_coupon.php";
+
+    public static final String offerURL = "http://cheapit1.tempsite.ws/query/page_offers_json_jimy.php";
+    public static final String partnerURL = "http://cheapit1.tempsite.ws/query/page_partners_json_jimy.php";
+    public static final String userURL = "http://cheapit1.tempsite.ws/query/page_users_json.php";
+    public static final String new_couponURL = "http://cheapit1.tempsite.ws/query/page_json_new_coupon_beta.php";
+    public static final String my_couponURL = "http://cheapit1.tempsite.ws/query/page_coupons_ordered_json.php";
+    public static final String update_coupon_URL = "http://cheapit1.tempsite.ws/query/update_coupon.php";
+
+
 
     public static String CurrentFirstName = "Visitante";
     public static String CurrentUsername = "Visitante";

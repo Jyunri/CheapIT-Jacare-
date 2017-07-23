@@ -111,6 +111,7 @@
                             android:textStyle="bold|italic"
                             android:textSize="18sp"
                             android:textColor="@color/white"
+                            android:maxLines="1"
                             android:text="Cupons Disponíveis"/>
 
 

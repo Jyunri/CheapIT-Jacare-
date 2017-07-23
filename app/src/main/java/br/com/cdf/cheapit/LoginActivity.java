@@ -30,7 +30,7 @@ import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    //TODO test guestLogin, check need [PD]
+    //TODO remove guestLogin [PD]
     Button guestLogin;
 
     private LoginButton fbLogin;
